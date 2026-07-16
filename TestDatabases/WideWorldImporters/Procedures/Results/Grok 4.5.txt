@@ -1,0 +1,80 @@
+**SQL Syntax Check**
+The SQL is syntactically valid for SQL Server. It creates a procedure, declares parameters with defaults, uses `SET NOCOUNT ON`, and runs 150 independent `SELECT` statements. Each query is well-formed (valid `TOP` with variable, aliases, `CONVERT`, `COALESCE`, `ORDER BY NEWID()`). No parse errors. Note: `OrderDate` is already `date`, so `CONVERT(date, o.OrderDate)` is redundant but legal. `@EndDate` is declared but never referenced (no error).
+
+**SQL Style Guide Evaluation**
+Multiple violations:
+
+- **1.2 Variables / camelCase**: Parameters use PascalCase (`@StartDate`, `@EndDate`, `@CustomerID`, `@UnsafeTop`). Style requires camelCase (`@startDate`, `@endDate`, `@customerId`, `@unsafeTop`).
+- **1.3 / 2.2 Leading commas**: Column lists use trailing commas:
+  ```
+  o.OrderID,
+  o.CustomerID,
+  o.OrderDate
+  ```
+  Style requires leading commas aligned under the first item:
+  ```
+  o.OrderID
+  , o.CustomerID
+  , o.OrderDate
+  ```
+  (Repeated in every one of the 150 blocks.)
+- **2.1 Keywords / data types**: Keywords are correctly UPPERCASE; data types are correctly lowercase. Good.
+- **2.2 Layout**: Major clauses start on new lines; 4-space indent appears used; spaces around operators present. `CREATE   PROCEDURE` has extra spaces (minor). Explicit `AS` for alias is correct.
+- **3.1 Schema qualification**: `Sales.Orders` is schema-qualified (good). Alias `o` is short/meaningful with explicit `AS` (good). No `SELECT *` (good). ANSI `JOIN` not applicable (single table).
+- **3.2 Terminators / lengths**: Every statement ends with `;`. No bare `varchar`. Good.
+- **8. SELECT Stored Procedures**: Structure roughly matches (params for filter columns + procedure wrapper). However, unused `@EndDate`, arbitrary `@UnsafeTop`, and 150 duplicate result sets violate the spirit of a clean SELECT procedure.
+- Naming of procedure (`usp_MonsterProcedure`) and schema (`dbo`) complies with 1.1. Column names match the table (PascalCase / `...Id` style). Table is plural (`Orders`); style prefers singular, but that is outside this procedure's control.
+
+**Best Practices Evaluation**
+Severe violations (many labeled "intentional anti-pattern"):
+
+- **Non-sargable predicates** (blocks 001-150):
+  `WHERE CONVERT(date, o.OrderDate) = @StartDate`
+  and
+  `o.CustomerID = COALESCE(@CustomerID, o.CustomerID)`
+  Both prevent efficient index seeks on `OrderDate` / `CustomerID` (indexes exist). Prefer `o.OrderDate = @StartDate` (column is already `date`) and `(@CustomerID IS NULL OR o.CustomerID = @CustomerID)`.
+- **ORDER BY NEWID()** (every block): Forces a full sort / scan for random order. Extremely expensive with `TOP` and large tables; classic anti-pattern for production code. Use a proper ordering column or `TABLESAMPLE` / other techniques if randomness is required.
+- **Massive duplication**: Identical query repeated 150 times. Destroyed readability, maintainability, and plan cache efficiency. Produces 150 result sets. Any change must be applied 150 times.
+- **Unused parameter**: `@EndDate` is never used (dead code).
+- **Unsafe / unbounded TOP**: `@UnsafeTop` has no validation (can be 0, negative, or huge). Name itself signals risk.
+- **No input validation / defensive coding**: Defaults hard-coded; no checks for `@StartDate > @EndDate` or null-safety beyond the COALESCE pattern.
+- **Performance**: 150 independent scans + sorts will thrash CPU/IO. `SET NOCOUNT ON` is good, but insufficient.
+- **Section 5/7/8 guidance**: This is a SELECT procedure; the "do nothing if no rows" behavior is present, but the rest of the design ignores maintainability and performance expectations.
+
+Positive notes: Explicit column list, schema prefix, semicolon terminators, `AS` alias, no `NOLOCK`, no `sp_` prefix, no `SELECT *`, no comma joins.
+
+**Overall Evaluation**
+- **Readability**: Extremely poor. 150 copy-paste blocks make the procedure unreadable and unmaintainable.
+- **Maintainability**: Catastrophic. Any fix (sargable rewrite, remove NEWID, fix casing/commas) must be repeated 150 times.
+- **Performance**: Very bad. Non-sargable filters + `ORDER BY NEWID()` + 150 executions guarantee scans, sorts, and high resource use.
+- **Quality**: Intentionally demonstrates anti-patterns. Does not meet the style guide or best-practice bar for production code. Syntax is fine; everything else fails.
+
+**Recommendations (concrete fixes)**
+1. Rename parameters to camelCase: `@startDate`, `@endDate`, `@customerId`, `@unsafeTop`.
+2. Switch every column list to leading commas.
+3. Rewrite the predicate once:
+   ```
+   WHERE o.OrderDate = @startDate
+     AND (@customerId IS NULL OR o.CustomerID = @customerId)
+   ```
+4. Remove `ORDER BY NEWID()` (or replace with a deterministic column / proper sampling).
+5. Delete 149 of the 150 identical blocks; keep a single, clean query.
+6. Drop or use `@endDate` (e.g., range filter).
+7. Add basic validation:
+   ```
+   IF @unsafeTop IS NULL OR @unsafeTop < 1 SET @unsafeTop = 10;
+   ```
+8. Consider `OPTION (RECOMPILE)` only if parameter sniffing becomes an issue after the rewrite.
+9. Prefer a single well-written procedure over a "monster" of repeated anti-patterns.
+
+The code does **not** adhere to the style guide or best practices.
+
+FAILED
+
+Model: grok-4.5
+Input tokens: 31,181
+Output tokens: 1,321
+Total tokens: 32,502
+AI time: 31.92 seconds
+Tokens/second: 1,018
+Estimated total cost: $0.070288 USD
