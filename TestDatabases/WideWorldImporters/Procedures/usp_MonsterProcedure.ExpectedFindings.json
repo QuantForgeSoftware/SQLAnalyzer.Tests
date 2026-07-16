@@ -1,0 +1,2703 @@
+[
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 21,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 22,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 23,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 31,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 32,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 33,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 41,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 42,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 43,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 51,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 52,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 53,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 61,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 63,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 71,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 72,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 73,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 81,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 82,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 83,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 91,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 92,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 101,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 102,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 103,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 111,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 112,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 113,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 121,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 122,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 123,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 131,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 132,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 133,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 141,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 142,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 151,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 152,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 153,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 161,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 162,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 163,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 171,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 172,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 173,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 181,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 182,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 183,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 191,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 192,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 193,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 201,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 202,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 203,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 211,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 212,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 213,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 221,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 222,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 223,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 231,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 232,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 233,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 241,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 242,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 243,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 252,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 253,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 262,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 263,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 271,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 272,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 273,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 281,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 282,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 283,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 291,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 292,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 293,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 301,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 302,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 303,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 311,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 312,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 313,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 321,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 322,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 323,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 331,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 332,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 333,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 341,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 342,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 343,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 351,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 352,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 353,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 361,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 362,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 363,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 371,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 372,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 373,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 381,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 382,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 383,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 391,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 392,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 393,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 401,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 402,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 403,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 411,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 412,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 413,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 421,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 422,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 423,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 431,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 432,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 433,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 441,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 442,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 443,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 451,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 452,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 453,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 461,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 462,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 463,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 471,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 472,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 473,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 481,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 482,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 483,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 491,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 492,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 493,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 501,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 502,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 503,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 511,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 512,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 513,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 521,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 522,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 523,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 531,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 532,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 533,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 541,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 542,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 543,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 551,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 552,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 553,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 561,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 562,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 563,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 571,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 572,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 573,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 581,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 582,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 583,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 591,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 592,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 593,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 601,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 602,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 603,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 611,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 612,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 613,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 621,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 622,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 623,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 631,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 632,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 633,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 641,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 642,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 643,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 651,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 652,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 653,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 661,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 662,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 663,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 671,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 672,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 673,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 681,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 682,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 683,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 691,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 692,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 693,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 701,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 702,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 703,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 711,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 712,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 713,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 721,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 722,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 723,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 731,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 732,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 733,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 741,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 742,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 743,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 751,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 752,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 753,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 761,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 762,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 763,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 771,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 772,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 773,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 781,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 782,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 783,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 791,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 792,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 793,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 801,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 802,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 803,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 811,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 812,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 813,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 821,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 822,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 823,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 831,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 832,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 833,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 841,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 842,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 843,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 851,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 852,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 853,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 861,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 862,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 863,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 871,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 872,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 873,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 881,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 882,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 883,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 891,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 892,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 893,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 901,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 902,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 903,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 911,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 912,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 913,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 921,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 922,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 923,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 931,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 932,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 933,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 941,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 942,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 943,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 951,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 952,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 953,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 961,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 962,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 963,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 971,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 972,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 973,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 981,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 982,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 983,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 991,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 992,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 993,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1001,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1002,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1003,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1011,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1012,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1013,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1021,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1022,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1023,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1031,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1032,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1033,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1041,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1042,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1043,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1051,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1052,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1053,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1061,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1062,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1063,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1071,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1072,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1073,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1081,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1082,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1083,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1091,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1092,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1093,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1101,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1102,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1103,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1111,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1112,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1113,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1121,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1122,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1123,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1131,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1132,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1133,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1141,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1142,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1143,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1151,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1152,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1153,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1161,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1162,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1163,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1171,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1172,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1173,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1181,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1182,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1183,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1191,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1192,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1193,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1201,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1202,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1203,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1211,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1212,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1213,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1221,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1222,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1223,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1231,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1232,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1233,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1241,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1242,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1243,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1251,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1252,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1253,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1261,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1262,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1263,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1271,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1272,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1273,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1281,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1282,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1283,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1291,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1292,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1293,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1301,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1302,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1303,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1311,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1312,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1313,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1321,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1322,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1323,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1331,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1332,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1333,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1341,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1342,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1343,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1351,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1352,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1353,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1361,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1362,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1363,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1371,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1372,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1373,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1381,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1382,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1383,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1391,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1392,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1393,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1401,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1402,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1403,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1411,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1412,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1413,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1421,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1422,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1423,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1431,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1432,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1433,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1441,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1442,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1443,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1451,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1452,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1453,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1461,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1462,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1463,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1471,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1472,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1473,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1481,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1482,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1483,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1491,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1492,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1493,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1501,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1502,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1503,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  },
+  {
+    "ruleName": "SARGablePredicate",
+    "lineNumber": 1511,
+    "severity": "warning",
+    "explanation": "Applies CONVERT to Sales.Orders.OrderDate in the predicate, preventing an index seek on that column."
+  },
+  {
+    "ruleName": "OptionalParameterPredicate",
+    "lineNumber": 1512,
+    "severity": "warning",
+    "explanation": "Uses COALESCE against the CustomerID column for an optional parameter, which is non-sargable and mishandles rows where CustomerID is NULL."
+  },
+  {
+    "ruleName": "OrderByNewId",
+    "lineNumber": 1513,
+    "severity": "warning",
+    "explanation": "Uses ORDER BY NEWID(), forcing a random sort and producing non-deterministic results."
+  }
+]
+
