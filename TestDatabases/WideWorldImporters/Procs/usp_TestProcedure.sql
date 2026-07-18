@@ -5,9 +5,13 @@ GO
 
 CREATE OR ALTER PROCEDURE [dbo].[usp_TestProcedure]
     @CustomerID int = NULL,
-    @RunUnsafeWrites bit = 0
+    @RunUnsafeWrites bit = 0,
+    @CustomerName nvarchar(100),
+    @NewCategory nvarchar(50)
 AS
 BEGIN
+    -- added lines to match
+    -- test
     -- ISSUE: NoCountDisabled | Leaves row-count chatter enabled, increasing client and network noise.
     SET NOCOUNT OFF;
 
@@ -195,6 +199,73 @@ BEGIN
     -- ISSUE: SessionSettingChanged | Changes a session setting and does not restore it.
     SET ROWCOUNT 1;
     SELECT o.OrderID FROM Sales.Orders AS o;
+
+        CREATE TABLE #DemoCustomers (
+        CustomerID int,
+        CustomerName nvarchar(100),
+        CustomerCategoryID int,
+        DeliveryMethodID int
+    );
+
+    CREATE TABLE #DemoCategories (
+        CategoryID int,
+        CategoryName nvarchar(50)
+    );
+
+    INSERT INTO #DemoCategories
+    VALUES (99, @NewCategory);
+
+    INSERT INTO #DemoCustomers
+    SELECT CustomerID, CustomerName, CustomerCategoryID, DeliveryMethodID
+    FROM Sales.Customers
+    WHERE CustomerName LIKE '%' + @CustomerName + '%';
+
+    SET @sql = N'SELECT CustomerID, CustomerName FROM #DemoCustomers WHERE CustomerName LIKE ''%' + @CustomerName + '%''';
+    EXEC sp_executesql @sql;
+
+    UPDATE #DemoCustomers
+    SET CustomerCategoryID = 1;
+
+    SELECT c.CustomerID, c.CustomerName, o.OrderID
+    FROM Sales.Customers c
+    LEFT JOIN Sales.Orders o ON c.CustomerID = o.CustomerID
+    WHERE o.OrderDate >= '2016-01-01';
+
+    SELECT CustomerID, CustomerName
+    FROM Sales.Customers
+    WHERE DeliveryMethodID = NULL;
+
+    SELECT CustomerID, dbo.GetCustomerType(CustomerID) AS CustomerType
+    FROM Sales.Customers;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        DELETE FROM #DemoCustomers WHERE CustomerID = @OrderID;
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        SELECT ERROR_MESSAGE();
+    END CATCH;
+
+    SELECT CustomerID, CustomerName
+    FROM Sales.Customers WITH (INDEX = 1)
+    WHERE CustomerName LIKE @CustomerName;
+
+    SELECT CustomerID
+    FROM (
+        SELECT CustomerID
+        FROM (
+            SELECT CustomerID
+            FROM (
+                SELECT CustomerID FROM Sales.Customers WHERE CustomerName LIKE '%A%'
+            ) AS t1
+        ) AS t2
+    ) AS t3;
+
+    SELECT * FROM dbo.GetCustomerOrdersMulti(@CustomerName);
+
+    DROP TABLE #DemoCategories;
+    DROP TABLE #DemoCustomers;
 END
 GO
 
