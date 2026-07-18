@@ -1,0 +1,14 @@
+Comparison: Output/Deepseek V4 Flash.txt vs Test.ExpectedFindings.json
+Line-number tolerance: < 5 (differences smaller than 5 are treated as the same location)
+
+Expected findings: 51
+Output findings:   51
+Matched:           51
+Missing (expected but not in output): 0
+Extra (output but not expected):      0
+
+MISSING FINDINGS (in expected, not matched in output)
+------------------------------------------------------------
+
+EXTRA FINDINGS (in output, not in expected)
+------------------------------------------------------------

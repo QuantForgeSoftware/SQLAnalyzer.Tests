@@ -1,0 +1,15 @@
+Comparison: Output/Deepseek V4 Pro.txt vs Test.ExpectedFindings.json
+Line-number tolerance: < 10 (differences smaller than 10 are treated as the same location)
+
+Expected findings: 51
+Output findings:   50
+Matched:           50
+Missing (expected but not in output): 1
+Extra (output but not expected):      0
+
+MISSING FINDINGS (in expected, not matched in output)
+------------------------------------------------------------
+MISS NotInNullableSubquery          expected line  46  NOT IN has surprising results when the subquery can produce NULL.
+
+EXTRA FINDINGS (in output, not in expected)
+------------------------------------------------------------

@@ -1,0 +1,39 @@
+Comparison (line differences < 4 ignored): Grok 4.5-Test.Output.txt vs usp_TestProcedure.ExpectedFindings.json
+
+Total expected findings: 51
+Total output findings:   64
+Matched within +/-3 lines: 51
+Missing from output:     0
+Extra in output:         12
+Severity mismatches:     12
+
+Missing findings (expected but not within line tolerance):
+  (none)
+
+Extra findings (in output but not within line tolerance):
+  line 53: HardCodedLiteral - Business identifier CustomerID value 1 is hard-coded in the predicate.
+  line 56: TopWithoutOrderBy - SELECT TOP (1) with CROSS JOIN has no ORDER BY, so which row is returned is arbitrary.
+  line 59: TopWithoutOrderBy - SELECT TOP (1) without ORDER BY returns an arbitrary matching order/line pair.
+  line 77: HardCodedLiteral - Hard-coded OrderID values 1 and 2 are embedded in the UNION branches.
+  line 80: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery runs once per outer Sales.Orders row.
+  line 87: TopWithoutOrderBy - SELECT TOP (5) into @OrderIds has no ORDER BY, so which five OrderID values are kept is undefined.
+  line 90: TopWithoutOrderBy - SELECT TOP (5) INTO #ImplicitOrders has no ORDER BY, so row selection is arbitrary.
+  line 93: TopWithoutOrderBy - Cursor SELECT TOP (2) has no ORDER BY, so which rows are fetched is arbitrary.
+  line 107: DynamicSqlWithoutParameters - EXEC (@Sql) runs dynamic SQL without parameterized inputs.
+  line 140: TopWithoutOrderBy - SELECT TOP (1) without ORDER BY makes the chosen Orders/Invoices pair non-deterministic.
+  line 143: TopWithoutOrderBy - SELECT TOP (1) self-join has no ORDER BY, so the returned row is arbitrary.
+  line 161: UpdateWithoutMeaningfulChange - MERGE WHEN MATCHED sets target.Comments = target.Comments, writing no meaningful change.
+
+Severity mismatches:
+  expected line 31 (output line 29): ReadUncommittedHint - expected warning, got error
+  expected line 46 (output line 44): NotInNullableSubquery - expected warning, got error
+  expected line 58 (output line 56): CartesianJoin - expected warning, got error
+  expected line 76 (output line 74): NondeterministicPagination - expected warning, got error
+  expected line 85 (output line 83): VariableAssignmentSelect - expected warning, got error
+  expected line 108 (output line 106): DynamicSqlConcatenation - expected warning, got error
+  expected line 112 (output line 111): DynamicSqlWithoutParameters - expected warning, got error
+  expected line 119 (output line 120): CatchSwallowsError - expected warning, got error
+  expected line 130 (output line 128): PrintDiagnostic - expected warning, got info
+  expected line 160 (output line 159): MergeStatement - expected warning, got error
+  expected line 170 (output line 169): DeleteWithWeakPredicate - expected warning, got error
+  expected line 178 (output line 178): ExplicitTransactionWithoutTryCatch - expected warning, got error

@@ -1,0 +1,149 @@
+Comparison: Output/Kimi K2.7 Coder.json vs Test.ExpectedFindings.json
+Line-number tolerance: < 2 (differences smaller than 2 are treated as the same location)
+
+Expected findings: 61
+Output findings:   86
+Matched:           6
+Missing (expected but not in output): 55
+Extra (output but not expected):      80
+
+MISSING FINDINGS (in expected, not matched in output)
+------------------------------------------------------------
+MISS XactAbortDisabled              expected line  14  SET XACT_ABORT OFF allows some run-time errors to leave a transaction partially applied.
+MISS SelectStar                     expected line  21  SELECT * couples callers to every current and future column of Sales.Orders.
+MISS TopWithoutOrderBy              expected line  24  Returns an arbitrary set of rows because no ordering is specified.
+MISS UnnecessaryDistinct            expected line  27  Uses a duplicate-eliminating operation where OrderID is already unique.
+MISS ReadUncommittedHint            expected line  30  Can return uncommitted, missing, or duplicated rows.
+MISS FunctionOnColumn               expected line  33  YEAR on the indexed date column prevents a simple range seek.
+MISS ImplicitConversion             expected line  36  Compares an int column with nvarchar input and can force conversion.
+MISS OptionalParameterOr            expected line  39  OR-based optional filtering makes cardinality estimation and seeking difficult.
+MISS LeadingWildcardLike            expected line  42  A leading wildcard prevents a normal index seek on Comments.
+MISS NotInNullableSubquery          expected line  45  NOT IN has surprising results when the subquery can produce NULL.
+MISS NonSargableIsNull              expected line  48  Wrapping CustomerID in ISNULL makes the predicate non-sargable.
+MISS ArithmeticOnColumn             expected line  51  Arithmetic on OrderID prevents direct index matching.
+MISS HardCodedLiteral               expected line  54  Hard-coded business identifier 1 in the inequality predicate on Sales.Orders.CustomerID.
+MISS NegativePredicate              expected line  54  Inequality often scans broad portions of the table.
+MISS CartesianJoin                  expected line  57  Omits a join predicate and multiplies Orders by Customers.
+MISS TopWithoutOrderBy              expected line  57  SELECT TOP (1) from the CROSS JOIN has no ORDER BY, returning an arbitrary row.
+MISS OldStyleJoin                   expected line  60  Comma joins obscure join predicates and make accidental cartesian joins easier.
+MISS CorrelatedScalarSubquery       expected line  63  Executes a scalar lookup for every qualifying order row.
+MISS CorrelatedExists               expected line  66  Runs a correlated EXISTS check per outer row instead of expressing a set join.
+MISS RepeatedExpression             expected line  69  Repeats the same CASE expression in select and ordering logic.
+MISS OrderByOrdinal                 expected line  72  Ordering by a column position becomes fragile when the select list changes.
+MISS NondeterministicPagination     expected line  75  OFFSET pagination has no stable tie breaker.
+MISS HardCodedLiteral               expected line  78  Hard-coded business identifiers 1 and 2 in the predicates on Sales.Orders.OrderID.
+MISS UnionInsteadOfUnionAll         expected line  78  Performs needless duplicate removal between disjoint literal branches.
+MISS CountStarForExistence          expected line  81  Counts all matching rows when only existence is needed.
+MISS VariableAssignmentSelect       expected line  84  SELECT assignment silently accepts multiple rows and keeps the last value.
+MISS TableVariableEstimate          expected line  87  A table variable may receive poor cardinality estimates on older compatibility levels.
+MISS TopWithoutOrderBy              expected line  88  SELECT TOP (5) inside the INSERT ... SELECT has no ORDER BY, inserting an arbitrary set of rows.
+MISS SelectIntoTempTable            expected line  91  Creates a temp-table schema implicitly instead of declaring it explicitly.
+MISS CursorRowByRow                 expected line  94  Uses a cursor for work that can be expressed set-wise.
+MISS WhileLoopRowByRow              expected line 101  Performs iterative work instead of a set-based operation.
+MISS DynamicSqlConcatenation        expected line 107  Concatenates a value into executable SQL text.
+MISS TempTableWithoutCleanup        expected line 115  Leaves an explicitly created temporary object until procedure scope ends.
+MISS CatchSwallowsError             expected line 122  Captures an error but neither rethrows nor returns a failure status.
+MISS LegacyRaiseError               expected line 126  Uses RAISERROR rather than THROW for new error paths.
+MISS PrintDiagnostic                expected line 129  PRINT is buffered and unsuitable for structured diagnostics.
+MISS HardCodedLiteral               expected line 132  Embeds a business identifier instead of accepting it as input or looking it up.
+MISS MagicDateLiteral               expected line 135  Embeds an unlabelled date constant in query logic.
+MISS AmbiguousDateConversion        expected line 138  Relies on session-sensitive date string conversion.
+MISS CoalesceInJoin                 expected line 141  Applies COALESCE in a join predicate, inhibiting normal join optimization.
+MISS TopWithoutOrderBy              expected line 141  SELECT TOP (1) in the COALESCE join has no ORDER BY, returning an arbitrary row.
+MISS SelfJoinWithoutNeed            expected line 144  Self-joins Orders solely to retrieve the same key.
+MISS WideSort                       expected line 147  Sorts every order by an unselective text column.
+MISS AggregateWithoutFilter         expected line 150  Aggregates the entire fact-like order-line table for a single scalar result.
+MISS HavingForRowFilter             expected line 153  Applies a row-level predicate after grouping rather than in WHERE.
+MISS RedundantOrderBy               expected line 156  Orders a one-row aggregate result unnecessarily.
+MISS MergeStatement                 expected line 160  MERGE has documented concurrency and correctness edge cases.
+MISS UpdateWithoutMeaningfulChange  expected line 166  Issues a write that changes no data and still causes logging and locking.
+MISS DeleteWithWeakPredicate        expected line 170  Deletes based on a broad business value rather than a stable key.
+MISS HardCodedLiteral               expected line 170  Hard-coded magic value -1 in the DELETE predicate on Sales.OrderLines.Quantity.
+MISS WaitForDelay                   expected line 174  Intentionally blocks a worker instead of using asynchronous scheduling.
+MISS ExplicitTransactionWithoutTryCatch expected line 179  Starts a transaction outside an error-handling boundary.
+MISS SetIdentityInsert              expected line 186  Changes session state and introduces fragile identity-management coupling.
+MISS UnqualifiedProcedureName       expected line 191  Invokes a system routine without schema qualification.
+MISS SessionSettingChanged          expected line 194  Changes a session setting and does not restore it.
+
+EXTRA FINDINGS (in output, not in expected)
+------------------------------------------------------------
+EXTRA SessionSettingChanged          output line  13  SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+EXTRA XactAbortDisabled              output line  16  SET XACT_ABORT OFF allows some run-time errors to leave a transaction partially applied.
+EXTRA SessionSettingChanged          output line  16  SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+EXTRA SelectStar                     output line  24  SELECT * on Sales.Orders couples callers to every current and future column.
+EXTRA TopWithoutOrderBy              output line  27  SELECT TOP (10) on Sales.Orders has no ORDER BY, so the returned rows are nondeterministic.
+EXTRA UnnecessaryDistinct            output line  30  DISTINCT on Sales.Orders.OrderID is unnecessary because OrderID is the primary key.
+EXTRA ReadUncommittedHint            output line  33  WITH (NOLOCK) on Sales.Orders can return uncommitted, missing, or duplicated rows.
+EXTRA FunctionOnColumn               output line  36  YEAR(o.OrderDate) in the predicate prevents a direct range seek on OrderDate.
+EXTRA ImplicitConversion             output line  39  Comparing Sales.Orders.CustomerID (int) with @CustomerIdText (nvarchar) forces an implicit conversion.
+EXTRA OptionalParameterOr            output line  42  OR-based optional filter @CustomerID IS NULL OR o.CustomerID = @CustomerID harms cardinality estimation and seeking.
+EXTRA LeadingWildcardLike            output line  45  LIKE pattern N'%urgent%' on Sales.Orders.Comments starts with a leading wildcard, preventing an index seek.
+EXTRA NonSargableIsNull              output line  51  ISNULL(o.CustomerID, 0) in the predicate wraps the column and makes the filter non-sargable.
+EXTRA ArithmeticOnColumn             output line  54  Arithmetic o.OrderID + 0 on the primary key column prevents direct index matching.
+EXTRA NegativePredicate              output line  57  Inequality o.CustomerID <> 1 on Sales.Orders often scans broad portions of the table.
+EXTRA CartesianJoin                  output line  60  CROSS JOIN between Sales.Orders and Sales.Customers multiplies rows with no join predicate.
+EXTRA OldStyleJoin                   output line  63  Comma-separated FROM clause with join predicate in WHERE is old-style syntax and error-prone.
+EXTRA TopWithoutOrderBy              output line  63  SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+EXTRA CorrelatedScalarSubquery       output line  66  Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+EXTRA CorrelatedExists               output line  69  Correlated EXISTS against Sales.OrderLines could be expressed as a set join instead of a per-row lookup.
+EXTRA RepeatedExpression             output line  72  The CASE expression on Sales.Orders.Comments is repeated in both the SELECT list and ORDER BY clause.
+EXTRA OrderByOrdinal                 output line  75  ORDER BY 2 references a select-list position and breaks if the column list changes.
+EXTRA NondeterministicPagination     output line  78  OFFSET/FETCH ordered only by Sales.Orders.OrderDate lacks a stable tie-breaker.
+EXTRA UnionInsteadOfUnionAll         output line  81  UNION combines disjoint branches (OrderID = 1 and OrderID = 2), causing unnecessary duplicate removal.
+EXTRA CountStarForExistence          output line  84  COUNT(*) > 0 from Sales.OrderLines counts all matching rows when only existence is needed.
+EXTRA CorrelatedScalarSubquery       output line  84  Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+EXTRA VariableAssignmentSelect       output line  87  SELECT @OrderID = o.OrderID FROM Sales.Orders silently accepts multiple rows and keeps the last value.
+EXTRA TableVariableEstimate          output line  90  Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+EXTRA SelectIntoTempTable            output line  95  SELECT ... INTO #ImplicitOrders from Sales.Orders creates the temp table schema implicitly.
+EXTRA CursorRowByRow                 output line  98  Cursor order_cursor over Sales.Orders processes rows one at a time instead of set-wise.
+EXTRA TopWithoutOrderBy              output line  98  SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+EXTRA WhileLoopRowByRow              output line 105  WHILE loop increments @Counter iteratively rather than using a set-based approach.
+EXTRA DynamicSqlConcatenation        output line 111  SQL string is built by concatenating @CustomerID directly into the query text.
+EXTRA SqlInjectionViaDynamicSql      output line 111  User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+EXTRA DynamicSqlConcatenation        output line 115  SQL string is built by concatenating @OrderID directly into the query text.
+EXTRA SqlInjectionViaDynamicSql      output line 115  User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+EXTRA DynamicSqlWithoutParameters    output line 116  sp_executesql is used but the statement is concatenated rather than parameterized.
+EXTRA TempTableWithoutCleanup        output line 119  Explicitly created temp table #Scratch is not dropped before the procedure ends.
+EXTRA CatchSwallowsError             output line 125  CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+EXTRA LegacyRaiseError               output line 130  RAISERROR is used instead of THROW for the new error path.
+EXTRA PrintDiagnostic                output line 133  PRINT is buffered and unsuitable for structured diagnostics.
+EXTRA HardCodedLiteral               output line 136  Hard-coded CustomerID value 1 is embedded in the query instead of being parameterized or looked up.
+EXTRA MagicDateLiteral               output line 139  Unlabelled date constant '20160101' is embedded in the Sales.Orders filter logic.
+EXTRA AmbiguousDateConversion        output line 142  CONVERT(date, '01/02/2016') relies on session-sensitive date string interpretation.
+EXTRA CoalesceInJoin                 output line 145  COALESCE in the join predicate between Sales.Orders and Sales.Invoices inhibits normal join optimization.
+EXTRA SelfJoinWithoutNeed            output line 148  Self-join on Sales.Orders only retrieves OrderID, which is already available in the same row.
+EXTRA TopWithoutOrderBy              output line 148  SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+EXTRA WideSort                       output line 151  ORDER BY Sales.Orders.Comments (nvarchar(MAX)) performs a wide, unselective sort.
+EXTRA AggregateWithoutFilter         output line 154  SUM(Quantity) over the entire Sales.OrderLines table aggregates a large fact-like table without a restrictive filter.
+EXTRA HavingForRowFilter             output line 157  Row-level predicate ol.OrderID > 0 on Sales.OrderLines is placed in HAVING instead of WHERE.
+EXTRA RedundantOrderBy               output line 160  ORDER BY OrderCount is redundant for a single-row aggregate result from Sales.Orders.
+EXTRA MergeStatement                 output line 164  MERGE on Sales.Orders has documented concurrency and correctness edge cases.
+EXTRA UpdateWithoutMeaningfulChange  output line 170  UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+EXTRA DeleteWithWeakPredicate        output line 174  DELETE from Sales.OrderLines uses the non-key column Quantity = -1 rather than a stable key predicate.
+EXTRA HardCodedLiteral               output line 174  Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+EXTRA WaitForDelay                   output line 178  WAITFOR DELAY blocks a worker instead of using asynchronous scheduling.
+EXTRA ExplicitTransactionWithoutTryCatch output line 183  BEGIN TRANSACTION is not wrapped in a BEGIN TRY / BEGIN CATCH error-handling boundary.
+EXTRA SetIdentityInsert              output line 190  SET IDENTITY_INSERT ON on Sales.Orders changes session state and introduces fragile identity-management coupling.
+EXTRA UnqualifiedProcedureName       output line 195  System procedure sp_who is invoked without a schema qualifier.
+EXTRA SessionSettingChanged          output line 198  SET ROWCOUNT 1 changes a session setting and is not restored before the procedure ends.
+EXTRA InsertWithoutColumnList        output line 213  INSERT INTO #DemoCategories VALUES omits the explicit column list.
+EXTRA HardCodedLiteral               output line 213  Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+EXTRA LeadingWildcardLike            output line 219  LIKE pattern '%' + @CustomerName + '%' on Sales.Customers.CustomerName starts with a leading wildcard.
+EXTRA DynamicSqlConcatenation        output line 221  SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+EXTRA SqlInjectionViaDynamicSql      output line 221  User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk.
+EXTRA LeadingWildcardLike            output line 221  The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+EXTRA DynamicSqlWithoutParameters    output line 222  sp_executesql is used but the statement is concatenated rather than parameterized.
+EXTRA UnqualifiedProcedureName       output line 222  System procedure sp_executesql is invoked without a schema qualifier.
+EXTRA UpdateWithoutWhere             output line 224  UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+EXTRA HardCodedLiteral               output line 224  Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+EXTRA OuterJoinToFilter              output line 230  Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join.
+EXTRA MagicDateLiteral               output line 230  Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic.
+EXTRA NullEquality                   output line 234  Sales.Customers.DeliveryMethodID = NULL uses equality with NULL instead of IS NULL and will never match.
+EXTRA ScalarUdfInSelect              output line 236  Scalar user-defined function dbo.GetCustomerType in the SELECT list forces row-by-row evaluation.
+EXTRA CatchSwallowsError             output line 244  CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+EXTRA CatchWithoutRollback           output line 244  CATCH block inside an active transaction does not roll back before handling the error.
+EXTRA IndexHintHardcoded             output line 249  Hard-coded index hint WITH (INDEX = 1) on Sales.Customers should be avoided in production code.
+EXTRA NestedSubqueryDepth            output line 252  Subquery is nested three levels deep and should be refactored to CTEs or temp tables.
+EXTRA LeadingWildcardLike            output line 258  LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+EXTRA SelectStar                     output line 263  SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF.
+EXTRA MultiStatementTvfInsteadOfInline output line 263  Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.

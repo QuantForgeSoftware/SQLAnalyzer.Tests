@@ -1,0 +1,16 @@
+Comparison: Output/MiniMax M3-0.txt vs ExpectedFindings.json
+Line-number tolerance: < 5 (differences smaller than 5 are treated as the same location)
+
+Expected findings: 51
+Output findings:   53
+Matched:           51
+Missing (expected but not in output): 0
+Extra (output but not expected):      2
+
+MISSING FINDINGS (in expected, not matched in output)
+------------------------------------------------------------
+
+EXTRA FINDINGS (in output, not in expected)
+------------------------------------------------------------
+EXTRA DynamicSqlConcatenation        output line 111  @Sql is built by concatenating literal SQL with @OrderID; this pattern is fragile and exposes SQL-injection risk.
+EXTRA DynamicSqlWithoutParameters    output line 112  sp_executesql is called with the value embedded in the SQL text instead of binding @OrderID as a parameter.
