@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "ruleName": "NoCountDisabled",
         "lineNumber": 13,
@@ -12,16 +12,16 @@
         "explanation": "SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends."
     },
     {
-        "ruleName": "XactAbortDisabled",
-        "lineNumber": 16,
-        "severity": "warning",
-        "explanation": "SET XACT_ABORT OFF allows some run-time errors to leave a transaction partially applied."
-    },
-    {
         "ruleName": "SessionSettingChanged",
         "lineNumber": 16,
         "severity": "warning",
         "explanation": "SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends."
+    },
+    {
+        "ruleName": "XactAbortDisabled",
+        "lineNumber": 16,
+        "severity": "warning",
+        "explanation": "SET XACT_ABORT OFF allows some run-time errors to leave a transaction partially applied."
     },
     {
         "ruleName": "SelectStar",
@@ -54,6 +54,12 @@
         "explanation": "YEAR(o.OrderDate) in the predicate prevents a direct range seek on OrderDate."
     },
     {
+        "ruleName": "HardCodedLiteral",
+        "lineNumber": 36,
+        "severity": "warning",
+        "explanation": "Year value 2016 is embedded directly in the predicate instead of being parameterized."
+    },
+    {
         "ruleName": "ImplicitConversion",
         "lineNumber": 39,
         "severity": "warning",
@@ -72,6 +78,12 @@
         "explanation": "LIKE pattern N'%urgent%' on Sales.Orders.Comments starts with a leading wildcard, preventing an index seek."
     },
     {
+        "ruleName": "NotInNullableSubquery",
+        "lineNumber": 48,
+        "severity": "error",
+        "explanation": "NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL."
+    },
+    {
         "ruleName": "NonSargableIsNull",
         "lineNumber": 51,
         "severity": "warning",
@@ -82,6 +94,12 @@
         "lineNumber": 54,
         "severity": "warning",
         "explanation": "Arithmetic o.OrderID + 0 on the primary key column prevents direct index matching."
+    },
+    {
+        "ruleName": "HardCodedLiteral",
+        "lineNumber": 57,
+        "severity": "warning",
+        "explanation": "Business identifier 1 is hard-coded in the CustomerID predicate."
     },
     {
         "ruleName": "NegativePredicate",
@@ -144,22 +162,28 @@
         "explanation": "OFFSET/FETCH ordered only by Sales.Orders.OrderDate lacks a stable tie-breaker."
     },
     {
+        "ruleName": "HardCodedLiteral",
+        "lineNumber": 81,
+        "severity": "warning",
+        "explanation": "OrderID literals 1 and 2 are embedded directly in the query branches."
+    },
+    {
         "ruleName": "UnionInsteadOfUnionAll",
         "lineNumber": 81,
         "severity": "warning",
         "explanation": "UNION combines disjoint branches (OrderID = 1 and OrderID = 2), causing unnecessary duplicate removal."
     },
     {
-        "ruleName": "CountStarForExistence",
-        "lineNumber": 84,
-        "severity": "warning",
-        "explanation": "COUNT(*) > 0 from Sales.OrderLines counts all matching rows when only existence is needed."
-    },
-    {
         "ruleName": "CorrelatedScalarSubquery",
         "lineNumber": 84,
         "severity": "warning",
         "explanation": "Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row."
+    },
+    {
+        "ruleName": "CountStarForExistence",
+        "lineNumber": 84,
+        "severity": "warning",
+        "explanation": "COUNT(*) > 0 from Sales.OrderLines counts all matching rows when only existence is needed."
     },
     {
         "ruleName": "VariableAssignmentSelect",
@@ -343,6 +367,12 @@
     },
     {
         "ruleName": "UpdateWithoutMeaningfulChange",
+        "lineNumber": 165,
+        "severity": "warning",
+        "explanation": "MERGE UPDATE sets target.Comments = target.Comments, producing writes/logging with no data change."
+    },
+    {
+        "ruleName": "UpdateWithoutMeaningfulChange",
         "lineNumber": 170,
         "severity": "warning",
         "explanation": "UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking."
@@ -390,16 +420,16 @@
         "explanation": "SET ROWCOUNT 1 changes a session setting and is not restored before the procedure ends."
     },
     {
-        "ruleName": "InsertWithoutColumnList",
-        "lineNumber": 213,
-        "severity": "warning",
-        "explanation": "INSERT INTO #DemoCategories VALUES omits the explicit column list."
-    },
-    {
         "ruleName": "HardCodedLiteral",
         "lineNumber": 213,
         "severity": "warning",
         "explanation": "Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories."
+    },
+    {
+        "ruleName": "InsertWithoutColumnList",
+        "lineNumber": 213,
+        "severity": "warning",
+        "explanation": "INSERT INTO #DemoCategories VALUES omits the explicit column list."
     },
     {
         "ruleName": "LeadingWildcardLike",
@@ -414,16 +444,16 @@
         "explanation": "SQL string is built by concatenating @CustomerName directly into the LIKE pattern."
     },
     {
-        "ruleName": "SqlInjectionViaDynamicSql",
-        "lineNumber": 221,
-        "severity": "error",
-        "explanation": "User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk."
-    },
-    {
         "ruleName": "LeadingWildcardLike",
         "lineNumber": 221,
         "severity": "warning",
         "explanation": "The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard."
+    },
+    {
+        "ruleName": "SqlInjectionViaDynamicSql",
+        "lineNumber": 221,
+        "severity": "error",
+        "explanation": "User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk."
     },
     {
         "ruleName": "DynamicSqlWithoutParameters",
@@ -438,28 +468,28 @@
         "explanation": "System procedure sp_executesql is invoked without a schema qualifier."
     },
     {
-        "ruleName": "UpdateWithoutWhere",
-        "lineNumber": 224,
-        "severity": "error",
-        "explanation": "UPDATE #DemoCustomers lacks a WHERE clause and would change every row."
-    },
-    {
         "ruleName": "HardCodedLiteral",
         "lineNumber": 224,
         "severity": "warning",
         "explanation": "Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers."
     },
     {
-        "ruleName": "OuterJoinToFilter",
-        "lineNumber": 230,
-        "severity": "warning",
-        "explanation": "Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join."
+        "ruleName": "UpdateWithoutWhere",
+        "lineNumber": 224,
+        "severity": "error",
+        "explanation": "UPDATE #DemoCustomers lacks a WHERE clause and would change every row."
     },
     {
         "ruleName": "MagicDateLiteral",
         "lineNumber": 230,
         "severity": "warning",
         "explanation": "Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic."
+    },
+    {
+        "ruleName": "OuterJoinToFilter",
+        "lineNumber": 230,
+        "severity": "warning",
+        "explanation": "Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join."
     },
     {
         "ruleName": "NullEquality",
@@ -504,15 +534,15 @@
         "explanation": "LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard."
     },
     {
-        "ruleName": "SelectStar",
-        "lineNumber": 263,
-        "severity": "warning",
-        "explanation": "SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF."
-    },
-    {
         "ruleName": "MultiStatementTvfInsteadOfInline",
         "lineNumber": 263,
         "severity": "warning",
         "explanation": "Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better."
+    },
+    {
+        "ruleName": "SelectStar",
+        "lineNumber": 263,
+        "severity": "warning",
+        "explanation": "SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF."
     }
 ]

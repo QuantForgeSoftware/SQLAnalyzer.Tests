@@ -2,12 +2,9 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
 CREATE OR ALTER PROCEDURE [dbo].[usp_TestProcedure]
     @CustomerID int = NULL,
-    @RunUnsafeWrites bit = 0,
-    @CustomerName nvarchar(100),
-    @NewCategory nvarchar(50)
+    @RunUnsafeWrites bit = 0,     @CustomerName nvarchar(100),     @NewCategory nvarchar(50)
 AS
 BEGIN
     -- added lines to match
