@@ -1,0 +1,7 @@
+Model: claude-fable-5
+Input tokens: 24,744
+Output tokens: 15,120
+Total tokens: 39,864
+AI time: 138.84 seconds
+Tokens/second: 287
+Estimated total cost: $1.003440 USD

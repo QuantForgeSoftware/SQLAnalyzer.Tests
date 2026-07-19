@@ -432,6 +432,12 @@
         "explanation": "INSERT INTO #DemoCategories VALUES omits the explicit column list."
     },
     {
+        "ruleName": "InsertWithoutColumnList",
+        "lineNumber": 215,
+        "severity": "warning",
+        "explanation": "INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list."
+    },
+    {
         "ruleName": "LeadingWildcardLike",
         "lineNumber": 219,
         "severity": "warning",

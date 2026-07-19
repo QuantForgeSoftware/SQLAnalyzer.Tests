@@ -1,0 +1,7 @@
+Model: unknown model
+Input tokens: 13,290
+Output tokens: 42,754
+Total tokens: 56,044
+AI time: 260.58 seconds
+Tokens/second: 215
+Estimated total cost: $0.055292 USD

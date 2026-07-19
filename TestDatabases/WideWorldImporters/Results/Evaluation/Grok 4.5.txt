@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): Grok 4.5.json vs Test.ExpectedFindings.json
 
-Total expected findings: 91
+Total expected findings: 92
 Total output findings:   87
 Matched within +/-4 lines: 87
-Missing from output:     4
+Missing from output:     5
 Extra in output:         0
 Severity mismatches:     12
 
@@ -12,6 +12,7 @@ Missing findings (expected but not within line tolerance):
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
   line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
 
 Extra findings (in output but not within line tolerance):
   (none)
