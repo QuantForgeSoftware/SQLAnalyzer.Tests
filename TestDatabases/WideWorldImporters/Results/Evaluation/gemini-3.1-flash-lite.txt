@@ -1,0 +1,72 @@
+Comparison (line differences < 5 ignored): gemini-3.1-flash-lite.json vs Test.ExpectedFindings.json
+
+Total expected findings: 95
+Total output findings:   60
+Matched within +/-4 lines: 55
+Missing from output:     40
+Extra in output:         5
+Severity mismatches:     13
+
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
+  line 60: TopWithoutOrderBy - SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
+  line 63: TopWithoutOrderBy - SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+  line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
+  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 92: TopWithoutOrderBy - SELECT TOP (5) inserted into @OrderIds has no ORDER BY, so the chosen rows are nondeterministic.
+  line 95: TopWithoutOrderBy - SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: DynamicSqlConcatenation - SQL string is built by concatenating @OrderID directly into the query text.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 116: DynamicSqlWithoutParameters - sp_executesql is used but the statement is concatenated rather than parameterized.
+  line 125: CatchSwallowsError - CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 145: TopWithoutOrderBy - SELECT TOP (1) on the COALESCE join has no ORDER BY, so the returned row is nondeterministic.
+  line 148: TopWithoutOrderBy - SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 165: UpdateWithoutMeaningfulChange - MERGE UPDATE sets target.Comments = target.Comments, producing writes/logging with no data change.
+  line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+  line 213: HardCodedLiteral - Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+  line 219: LeadingWildcardLike - LIKE pattern '%' + @CustomerName + '%' on Sales.Customers.CustomerName starts with a leading wildcard.
+  line 221: DynamicSqlConcatenation - SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+  line 222: DynamicSqlWithoutParameters - sp_executesql is used but the statement is concatenated rather than parameterized.
+  line 222: UnqualifiedProcedureName - System procedure sp_executesql is invoked without a schema qualifier.
+  line 224: HardCodedLiteral - Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+  line 224: UpdateWithoutWhere - UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+  line 230: MagicDateLiteral - Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic.
+  line 244: CatchSwallowsError - CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+  line 244: CatchWithoutRollback - CATCH block inside an active transaction does not roll back before handling the error.
+  line 249: IndexHintHardcoded - Hard-coded index hint WITH (INDEX = 1) on Sales.Customers should be avoided in production code.
+  line 252: NestedSubqueryDepth - Subquery is nested three levels deep and should be refactored to CTEs or temp tables.
+  line 258: LeadingWildcardLike - LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+  line 263: MultiStatementTvfInsteadOfInline - Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.
+  line 263: SelectStar - SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF.
+
+Extra findings (in output but not within line tolerance):[incorrect--right issues, wrong line numbers]
+  line 120: CatchSwallowsError - The CATCH block swallows the error without re-throwing or logging it effectively.
+  line 249: CatchWithoutRollback - CATCH block within a transaction does not perform a ROLLBACK, leaving the transaction open.
+  line 254: IndexHintHardcoded - Hardcoded index hints (WITH (INDEX = 1)) are brittle and should be avoided in production.
+  line 258: NestedSubqueryDepth - Subquery nesting exceeds 3 levels; refactor using CTEs for improved readability and maintenance.
+  line 269: SelectStar - SELECT * retrieves all columns from the TVF, violating explicit column selection guidelines.
+
+Severity mismatches (same rule matched, different severity):
+  expected line 60 (output line 57): CartesianJoin - expected warning, got error
+  expected line 72 (output line 69): RepeatedExpression - expected warning, got info
+  expected line 111 (output line 109): DynamicSqlConcatenation - expected warning, got error
+  expected line 112 (output line 114): DynamicSqlWithoutParameters - expected warning, got error
+  expected line 133 (output line 132): PrintDiagnostic - expected warning, got info
+  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
+  expected line 148 (output line 147): SelfJoinWithoutNeed - expected warning, got info
+  expected line 160 (output line 159): RedundantOrderBy - expected warning, got info
+  expected line 164 (output line 162): MergeStatement - expected warning, got error
+  expected line 170 (output line 170): UpdateWithoutMeaningfulChange - expected warning, got info
+  expected line 174 (output line 174): DeleteWithWeakPredicate - expected error, got warning
+  expected line 198 (output line 201): SessionSettingChanged - expected warning, got error
+  expected line 213 (output line 216): InsertWithoutColumnList - expected warning, got error

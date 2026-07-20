@@ -1,0 +1,7 @@
+Model: gpt-5.6-sol
+Input tokens: 12,717
+Output tokens: 9,719
+Total tokens: 22,436
+AI time: 153.18 seconds
+Tokens/second: 146
+Estimated total cost: $0.355155 USD

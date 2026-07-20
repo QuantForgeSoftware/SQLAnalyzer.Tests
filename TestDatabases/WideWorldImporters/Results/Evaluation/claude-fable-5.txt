@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): Fable 5.json vs Test.ExpectedFindings.json
 
-Total expected findings: 92
+Total expected findings: 95
 Total output findings:   81
 Matched within +/-4 lines: 81
-Missing from output:     11
+Missing from output:     14
 Extra in output:         0
 Severity mismatches:     3
 
@@ -13,9 +13,12 @@ Missing findings (expected but not within line tolerance):
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
   line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
   line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
+  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
   line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
   line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
   line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
   line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
   line 213: HardCodedLiteral - Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
   line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.

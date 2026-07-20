@@ -1,0 +1,7 @@
+Model: qwen3.6-35b-a3b-ud-mlx
+Input tokens: 13,098
+Output tokens: 27,432
+Total tokens: 40,530
+AI time: 307.92 seconds
+Tokens/second: 132
+Estimated total cost: $0.000000 USD

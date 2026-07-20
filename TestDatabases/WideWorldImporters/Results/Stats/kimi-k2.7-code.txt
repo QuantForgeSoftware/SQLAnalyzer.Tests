@@ -1,0 +1,7 @@
+Model: kimi-k2.7-code
+Input tokens: 12,773
+Output tokens: 37,180
+Total tokens: 49,953
+AI time: 535.10 seconds
+Tokens/second: 93
+Estimated total cost: $0.151147 USD

@@ -1,0 +1,75 @@
+import json
+from pathlib import Path
+
+base = Path('/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters')
+expected_path = base / 'Test.ExpectedFindings.json'
+output_dir = base / 'Results/Output'
+eval_dir = base / 'Results/Evaluation'
+
+expected = json.loads(expected_path.read_text(encoding='utf-8-sig'))
+TOL = 4
+
+for output_file in sorted(output_dir.glob('*.json')):
+    test_name = output_file.stem
+    out_path = eval_dir / f'{test_name}.txt'
+    output = json.loads(output_file.read_text(encoding='utf-8-sig'))
+
+    matched_exp = set()
+    matched_out = set()
+    severity_mismatches = []
+
+    for i, e in enumerate(expected):
+        for j, o in enumerate(output):
+            if j in matched_out:
+                continue
+            if e['ruleName'] != o['ruleName']:
+                continue
+            if abs(e['lineNumber'] - o['lineNumber']) <= TOL:
+                matched_exp.add(i)
+                matched_out.add(j)
+                if e['severity'] != o['severity']:
+                    severity_mismatches.append({
+                        'expected_line': e['lineNumber'],
+                        'output_line': o['lineNumber'],
+                        'rule': e['ruleName'],
+                        'expected_severity': e['severity'],
+                        'output_severity': o['severity']
+                    })
+                break
+
+    missing = [expected[i] for i in range(len(expected)) if i not in matched_exp]
+    extra = [output[j] for j in range(len(output)) if j not in matched_out]
+
+    lines = []
+    lines.append(f'Comparison (line differences < 5 ignored): {test_name}.json vs Test.ExpectedFindings.json')
+    lines.append('')
+    lines.append(f'Total expected findings: {len(expected)}')
+    lines.append(f'Total output findings:   {len(output)}')
+    lines.append(f'Matched within +/-4 lines: {len(matched_exp)}')
+    lines.append(f'Missing from output:     {len(missing)}')
+    lines.append(f'Extra in output:         {len(extra)}')
+    lines.append(f'Severity mismatches:     {len(severity_mismatches)}')
+    lines.append('')
+    lines.append('Missing findings (expected but not within line tolerance):')
+    if missing:
+        for f in missing:
+            lines.append(f"  line {f['lineNumber']}: {f['ruleName']} - {f['explanation']}")
+    else:
+        lines.append('  (none)')
+    lines.append('')
+    lines.append('Extra findings (in output but not within line tolerance):')
+    if extra:
+        for f in extra:
+            lines.append(f"  line {f['lineNumber']}: {f['ruleName']} - {f['explanation']}")
+    else:
+        lines.append('  (none)')
+    lines.append('')
+    lines.append('Severity mismatches (same rule matched, different severity):')
+    if severity_mismatches:
+        for m in severity_mismatches:
+            lines.append(f"  expected line {m['expected_line']} (output line {m['output_line']}): {m['rule']} - expected {m['expected_severity']}, got {m['output_severity']}")
+    else:
+        lines.append('  (none)')
+
+    out_path.write_text('\n'.join(lines) + '\n')
+    print(f'{test_name}: matched={len(matched_exp)}, missing={len(missing)}, extra={len(extra)}, sev={len(severity_mismatches)} -> {out_path}')

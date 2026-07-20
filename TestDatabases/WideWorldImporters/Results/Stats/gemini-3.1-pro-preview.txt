@@ -1,0 +1,7 @@
+Model: gemini-3.1-pro-preview
+Input tokens: 14,220
+Output tokens: 4,698
+Total tokens: 18,918
+AI time: 164.25 seconds
+Tokens/second: 115
+Estimated total cost: $0.091926 USD

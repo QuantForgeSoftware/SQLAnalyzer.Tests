@@ -1,0 +1,7 @@
+Model: claude-opus-4-8
+Input tokens: 24,744
+Output tokens: 7,906
+Total tokens: 32,650
+AI time: 78.59 seconds
+Tokens/second: 415
+Estimated total cost: $0.321370 USD

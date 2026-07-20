@@ -168,6 +168,12 @@
         "explanation": "OrderID literals 1 and 2 are embedded directly in the query branches."
     },
     {
+        "ruleName": "HardCodedLiteral",
+        "lineNumber": 81,
+        "severity": "warning",
+        "explanation": "Order identifier 2 is embedded directly in the second UNION branch."
+    },
+    {
         "ruleName": "UnionInsteadOfUnionAll",
         "lineNumber": 81,
         "severity": "warning",
@@ -306,6 +312,12 @@
         "explanation": "Unlabelled date constant '20160101' is embedded in the Sales.Orders filter logic."
     },
     {
+        "ruleName": "MagicDateLiteral",
+        "lineNumber": 141,
+        "severity": "warning",
+        "explanation": "The date value '01/02/2016' is embedded directly in the expression."
+    },
+    {
         "ruleName": "AmbiguousDateConversion",
         "lineNumber": 142,
         "severity": "warning",
@@ -352,6 +364,12 @@
         "lineNumber": 157,
         "severity": "warning",
         "explanation": "Row-level predicate ol.OrderID > 0 on Sales.OrderLines is placed in HAVING instead of WHERE."
+    },
+    {
+        "ruleName": "AggregateWithoutFilter",
+        "lineNumber": 159,
+        "severity": "warning",
+        "explanation": "COUNT(*) scans and aggregates all rows in Sales.Orders without a filter."
     },
     {
         "ruleName": "RedundantOrderBy",

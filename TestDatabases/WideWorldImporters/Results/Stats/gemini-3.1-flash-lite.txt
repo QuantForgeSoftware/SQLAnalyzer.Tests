@@ -1,0 +1,7 @@
+Model: gemini-3.1-flash-lite
+Input tokens: 14,220
+Output tokens: 3,533
+Total tokens: 17,753
+AI time: 11.25 seconds
+Tokens/second: 1,578
+Estimated total cost: $0.008855 USD

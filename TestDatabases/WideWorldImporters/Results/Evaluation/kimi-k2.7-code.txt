@@ -1,25 +1,25 @@
-Comparison (line differences < 5 ignored): Kimi K2.7 Coder.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): kimi-k2.7-code.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
-Total output findings:   86
-Matched within +/-4 lines: 86
-Missing from output:     9
+Total output findings:   87
+Matched within +/-4 lines: 87
+Missing from output:     8
 Extra in output:         0
-Severity mismatches:     0
+Severity mismatches:     2
 
 Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
   line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
-  line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
-  line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
   line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
   line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
-  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-  line 165: UpdateWithoutMeaningfulChange - MERGE UPDATE sets target.Comments = target.Comments, producing writes/logging with no data change.
   line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
 
 Extra findings (in output but not within line tolerance):
   (none)
 
 Severity mismatches (same rule matched, different severity):
-  (none)
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error

@@ -1,0 +1,7 @@
+Model: gpt-5.6-luna
+Input tokens: 12,717
+Output tokens: 6,596
+Total tokens: 19,313
+AI time: 34.48 seconds
+Tokens/second: 560
+Estimated total cost: $0.052293 USD
