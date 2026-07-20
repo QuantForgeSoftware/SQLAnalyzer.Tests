@@ -1,0 +1,17 @@
+Model: kimi-k3
+Input tokens: 12,929
+Output tokens: 29,696
+Total tokens: 42,625
+AI time: 762.29 seconds
+Tokens/second: 56
+Estimated total cost: $0.449319 USD
+
+**Notes**
+Total missed expected findings: 12
+Recall: 87.4%
+Most common missed rules: HardCodedLiteral (5), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1)
+Severity distribution of misses: {'warning': 10, 'error': 2}
+Misses on lines with multiple expected rules: 10/12 (83.3%)
+Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+Extra findings: 0
+Severity mismatches among matched: 4

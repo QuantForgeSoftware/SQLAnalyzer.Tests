@@ -1,0 +1,17 @@
+Model: claude-sonnet-5
+Input tokens: 24,744
+Output tokens: 23,908
+Total tokens: 48,652
+AI time: 175.37 seconds
+Tokens/second: 277
+Estimated total cost: $0.288568 USD
+
+**Notes**
+Total missed expected findings: 13
+Recall: 86.3%
+Most common missed rules: HardCodedLiteral (5), SessionSettingChanged (2), CorrelatedScalarSubquery (1), SqlInjectionViaDynamicSql (1), MagicDateLiteral (1)
+Severity distribution of misses: {'warning': 12, 'error': 1}
+Misses on lines with multiple expected rules: 9/13 (69.2%)
+Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+Extra findings: 1
+Severity mismatches among matched: 6

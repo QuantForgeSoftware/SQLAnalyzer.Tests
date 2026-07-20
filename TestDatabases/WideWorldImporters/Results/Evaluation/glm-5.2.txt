@@ -1,0 +1,75 @@
+glm-5.2 Evaluation
+========================================
+
+Expected findings: 95
+Actual findings:   82
+Matched findings:  82  (not listed per instructions)
+Missing findings:  13
+Extra findings:    0
+
+MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
+----------------------------------------------------------------------
+1. SessionSettingChanged | line 13 | warning
+   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+
+2. SessionSettingChanged | line 16 | warning
+   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+
+3. HardCodedLiteral | line 36 | warning
+   Year value 2016 is embedded directly in the predicate instead of being parameterized.
+
+4. HardCodedLiteral | line 81 | warning
+   OrderID literals 1 and 2 are embedded directly in the query branches.
+
+5. HardCodedLiteral | line 81 | warning
+   Order identifier 2 is embedded directly in the second UNION branch.
+
+6. CorrelatedScalarSubquery | line 84 | warning
+   Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+
+7. TopWithoutOrderBy | line 98 | warning
+   SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+
+8. MagicDateLiteral | line 141 | warning
+   The date value '01/02/2016' is embedded directly in the expression.
+
+9. AggregateWithoutFilter | line 159 | warning
+   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+
+10. UpdateWithoutMeaningfulChange | line 170 | warning
+   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+
+11. HardCodedLiteral | line 213 | warning
+   Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+
+12. InsertWithoutColumnList | line 215 | warning
+   INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+
+13. LeadingWildcardLike | line 221 | warning
+   The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+
+EXTRA FINDINGS (Actual but not expected)
+----------------------------------------------------------------------
+SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
+----------------------------------------------------------------------
+1. PrintDiagnostic | line 133
+   Expected: warning
+   Actual:   info
+
+2. RedundantOrderBy | line 160
+   Expected: warning
+   Actual:   info
+
+3. DeleteWithWeakPredicate | line 174
+   Expected: error
+   Actual:   warning
+
+4. ExplicitTransactionWithoutTryCatch | line 183
+   Expected: error
+   Actual:   warning
+
+SUMMARY
+----------------------------------------------------------------------
+Recall:    82 / 95 = 86.3%
+Precision: 82 / 82 = 100.0%
+Most missing rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1)
