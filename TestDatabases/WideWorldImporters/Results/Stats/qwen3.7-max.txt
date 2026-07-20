@@ -1,0 +1,16 @@
+Model: qwen3.7-max
+Input tokens: 13,100
+Output tokens: 19,977
+Total tokens: 33,077
+AI time: 362.92 seconds
+Tokens/second: 91
+Estimated total cost: $0.182578 USD
+
+
+**Notes**
+Total missed expected findings: 14
+Recall: 85.3%
+Most common missed rules: HardCodedLiteral (5), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1)
+Severity distribution of misses: {'warning': 12, 'error': 2}
+Misses on lines with multiple expected rules: 10/14 (71.4%)
+Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)

@@ -5,3 +5,11 @@ Total tokens: 17,753
 AI time: 11.25 seconds
 Tokens/second: 1,578
 Estimated total cost: $0.008855 USD
+
+**Notes**
+Total missed expected findings: 37
+Recall: 61.1%
+Most common missed rules: HardCodedLiteral (7), TopWithoutOrderBy (7), LeadingWildcardLike (3), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2)
+Severity distribution of misses: {'warning': 34, 'error': 3}
+Misses on lines with multiple expected rules: 28/37 (75.7%)
+Top lines with misses: line 81 (2), line 115 (2), line 221 (2), line 222 (2), line 224 (2)

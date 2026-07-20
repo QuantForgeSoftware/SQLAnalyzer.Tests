@@ -1,0 +1,18 @@
+Model: qwen3.7-plus
+Input tokens: 13,155
+Output tokens: 19,036
+Total tokens: 32,191
+AI time: 346.85 seconds
+Tokens/second: 93
+Estimated total cost: $0.035720 USD
+
+Notable pattern: the model tends to emit only one finding per rule/line combination, so it missed many duplicate rules like multiple TopWithoutOrderBy and HardCodedLiteral instances at the same line.
+
+
+**Notes**
+Total missed expected findings: 25
+Recall: 73.7%
+Most common missed rules: HardCodedLiteral (7), TopWithoutOrderBy (7), SessionSettingChanged (2), LeadingWildcardLike (2), CorrelatedScalarSubquery (1)
+Severity distribution of misses: {'warning': 24, 'error': 1}
+Misses on lines with multiple expected rules: 18/25 (72.0%)
+Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)

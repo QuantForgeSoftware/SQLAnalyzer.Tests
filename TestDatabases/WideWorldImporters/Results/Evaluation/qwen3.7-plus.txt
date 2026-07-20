@@ -1,0 +1,107 @@
+qwen3.7-plus Evaluation
+========================================
+
+Expected findings: 95
+Actual findings:   70
+Matched findings:  70  (not listed per instructions)
+Missing findings:  25
+Extra findings:    0
+
+MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
+----------------------------------------------------------------------
+1. SessionSettingChanged | line 13 | warning
+   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+
+2. SessionSettingChanged | line 16 | warning
+   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+
+3. HardCodedLiteral | line 36 | warning
+   Year value 2016 is embedded directly in the predicate instead of being parameterized.
+
+4. HardCodedLiteral | line 57 | warning
+   Business identifier 1 is hard-coded in the CustomerID predicate.
+
+5. TopWithoutOrderBy | line 60 | warning
+   SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
+
+6. TopWithoutOrderBy | line 63 | warning
+   SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+
+7. HardCodedLiteral | line 81 | warning
+   OrderID literals 1 and 2 are embedded directly in the query branches.
+
+8. HardCodedLiteral | line 81 | warning
+   Order identifier 2 is embedded directly in the second UNION branch.
+
+9. CorrelatedScalarSubquery | line 84 | warning
+   Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+
+10. TopWithoutOrderBy | line 92 | warning
+   SELECT TOP (5) inserted into @OrderIds has no ORDER BY, so the chosen rows are nondeterministic.
+
+11. TopWithoutOrderBy | line 95 | warning
+   SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+
+12. TopWithoutOrderBy | line 98 | warning
+   SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+
+13. SqlInjectionViaDynamicSql | line 115 | error
+   User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+
+14. DynamicSqlWithoutParameters | line 116 | warning
+   sp_executesql is used but the statement is concatenated rather than parameterized.
+
+15. MagicDateLiteral | line 141 | warning
+   The date value '01/02/2016' is embedded directly in the expression.
+
+16. TopWithoutOrderBy | line 145 | warning
+   SELECT TOP (1) on the COALESCE join has no ORDER BY, so the returned row is nondeterministic.
+
+17. TopWithoutOrderBy | line 148 | warning
+   SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+
+18. AggregateWithoutFilter | line 159 | warning
+   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+
+19. UpdateWithoutMeaningfulChange | line 170 | warning
+   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+
+20. HardCodedLiteral | line 174 | warning
+   Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+
+21. HardCodedLiteral | line 213 | warning
+   Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+
+22. InsertWithoutColumnList | line 215 | warning
+   INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+
+23. LeadingWildcardLike | line 221 | warning
+   The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+
+24. HardCodedLiteral | line 224 | warning
+   Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+
+25. LeadingWildcardLike | line 258 | warning
+   LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+
+EXTRA FINDINGS (Actual but not expected)
+----------------------------------------------------------------------
+SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
+----------------------------------------------------------------------
+1. DeleteWithWeakPredicate | line 174
+   Expected: error
+   Actual:   warning
+
+2. ExplicitTransactionWithoutTryCatch | line 183
+   Expected: error
+   Actual:   warning
+
+3. OuterJoinToFilter | line 230
+   Expected: warning
+   Actual:   error
+
+SUMMARY
+----------------------------------------------------------------------
+Recall:    70 / 95 = 73.7%
+Precision: 70 / 70 = 100.0%
+Most missing rules: HardCodedLiteral (7), TopWithoutOrderBy (7), SessionSettingChanged (2), LeadingWildcardLike (2), CorrelatedScalarSubquery (1)
