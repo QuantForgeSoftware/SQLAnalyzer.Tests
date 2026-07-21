@@ -1,0 +1,16 @@
+Model: gemini-flash-latest
+Input tokens: 14,339
+Output tokens: 4,468
+Total tokens: 18,807
+AI time: 79.60 seconds
+Tokens/second: 236
+Estimated total cost: $0.060785 USD
+
+**Notes**
+Total missed expected findings: 16
+Recall: 83.2%
+Most common missed rules: HardCodedLiteral (7), SessionSettingChanged (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1), LeadingWildcardLike (1), UnqualifiedProcedureName (1)
+Severity distribution of misses: {'warning': 16}
+Misses on lines with multiple expected rules: 1/16 (6.2%)
+Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+Notable patterns: session-setting changes (SessionSettingChanged) are missed; hard-coded literals are under-reported, often on lines that also carry other rules.

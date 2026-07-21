@@ -1,15 +1,16 @@
 Model: gpt-5.6-terra
-Input tokens: 12,717
-Output tokens: 7,148
-Total tokens: 19,865
-AI time: 56.57 seconds
-Tokens/second: 351
-Estimated total cost: $0.139013 USD
+Input tokens: 12,845
+Output tokens: 7,659
+Total tokens: 20,504
+AI time: 60.08 seconds
+Tokens/second: 341
+Estimated total cost: $0.146998 USD
 
 **Notes**
-Total missed expected findings: 16
-Recall: 83.2%
-Most common missed rules: HardCodedLiteral (7), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), NotInNullableSubquery (1), CorrelatedScalarSubquery (1)
-Severity distribution of misses: {'warning': 13, 'error': 3}
-Misses on lines with multiple expected rules: 12/16 (75.0%)
-Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 48 (1)
+Total missed expected findings: 10
+Recall: 89.5%
+Most common missed rules: SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), HardCodedLiteral (1), NotInNullableSubquery (1), CorrelatedScalarSubquery (1), MagicDateLiteral (1), AggregateWithoutFilter (1), InsertWithoutColumnList (1)
+Severity distribution of misses: {'warning': 7, 'error': 3}
+Misses on lines with multiple expected rules: 0/10 (0.0%)
+Top lines with misses: line 13 (1), line 16 (1), line 36 (1), line 48 (1), line 84 (1)
+Notable patterns: session-setting changes (SessionSettingChanged) are missed; dynamic-SQL / concatenation issues are missed or line-shifted; some error-severity findings are absent.

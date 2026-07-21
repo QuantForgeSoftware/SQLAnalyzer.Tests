@@ -1,15 +1,20 @@
 Model: gemini-3.1-flash-lite
-Input tokens: 14,220
-Output tokens: 3,533
-Total tokens: 17,753
-AI time: 11.25 seconds
-Tokens/second: 1,578
-Estimated total cost: $0.008855 USD
+Input tokens: 14,339
+Output tokens: 3,366
+Total tokens: 17,705
+AI time: 10.20 seconds
+Tokens/second: 1,735
+Estimated total cost: $0.008634 USD
 
 **Notes**
-Total missed expected findings: 37
-Recall: 61.1%
-Most common missed rules: HardCodedLiteral (7), TopWithoutOrderBy (7), LeadingWildcardLike (3), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2)
-Severity distribution of misses: {'warning': 34, 'error': 3}
-Misses on lines with multiple expected rules: 28/37 (75.7%)
-Top lines with misses: line 81 (2), line 115 (2), line 221 (2), line 222 (2), line 224 (2)
+The model missed 84 of 95 expected findings (recall 11.6%, precision 19.3%).
+Top missed rules: TopWithoutOrderBy (8), HardCodedLiteral (8), LeadingWildcardLike (4), MagicDateLiteral (3), with two misses each for SessionSettingChanged, CorrelatedScalarSubquery, SqlInjectionViaDynamicSql, DynamicSqlConcatenation, DynamicSqlWithoutParameters, CatchSwallowsError, AggregateWithoutFilter, and InsertWithoutColumnList.
+Severity distribution of misses: 77 warnings and 7 errors. The missed errors include NotInNullableSubquery (line 48), SqlInjectionViaDynamicSql (lines 111 and 115), DeleteWithWeakPredicate (line 174), ExplicitTransactionWithoutTryCatch (line 183), UpdateWithoutWhere (line 224), and CatchWithoutRollback (line 244), so the highest-severity vulnerabilities are largely absent from the actual output.
+Pattern observations:
+- Systematic line-number offset: many actual findings are reported roughly 7–10 lines earlier than the expected source lines (for example, NoCountDisabled at line 4 vs. expected line 13, SelectStar at line 17 vs. expected line 24). Because the tolerance is ±4 lines, these are treated as extra or missing rather than matched, which is the dominant reason for the low recall and precision.
+- Under-reporting: the model produced only 57 findings vs. 95 expected. Entire rule categories are missing, including session-state changes (NoCountDisabled, XactAbortDisabled, SessionSettingChanged at lines 13 and 16), most date-literal issues, and almost all ORDER BY / TOP anti-patterns.
+- Duplicate/multi-rule lines are frequently incomplete. For example, line 36 should report both FunctionOnColumn and HardCodedLiteral (the 2016 literal), but only FunctionOnColumn was matched; line 81 should report HardCodedLiteral twice plus UnionInsteadOfUnionAll, all of which were missed.
+- Dynamic-SQL region (lines 111–116 and 219–222): the model missed the @OrderID injection at line 115, the DynamicSqlWithoutParameters at line 116, and the @CustomerName concatenation/LIKE issues around lines 221–222. These are critical errors and warnings that were either not emitted or reported too far from the expected line to match.
+- Severity mismatches are few but notable: DynamicSqlConcatenation and DynamicSqlWithoutParameters were both upgraded from warning to error, the opposite of the general trend of missing severity.
+- 46 extra findings were reported. Most are conceptually similar to expected issues but appear at shifted line numbers, reinforcing the line-offset pattern rather than hallucination.
+In short, gemini-3.1-flash-lite is fast and inexpensive, but on this procedure it produced a sparse audit with a systematic line-number bias and weak coverage of high-severity correctness issues.

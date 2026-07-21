@@ -9,8 +9,8 @@ Estimated total cost: $0.082412 USD
 **Notes**
 Total missed expected findings: 13
 Recall: 86.3%
-Most common missed rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1)
+Most common missed rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1), InsertWithoutColumnList (1)
 Severity distribution of misses: {'warning': 13}
-Misses on lines with multiple expected rules: 9/13 (69.2%)
+Misses on lines with multiple expected rules: 1/13 (7.7%)
 Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 84 (1)
-Severity mismatches among matched findings: 4 (PrintDiagnostic (expected warning, actual info), RedundantOrderBy (expected warning, actual info), DeleteWithWeakPredicate (expected error, actual warning)...)
+Notable patterns: session-setting changes (SessionSettingChanged) are missed; hard-coded literals are under-reported, often on lines that also carry other rules.

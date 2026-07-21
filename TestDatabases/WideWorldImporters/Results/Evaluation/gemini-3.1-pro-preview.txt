@@ -1,32 +1,70 @@
-Comparison (line differences < 5 ignored): gemini-3.1-pro-preview.json vs Test.ExpectedFindings.json
+gemini-3.1-pro-preview Evaluation
+========================================
 
-Total expected findings: 95
-Total output findings:   87
-Matched within +/-4 lines: 86
-Missing from output:     9
-Extra in output:         1
-Severity mismatches:     8
+Expected findings: 95
+Actual findings:   85
+Matched findings:  85  (not listed per instructions)
+Missing findings:  10
+Extra findings:    0
+Severity mismatches: 4
 
-Missing findings (expected but not within line tolerance):
-  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
-  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
-  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
-  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
-  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
-  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-  line 170: UpdateWithoutMeaningfulChange - UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
+----------------------------------------------------------------------
+1. SessionSettingChanged | line 13 | warning
+   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
 
-Extra findings (in output but not within line tolerance):
-  line 257: HardCodedLiteral - Hardcoded business identifiers make code brittle.
+2. SessionSettingChanged | line 16 | warning
+   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
 
-Severity mismatches (same rule matched, different severity):
-  expected line 16 (output line 16): XactAbortDisabled - expected warning, got error
-  expected line 60 (output line 60): CartesianJoin - expected warning, got error
-  expected line 125 (output line 124): CatchSwallowsError - expected warning, got error
-  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
-  expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
-  expected line 213 (output line 212): InsertWithoutColumnList - expected warning, got error
-  expected line 215 (output line 215): InsertWithoutColumnList - expected warning, got error
-  expected line 244 (output line 243): CatchSwallowsError - expected warning, got error
+3. HardCodedLiteral | line 36 | warning
+   Year value 2016 is embedded directly in the predicate instead of being parameterized.
+
+4. SqlInjectionViaDynamicSql | line 111 | error
+   User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+
+5. SqlInjectionViaDynamicSql | line 115 | error
+   User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+
+6. MagicDateLiteral | line 141 | warning
+   The date value '01/02/2016' is embedded directly in the expression.
+
+7. AggregateWithoutFilter | line 159 | warning
+   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+
+8. UpdateWithoutMeaningfulChange | line 170 | warning
+   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+
+9. HardCodedLiteral | line 174 | warning
+   Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+
+10. HardCodedLiteral | line 224 | warning
+   Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+
+
+EXTRA FINDINGS (Actual but not expected)
+----------------------------------------------------------------------
+
+SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
+----------------------------------------------------------------------
+1. CartesianJoin | line 60
+   Expected: warning
+   Actual:   error
+
+2. DeleteWithWeakPredicate | line 174
+   Expected: error
+   Actual:   warning
+
+3. ExplicitTransactionWithoutTryCatch | line 183
+   Expected: error
+   Actual:   warning
+
+4. NullEquality | line 234
+   Expected: error
+   Actual:   warning
+
+
+SUMMARY
+----------------------------------------------------------------------
+Recall:    85 / 95 = 89.5%
+Precision: 85 / 85 = 100.0%
+Most missed rules: HardCodedLiteral (3), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1)

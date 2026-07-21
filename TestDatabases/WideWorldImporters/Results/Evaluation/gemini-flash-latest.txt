@@ -1,0 +1,100 @@
+gemini-flash-latest Evaluation
+========================================
+
+Expected findings: 95
+Actual findings:   79
+Matched findings:  79  (not listed per instructions)
+Missing findings:  16
+Extra findings:    0
+Severity mismatches: 7
+
+MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
+----------------------------------------------------------------------
+1. SessionSettingChanged | line 13 | warning
+   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+
+2. SessionSettingChanged | line 16 | warning
+   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+
+3. HardCodedLiteral | line 36 | warning
+   Year value 2016 is embedded directly in the predicate instead of being parameterized.
+
+4. HardCodedLiteral | line 57 | warning
+   Business identifier 1 is hard-coded in the CustomerID predicate.
+
+5. HardCodedLiteral | line 81 | warning
+   OrderID literals 1 and 2 are embedded directly in the query branches.
+
+6. HardCodedLiteral | line 81 | warning
+   Order identifier 2 is embedded directly in the second UNION branch.
+
+7. CorrelatedScalarSubquery | line 84 | warning
+   Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+
+8. MagicDateLiteral | line 141 | warning
+   The date value '01/02/2016' is embedded directly in the expression.
+
+9. AggregateWithoutFilter | line 159 | warning
+   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+
+10. UpdateWithoutMeaningfulChange | line 170 | warning
+   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+
+11. HardCodedLiteral | line 174 | warning
+   Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+
+12. HardCodedLiteral | line 213 | warning
+   Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+
+13. LeadingWildcardLike | line 221 | warning
+   The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+
+14. UnqualifiedProcedureName | line 222 | warning
+   System procedure sp_executesql is invoked without a schema qualifier.
+
+15. HardCodedLiteral | line 224 | warning
+   Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+
+16. MultiStatementTvfInsteadOfInline | line 263 | warning
+   Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.
+
+
+EXTRA FINDINGS (Actual but not expected)
+----------------------------------------------------------------------
+
+SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
+----------------------------------------------------------------------
+1. ImplicitConversion | line 39
+   Expected: warning
+   Actual:   error
+
+2. VariableAssignmentSelect | line 87
+   Expected: warning
+   Actual:   error
+
+3. CatchSwallowsError | line 125
+   Expected: warning
+   Actual:   error
+
+4. AmbiguousDateConversion | line 142
+   Expected: warning
+   Actual:   error
+
+5. DeleteWithWeakPredicate | line 174
+   Expected: error
+   Actual:   warning
+
+6. ExplicitTransactionWithoutTryCatch | line 183
+   Expected: error
+   Actual:   warning
+
+7. CatchSwallowsError | line 244
+   Expected: warning
+   Actual:   error
+
+
+SUMMARY
+----------------------------------------------------------------------
+Recall:    79 / 95 = 83.2%
+Precision: 79 / 79 = 100.0%
+Most missed rules: HardCodedLiteral (7), SessionSettingChanged (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1), LeadingWildcardLike (1), UnqualifiedProcedureName (1), MultiStatementTvfInsteadOfInline (1)

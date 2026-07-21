@@ -1,15 +1,16 @@
 Model: gpt-5.6-luna
-Input tokens: 12,717
-Output tokens: 6,596
-Total tokens: 19,313
-AI time: 34.48 seconds
-Tokens/second: 560
-Estimated total cost: $0.052293 USD
+Input tokens: 12,845
+Output tokens: 7,848
+Total tokens: 20,693
+AI time: 48.53 seconds
+Tokens/second: 426
+Estimated total cost: $0.059933 USD
 
 **Notes**
-Total missed expected findings: 23
-Recall: 75.8%
-Most common missed rules: HardCodedLiteral (7), LeadingWildcardLike (3), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), InsertWithoutColumnList (2)
-Severity distribution of misses: {'warning': 20, 'error': 3}
-Misses on lines with multiple expected rules: 15/23 (65.2%)
-Top lines with misses: line 81 (2), line 213 (2), line 13 (1), line 16 (1), line 36 (1)
+Total missed expected findings: 13
+Recall: 86.3%
+Most common missed rules: SessionSettingChanged (2), LeadingWildcardLike (2), HardCodedLiteral (1), NotInNullableSubquery (1), CorrelatedScalarSubquery (1), TableVariableEstimate (1), SqlInjectionViaDynamicSql (1), MagicDateLiteral (1)
+Severity distribution of misses: {'warning': 11, 'error': 2}
+Misses on lines with multiple expected rules: 0/13 (0.0%)
+Top lines with misses: line 13 (1), line 16 (1), line 36 (1), line 48 (1), line 84 (1)
+Notable patterns: session-setting changes (SessionSettingChanged) are missed; dynamic-SQL / concatenation issues are missed or line-shifted; some error-severity findings are absent.

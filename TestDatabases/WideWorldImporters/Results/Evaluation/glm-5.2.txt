@@ -6,6 +6,7 @@ Actual findings:   82
 Matched findings:  82  (not listed per instructions)
 Missing findings:  13
 Extra findings:    0
+Severity mismatches: 4
 
 MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
 ----------------------------------------------------------------------
@@ -48,8 +49,10 @@ MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
 13. LeadingWildcardLike | line 221 | warning
    The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
+
 EXTRA FINDINGS (Actual but not expected)
 ----------------------------------------------------------------------
+
 SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
 ----------------------------------------------------------------------
 1. PrintDiagnostic | line 133
@@ -68,8 +71,9 @@ SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
    Expected: error
    Actual:   warning
 
+
 SUMMARY
 ----------------------------------------------------------------------
 Recall:    82 / 95 = 86.3%
 Precision: 82 / 82 = 100.0%
-Most missing rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1)
+Most missed rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1), InsertWithoutColumnList (1), LeadingWildcardLike (1)

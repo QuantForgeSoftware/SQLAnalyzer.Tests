@@ -1,15 +1,16 @@
 Model: gpt-5.6-sol
-Input tokens: 12,717
-Output tokens: 9,719
-Total tokens: 22,436
-AI time: 153.18 seconds
-Tokens/second: 146
-Estimated total cost: $0.355155 USD
+Input tokens: 12,845
+Output tokens: 10,227
+Total tokens: 23,072
+AI time: 147.19 seconds
+Tokens/second: 157
+Estimated total cost: $0.371035 USD
 
 **Notes**
-Total missed expected findings: 8
-Recall: 91.6%
-Most common missed rules: SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), HardCodedLiteral (1), NotInNullableSubquery (1), CorrelatedScalarSubquery (1)
-Severity distribution of misses: {'warning': 5, 'error': 3}
-Misses on lines with multiple expected rules: 6/8 (75.0%)
-Top lines with misses: line 13 (1), line 16 (1), line 36 (1), line 48 (1), line 84 (1)
+Total missed expected findings: 10
+Recall: 89.5%
+Most common missed rules: SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), HardCodedLiteral (1), NotInNullableSubquery (1), TableVariableEstimate (1), MagicDateLiteral (1), AggregateWithoutFilter (1), InsertWithoutColumnList (1)
+Severity distribution of misses: {'warning': 7, 'error': 3}
+Misses on lines with multiple expected rules: 0/10 (0.0%)
+Top lines with misses: line 13 (1), line 16 (1), line 36 (1), line 48 (1), line 90 (1)
+Notable patterns: session-setting changes (SessionSettingChanged) are missed; dynamic-SQL / concatenation issues are missed or line-shifted; some error-severity findings are absent.
