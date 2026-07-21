@@ -1,0 +1,19 @@
+Model: qwen3.8-max-preview
+Input tokens: 13,320
+Output tokens: 44,647
+Total tokens: 57,967
+AI time: 725.18 seconds
+Tokens/second: 80
+Estimated total cost: $0.368152 USD
+
+**Notes**
+The model missed 6 expected findings (93.7% recall).
+Most missed rule: SessionSettingChanged (2 misses at lines 13 and 16), followed by one miss each for HardCodedLiteral (line 36), SqlInjectionViaDynamicSql (line 115), AggregateWithoutFilter (line 159), and LeadingWildcardLike (line 221).
+Severity distribution of misses: 2 errors (SqlInjectionViaDynamicSql, AggregateWithoutFilter) and 4 warnings (SessionSettingChanged x2, HardCodedLiteral, LeadingWildcardLike).
+Notable patterns:
+- Session-setting resets are consistently missed: both `SET NOCOUNT OFF` and `SET XACT_ABORT OFF` were overlooked, suggesting weak handling of session-state side effects.
+- Line 36 carries two expected findings (FunctionOnColumn and HardCodedLiteral). The model emitted FunctionOnColumn but missed the embedded 2016 literal, showing difficulty surfacing multiple distinct issues on the same line.
+- SqlInjectionViaDynamicSql has three expected instances (lines 111, 115, 221). The model matched two (offset by one line) but missed the @OrderID concatenation at line 115, indicating inconsistent recognition of dynamic-SQL parameters.
+- AggregateWithoutFilter at line 159 (COUNT(*) over Sales.Orders) is a straightforward missed anti-pattern.
+- The single extra finding (HardCodedLiteral at line 51) is a duplicate-style false positive: the line is expected to report NonSargableIsNull, which the model did find, but it also invented a hard-coded-value issue that was not in the expected set.
+All three severity mismatches downgraded error-level findings to warning (NotInNullableSubquery, DeleteWithWeakPredicate, ExplicitTransactionWithoutTryCatch), indicating a conservative severity calibration.

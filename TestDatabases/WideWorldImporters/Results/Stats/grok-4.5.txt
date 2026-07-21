@@ -1,0 +1,15 @@
+Model: grok-4.5
+Input tokens: 13,287
+Output tokens: 5,213
+Total tokens: 18,500
+AI time: 381.33 seconds
+Tokens/second: 49
+Estimated total cost: $0.057852 USD
+
+**Notes**
+- 6 expected findings missing overall: Grok found 89/95 expected within ±4 lines and reported 0 extra findings, but had 7 severity mismatches.
+- Missed session-state resets: it did not flag `SET NOCOUNT OFF` (line 13) and `SET XACT_ABORT OFF` (line 16) as un-restored session settings.
+- Missed a second SQL injection risk on line 115 (`@OrderID` concatenation) near where it did catch `DynamicSqlWithoutParameters` as an error instead of warning.
+- Missed `AggregateWithoutFilter` at line 159 (likely because it reported `RedundantOrderBy` at that same line and did not split the aggregate count).
+- Missed one `InsertWithoutColumnList` at line 215 and one `LeadingWildcardLike` at line 221 in the dynamic-LIKE section.
+- Most severity mismatches are elevated from warning to error on dynamic SQL / catch blocks, and two are downgraded (`DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`), suggesting Grok is more aggressive on some security patterns but less consistent on explicit-transaction and weak-delete severity.

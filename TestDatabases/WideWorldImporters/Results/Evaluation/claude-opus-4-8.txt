@@ -1,11 +1,11 @@
-Comparison (line differences < 5 ignored): claude-opus-4-8.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): claude-opus-4-8-1.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
-Total output findings:   83
-Matched within +/-4 lines: 80
-Missing from output:     15
-Extra in output:         3
-Severity mismatches:     5
+Total output findings:   86
+Matched within +/-4 lines: 82
+Missing from output:     13
+Extra in output:          4
+Severity mismatches:     6
 
 Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
@@ -20,18 +20,18 @@ Missing findings (expected but not within line tolerance):
   line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
   line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
   line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
-  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
-  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
-  line 224: HardCodedLiteral - Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+  line 222: UnqualifiedProcedureName - System procedure sp_executesql is invoked without a schema qualifier.
 
 Extra findings (in output but not within line tolerance):
-  line 68: CountStarForExistence - COUNT(*) is computed as LineCount but only the number is used; if existence were needed EXISTS would be cheaper.
-  line 123: ExplicitTransactionWithoutTryCatch - This BEGIN TRY covers a divide operation but note the broader pattern; the CATCH below swallows the error.
-  line 252: LeadingWildcardLike - WHERE CustomerName LIKE @CustomerName may carry a leading wildcard value, preventing an index seek.
+  line 66: CountStarForExistence - COUNT(*) inside the scalar subquery counts all rows though only a count-per-order is needed.
+  line 112: UnqualifiedProcedureName - EXEC (@Sql) is fine, but the built statement is unqualified; prefer parameterized sp_executesql.
+  line 125: CatchWithoutRollback - This CATCH block handles an error without rolling back any active transaction.
+  line 252: LeadingWildcardLike - LIKE @CustomerName may contain a leading wildcard, preventing an index seek.
 
 Severity mismatches (same rule matched, different severity):
-  expected line 48 (output line 50): NotInNullableSubquery - expected error, got warning
-  expected line 125 (output line 126): CatchSwallowsError - expected warning, got error
-  expected line 174 (output line 175): DeleteWithWeakPredicate - expected error, got warning
-  expected line 183 (output line 185): ExplicitTransactionWithoutTryCatch - expected error, got warning
-  expected line 244 (output line 247): CatchSwallowsError - expected warning, got error
+  expected line 69 (output line 69): CorrelatedExists - expected warning, got info
+  expected line 125 (output line 125): CatchSwallowsError - expected warning, got error
+  expected line 133 (output line 133): PrintDiagnostic - expected warning, got info
+  expected line 174 (output line 174): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 184): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 244 (output line 246): CatchSwallowsError - expected warning, got error

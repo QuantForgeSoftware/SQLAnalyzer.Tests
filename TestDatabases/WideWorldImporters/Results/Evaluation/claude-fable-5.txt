@@ -1,11 +1,11 @@
-Comparison (line differences < 5 ignored): Fable 5.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): claude-fable-5-1.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
-Total output findings:   81
-Matched within +/-4 lines: 81
-Missing from output:     14
+Total output findings:   82
+Matched within +/-4 lines: 82
+Missing from output:     13
 Extra in output:         0
-Severity mismatches:     3
+Severity mismatches:     4
 
 Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
@@ -20,7 +20,6 @@ Missing findings (expected but not within line tolerance):
   line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
   line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
   line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
-  line 213: HardCodedLiteral - Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
   line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
 Extra findings (in output but not within line tolerance):
@@ -30,3 +29,4 @@ Severity mismatches (same rule matched, different severity):
   expected line 48 (output line 48): NotInNullableSubquery - expected error, got warning
   expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
   expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 198 (output line 197): SessionSettingChanged - expected warning, got error

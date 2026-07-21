@@ -1,35 +1,28 @@
-Comparison (line differences < 5 ignored): Grok 4.5.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): grok-4.5-1.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
-Total output findings:   87
-Matched within +/-4 lines: 87
-Missing from output:     8
-Extra in output:         0
-Severity mismatches:     12
+Total output findings:   89
+Matched within +/-4 lines: 89
+Missing from output:      6
+Extra in output:          0
+Severity mismatches:      7
 
 Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
-  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
   line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
   line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-  line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
   line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
 Extra findings (in output but not within line tolerance):
   (none)
 
 Severity mismatches (same rule matched, different severity):
-  expected line 33 (output line 33): ReadUncommittedHint - expected warning, got error
-  expected line 39 (output line 39): ImplicitConversion - expected warning, got error
-  expected line 60 (output line 60): CartesianJoin - expected warning, got error
-  expected line 87 (output line 87): VariableAssignmentSelect - expected warning, got error
   expected line 112 (output line 111): DynamicSqlWithoutParameters - expected warning, got error
   expected line 125 (output line 124): CatchSwallowsError - expected warning, got error
-  expected line 133 (output line 132): PrintDiagnostic - expected warning, got info
-  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
   expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
   expected line 222 (output line 221): DynamicSqlWithoutParameters - expected warning, got error
   expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error
   expected line 244 (output line 243): CatchSwallowsError - expected warning, got error

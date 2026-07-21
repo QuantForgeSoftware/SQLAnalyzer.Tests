@@ -1,15 +1,13 @@
 Model: claude-opus-4-8
-Input tokens: 24,744
-Output tokens: 7,906
-Total tokens: 32,650
-AI time: 78.59 seconds
-Tokens/second: 415
-Estimated total cost: $0.321370 USD
+Input tokens: 24,942
+Output tokens: 6,813
+Total tokens: 31,755
+AI time: 68.36 seconds
+Tokens/second: 465
+Estimated total cost: $0.295035 USD
 
 **Notes**
-Total missed expected findings: 15
-Recall: 84.2%
-Most common missed rules: HardCodedLiteral (6), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), TopWithoutOrderBy (1), MagicDateLiteral (1)
-Severity distribution of misses: {'warning': 13, 'error': 2}
-Misses on lines with multiple expected rules: 12/15 (80.0%)
-Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+- 13 expected findings missing (82/95 matched, 4 extras, 6 severity mismatches). The strongest pattern is literal detection: 5 missed `HardCodedLiteral` findings (year 2016, CustomerID 1, two OrderID literals, sentinel -1). It also missed both dynamic SQL injection risks (`SqlInjectionViaDynamicSql` at lines 111 and 115) and two un-restored session settings (`SET NOCOUNT OFF` / `SET XACT_ABORT OFF`).
+- Singleton misses: `TopWithoutOrderBy` at line 98 on the cursor SELECT, `MagicDateLiteral` at line 141, `AggregateWithoutFilter` at line 159, and `UnqualifiedProcedureName` for `sp_executesql` at line 222.
+- Extra findings: one plausible new rule (`CountStarForExistence` at line 66), one unqualified-procedure variant on a dynamic EXEC, a transaction-rollback catch observation, and a leading-wildcard on a variable that may or may not contain `%`.
+- Severity drift: two expected errors downgraded to warning (`DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`), two `CatchSwallowsError` instances upgraded to error, and two warnings reclassified as `info` (`CorrelatedExists`, `PrintDiagnostic`). Opus is fast and inexpensive but less literal-aware and less consistent on severity than the fable run.

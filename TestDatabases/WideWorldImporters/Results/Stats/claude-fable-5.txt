@@ -1,15 +1,12 @@
 Model: claude-fable-5
-Input tokens: 24,744
-Output tokens: 15,120
-Total tokens: 39,864
-AI time: 138.84 seconds
-Tokens/second: 287
-Estimated total cost: $1.003440 USD
+Input tokens: 24,942
+Output tokens: 16,695
+Total tokens: 41,637
+AI time: 151.98 seconds
+Tokens/second: 274
+Estimated total cost: $1.084170 USD
 
 **Notes**
-Total missed expected findings: 14
-Recall: 85.3%
-Most common missed rules: HardCodedLiteral (6), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1)
-Severity distribution of misses: {'warning': 12, 'error': 2}
-Misses on lines with multiple expected rules: 12/14 (85.7%)
-Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+- 13 expected findings missing (82/95 matched, 0 extras, 4 severity mismatches). The largest cluster is literal detection: 5 missed `HardCodedLiteral` findings (year 2016, CustomerID 1, two OrderID literals in a UNION branch, sentinel -1). It also missed two dynamic-SQL injection risks (`SqlInjectionViaDynamicSql` at lines 111 and 115) and two un-restored session settings (`SET NOCOUNT OFF` / `SET XACT_ABORT OFF`).
+- Other singleton misses: `CorrelatedScalarSubquery` at line 84, `MagicDateLiteral` at line 141, `AggregateWithoutFilter` at line 159, and `LeadingWildcardLike` at line 221.
+- Severity drift: three expected errors were downgraded to warnings (`NotInNullableSubquery`, `DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`) while one `SessionSettingChanged` warning was upgraded to an error. The run is clean of hallucinated findings but under-detects literals and session-state issues.
