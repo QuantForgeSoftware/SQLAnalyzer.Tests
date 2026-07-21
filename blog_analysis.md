@@ -2,15 +2,72 @@
 
 > Evaluating 18 frontier models on a real-world SQL analyzer task: correctness, error patterns, speed, and cost.
 
-Static analysis of SQL is one of the hardest prompt-engineering tasks you can throw at a large language model. The model must read a stored procedure, identify dozens of rule violations, emit the correct rule name, severity, line number, and a concise explanation — and it must do it in a single shot. To make the job even harder, many violations cluster on the same line, and a tolerance of ±5 lines is the only mercy we grant.
+Static analysis of SQL is one of the hardest single-shot prompt-engineering tasks you can give a large language model. The model must read a stored procedure, identify dozens of rule violations, emit the correct rule name, severity, line number, and a concise explanation — and it must do it in one pass. To make the job harder, many violations cluster on the same line, and a tolerance of ±5 lines is the only mercy we grant.
 
-This benchmark was run with **Quant Forge Software SQLAnalyzer**. The test case, `usp_TestProcedure.sql`, is part of the SQLAnalyzer test suite and is not publicly available outside the product. SQLAnalyzer generated the JSON reports, the ground-truth expected findings, and the cost/timing telemetry, so the numbers below reflect the actual end-to-end experience of using an LLM-backed SQL analyzer in production.
+This benchmark was run with **Quant Forge Software SQLAnalyzer**. SQLAnalyzer generated the JSON reports, the ground-truth expected findings, and the cost/timing telemetry, so the numbers below reflect the actual end-to-end experience of using an LLM-backed SQL analyzer in production.
 
-The ground truth contains **95 expected findings**. Each model produced a JSON report, which we compared to the expected findings using multiset matching within a 5-line window. We then pulled cost and timing data from the per-model Stats files to ask three questions:
+The test asks each model to find **95 expected findings** across **61 distinct T-SQL static-analysis rules** in a single stored procedure. The expected set contains **86 warnings** and **9 errors**.
+
+---
+
+## The Test
+
+### The source file
+
+The benchmark uses a single T-SQL stored procedure: `usp_TestProcedure.sql` from the SQLAnalyzer test suite. It is a deliberately constructed catalog of common and subtle T-SQL anti-patterns, weighing in at roughly 260 lines. Every problematic construct is intentional, and the ground truth enumerates exactly which issues should be reported, where they start, how serious they are, and why.
+
+The procedure contains **95 expected findings** spread across **61 distinct rule categories**. A model that merely understands syntax is not enough; it must recognize patterns such as:
+
+- **Missing session safeguards** — `SET NOCOUNT OFF` and `SET XACT_ABORT OFF` left in place.
+- **Plan-affecting query patterns** — `SELECT *`, `SELECT TOP` without `ORDER BY`, `DISTINCT` on a primary key, leading-wildcard `LIKE`, functions or arithmetic on indexed columns, implicit conversions, and OR-based optional parameters.
+- **Concurrency and isolation issues** — `WITH (NOLOCK)`, `READ UNCOMMITTED`, unqualified procedure calls, and `SET IDENTITY_INSERT`.
+- **Procedural anti-patterns** — cursors, `WHILE` loops, table variables for non-trivial data, `SELECT ... INTO #Temp`, and dynamic SQL built by string concatenation.
+- **Maintainability and correctness hazards** — magic literals, ambiguous date conversions, redundant `ORDER BY`, `MERGE`, `UPDATE` without meaningful change, `DELETE` with weak predicates, and error handlers that swallow exceptions.
+
+Several lines are intentionally dense. For example, line 81 combines `UNION` between disjoint branches with two hard-coded literals, so the expected output contains three findings on that single line. Line 111 concatenates a parameter directly into dynamic SQL, so it is expected to trigger both `DynamicSqlConcatenation` and the more severe `SqlInjectionViaDynamicSql`. Lines 60, 63, 92, 95, 98, 145, and 148 each contain both a structural anti-pattern and a `TopWithoutOrderBy` violation.
+
+### The prompt
+
+Each model receives the same instruction: act as a T-SQL static analyzer. The prompt defines **61 rules** by name, describes the pattern to flag, explains why it matters, and gives concrete examples. Severity is expected to be `warning` for most issues and `error` only when the issue can cause incorrect results, data loss, security breaches, or undefined behavior. Models must not rename, pluralize, abbreviate, or invent aliases for rule names. The required output is a JSON array in which each element has this shape:
+
+```json
+{
+  "ruleName": "RuleName",
+  "lineNumber": 42,
+  "severity": "warning|error|info",
+  "explanation": "Clear, concise description of the problem and why it matters."
+}
+```
+
+The prompt explicitly tells the model not to deduplicate across lines, not to deduplicate multiple occurrences of the same rule on the same line, to use the rule names exactly as written, and to keep explanations concrete. It also asks the model to audit any line that appears more than once in its findings to ensure distinct occurrences were not collapsed.
+
+### The scoring
+
+Each model produces one JSON report. We compare it to the ground truth using multiset matching within a 5-line window:
+
+- A reported finding **matches** an expected finding if the rule name is identical and the reported line is within ±4 lines of the expected line.
+- Each expected finding can match at most one reported finding, and each reported finding can match at most one expected finding.
+- **Missing findings** are expected violations the model never reported.
+- **Extra findings** are reported violations that do not correspond to any expected finding.
+- A **severity mismatch** is counted when a rule name and line match, but the model assigned a different severity than the ground truth.
+
+The line tolerance exists because models can legitimately disagree on whether a violation starts at the `SELECT`, the `FROM`, or the offending predicate. The tolerance does not, however, excuse missing a rule entirely or inventing one.
+
+### Why the task is hard
+
+This is not a reading-comprehension test. A model must do all of the following in one shot:
+
+1. **Map code to rule names.** A construct like `SET XACT_ABORT OFF` must be labeled `XactAbortDisabled`, not something generic.
+2. **Handle overlapping rules.** The same line can trigger several different rules, and the model must emit each one separately.
+3. **Handle repeated rules on the same line.** The model must notice that line 81 contains two distinct hard-coded literals and emit two `HardCodedLiteral` findings.
+4. **Assign severity correctly.** Calling a SQL-injection vector an `error` while calling a redundant `ORDER BY` a `warning` requires judgment.
+5. **Stay precise.** Line numbers and rule names must be exact; explanations must be concise and specific.
+
+We then pulled cost and timing data from the per-model Stats files to ask three questions:
 
 1. **Which model is the most accurate, regardless of cost?**
 2. **Which model delivers the best value per dollar?**
-3. **Did the latest prompt revision help the models that were re-run?**
+3. **Which models are clean enough for fully automated reporting?**
 
 This post walks through the results, the kinds of mistakes each model makes, and the practical trade-offs a team should consider before picking a model for production SQL analysis.
 
@@ -40,47 +97,6 @@ This post walks through the results, the kinds of mistakes each model makes, and
 | gemini-3.1-flash-lite | 11.6% | 11 | 84 | 46 | 2 | $0.009 | 10.2 |
 
 *The Qwen MLX entry was run locally via MLX, so the listed cost is $0; the real cost is hardware amortization and latency.
-
----
-
-## Did the New Prompt Help?
-
-We reran **grok-4.5**, **claude-fable-5**, **claude-opus-4-8**, **gpt-5.6-sol**, **gpt-5.6-terra**, **gpt-5.6-luna**, **gemini-3.1-pro-preview**, **glm-5.2**, and **gemini-flash-latest** with the latest version of `prompt.md`. The effect on raw recall was positive for most, with the biggest gains on the GPT-5.6 trio and on Grok:
-
-| Model | Run | Matched | Missing | Severity Mismatches | Cost | AI Time (s) |
-|---|---|---:|---:|---:|---:|---:|
-| grok-4.5 | old prompt | 87 | 8 | 12 | $0.056 | 172.0 |
-| grok-4.5 | new prompt | 89 | 6 | 7 | $0.058 | 381.3 |
-| claude-fable-5 | old prompt | 81 | 14 | 3 | $1.003 | 138.8 |
-| claude-fable-5 | new prompt | 82 | 13 | 4 | $1.084 | 152.0 |
-| claude-opus-4-8 | old prompt | 80 | 15 | 5 | $0.321 | 78.6 |
-| claude-opus-4-8 | new prompt | 82 | 13 | 6 | $0.295 | 68.4 |
-| gpt-5.6-sol | old prompt | 87 | 8 | 2 | $0.355 | 153.2 |
-| gpt-5.6-sol | new prompt | 85 | 10 | 4 | $0.371 | 147.2 |
-| gpt-5.6-terra | old prompt | 79 | 16 | 2 | $0.139 | 56.6 |
-| gpt-5.6-terra | new prompt | 85 | 10 | 1 | $0.147 | 60.1 |
-| gpt-5.6-luna | old prompt | 72 | 23 | 2 | $0.052 | 34.5 |
-| gpt-5.6-luna | new prompt | 82 | 13 | 3 | $0.060 | 48.5 |
-| gemini-3.1-pro-preview | old prompt | 86 | 9 | 8 | $0.092 | 164.2 |
-| gemini-3.1-pro-preview | new prompt | 85 | 10 | 4 | $0.099 | 166.9 |
-| glm-5.2 | old prompt | 82 | 13 | 2 | $0.082 | 172.4 |
-| glm-5.2 | new prompt | 82 | 13 | 4 | $0.082 | 172.4 |
-| gemini-flash-latest | old prompt | — | — | — | — | — |
-| gemini-flash-latest | new prompt | 79 | 16 | 7 | $0.061 | 79.6 |
-
-The verdict: **the new prompt helps some models more than others, and it hurt one.**
-
-- **Grok 4.5** jumped from 91.6% to **93.7%** recall and cut its severity mismatches from 12 to 7. The trade-off was a longer run time (172 s → 381 s), likely because the revised prompt asks for more thorough line-by-line reasoning.
-- **Claude Fable** improved from 85.3% to **86.3%** recall; **Claude Opus 4.8** improved from 84.2% to **86.3%** recall. Both picked up two matched findings. Severity mismatches ticked up slightly for each, but the net result is more correct findings for roughly the same cost.
-- **gpt-5.6-terra** was the biggest mover: it jumped from **83.2%** to **89.5%** recall, gained six matched findings, and dropped from 2 severity mismatch types to 1 at almost the same price. The new prompt clearly suits the mid-size GPT model.
-- **gpt-5.6-luna** climbed from **75.8%** to **86.3%** recall — a 10.5-point gain for only an extra $0.008 and 14 seconds. It is now competitive with the strong tier.
-- **gpt-5.6-sol** moved backward on raw recall (87 → 85 matched) and produced **7 extra findings** and **4 severity mismatches** under the new prompt, suggesting the revised instructions made it more verbose and over-sensitive. It is still accurate, but it dropped from the top tier to the strong tier and is no longer the cleanest GPT option.
-- **gemini-3.1-pro-preview** slipped from 90.5% to **89.5%** recall (86 → 85 matched) but cut severity mismatches from 8 to 4 and produced zero extra findings, so its signal quality improved.
-- **glm-5.2** was unchanged at **86.3%** recall. It is already a strong value, and the new prompt did not materially change its output.
-- **gemini-flash-latest** was evaluated for the first time with the new prompt: **83.2%** recall, zero extras, **7 severity mismatches**, and only **$0.061** in **79.6 s**. It has no old-prompt baseline.
-- **qwen3.8-max-preview** was also evaluated only with the new prompt, where it tied Grok at **93.7%** recall.
-
-For a production SQL analyzer, two extra correct findings per procedure is meaningful. For **gpt-5.6-terra** and **gpt-5.6-luna**, the gains were large enough to change their recommendation category.
 
 ---
 
@@ -115,14 +131,14 @@ Grok is the clear overall leader: it ties the highest recall, has the lowest cos
 Models in this band score **86.3%–89.5%** recall. They are good enough for many production workflows, but they trade off cost, speed, or noise.
 
 - **gemini-3.1-pro-preview** scored **89.5%** with zero extra findings. At **$0.099** and **167 seconds**, it is the closest competitor to Grok in the accuracy-per-dollar race.
-- **gpt-5.6-terra** improved to **89.5%** recall, zero extra findings, and only **1 severity mismatch type**. At **$0.147** and **60 seconds**, it is now the fastest model in the strong tier.
-- **gpt-5.6-sol** is also at **89.5%** recall, but the new prompt made it noisier: **7 extra findings** and **4 severity mismatch types**. It is the most expensive OpenAI option in this group ($0.371). Choose it only if latency matters more than zero-exactness.
+- **gpt-5.6-terra** scores **89.5%** recall, zero extra findings, and only **1 severity mismatch type**. At **$0.147** and **60 seconds**, it is the fastest model in the strong tier.
+- **gpt-5.6-sol** is also at **89.5%** recall, but it is the noisiest model in the strong tier: **7 extra findings** and **4 severity mismatch types**. It is the most expensive OpenAI option in this group ($0.371). Choose it only if latency matters more than zero-exactness.
 - **kimi-k3** reached **87.4%** recall with zero extras, but at **$0.449** and **762 seconds** it is both expensive and glacial.
-- **gpt-5.6-luna** improved to **86.3%** recall with **1 extra finding**. It is the cheapest ($0.060) and fastest (**48.5 s**) model in this tier.
+- **gpt-5.6-luna** reaches **86.3%** recall with **1 extra finding**. It is the cheapest ($0.060) and fastest (**48.5 s**) model in this tier.
 - **glm-5.2** hits **86.3%** with zero extras for **$0.082**. It is the strongest value in this tier.
 - **claude-sonnet-5** reaches **86.3%** with **1 extra finding** for **$0.289**. It is the practical Anthropic choice over the premium models.
 - **claude-opus-4-8** also reaches **86.3%** and is the fastest Claude model at **68.4 seconds**, but it produces **4 extra findings**, the most among models above 80% recall.
-- **claude-fable-5** improved to **86.3%** recall with the new prompt, but at **$1.084** it is still the most expensive model in the benchmark. The premium is impossible to justify for this task.
+- **claude-fable-5** reaches **86.3%** recall, but at **$1.084** it is the most expensive model in the benchmark. The premium is impossible to justify for this task.
 
 ### 🥉 Respectable but not leading: qwen3.7-max, gemini-flash-latest, MiniMax M3
 
@@ -137,7 +153,7 @@ Models in this band score **86.3%–89.5%** recall. They are good enough for man
 
 ### ❌ Not recommended: gemini-3.1-flash-lite
 
-The flash model is the cheapest ($0.009) and fastest (10.2 s), but **11.6% recall**, **46 extra findings**, and **2 severity mismatch types** make it unsuitable for static analysis unless the only goal is a deliberately wrong first pass. With the new prompt, its output collapsed: it reports only 57 findings, most of them line-shifted duplicates, and misses 84 of the 95 expected issues.
+The flash model is the cheapest ($0.009) and fastest (10.2 s), but **11.6% recall**, **46 extra findings**, and **2 severity mismatch types** make it unsuitable for static analysis unless the only goal is a deliberately wrong first pass. It reports only 57 findings, most of them line-shifted duplicates, and misses 84 of the 95 expected issues.
 
 ---
 
@@ -314,7 +330,7 @@ Use **claude-sonnet-5**. Avoid **claude-fable-5** unless someone else is paying 
 
 This benchmark is a single test, but it is a demanding one. The differences between models are not subtle: the best models find 89 of 95 issues, while the bottom tier finds only 11. The cost spread is even wider — over 100× from the cheapest to the most expensive.
 
-The key insight is that **accuracy and price are not tightly coupled**. The best model in the benchmark is also one of the cheapest, and the latest prompt revision widened the gap at the top for the GPT-5.6 family while collapsing gemini-3.1-flash-lite. That makes the choice relatively simple for most teams:
+The key insight is that **accuracy and price are not tightly coupled**. The best model in the benchmark is also one of the cheapest. That makes the choice relatively simple for most teams:
 
 - **Best overall: grok-4.5**
 - **Best alternative by ecosystem: qwen3.8-max-preview (Alibaba), gemini-3.1-pro-preview (Google), gpt-5.6-terra (OpenAI), claude-sonnet-5 (Anthropic), glm-5.2 (Zhipu), kimi-k2.7-code (Moonshot)**
