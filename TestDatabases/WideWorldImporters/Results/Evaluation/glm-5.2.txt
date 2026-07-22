@@ -1,79 +1,32 @@
-glm-5.2 Evaluation
-========================================
+Comparison (line differences < 5 ignored): glm-5.2.json vs Test.ExpectedFindings.json
 
-Expected findings: 95
-Actual findings:   82
-Matched findings:  82  (not listed per instructions)
-Missing findings:  13
-Extra findings:    0
-Severity mismatches: 4
+Total expected findings: 95
+Total output findings:   82
+Matched within +/-4 lines: 82
+Missing from output:     13
+Extra in output:         0
+Severity mismatches:     4
 
-MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
-----------------------------------------------------------------------
-1. SessionSettingChanged | line 13 | warning
-   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
+  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 170: UpdateWithoutMeaningfulChange - UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+  line 213: HardCodedLiteral - Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
-2. SessionSettingChanged | line 16 | warning
-   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+Extra findings (in output but not within line tolerance):
+  (none)
 
-3. HardCodedLiteral | line 36 | warning
-   Year value 2016 is embedded directly in the predicate instead of being parameterized.
-
-4. HardCodedLiteral | line 81 | warning
-   OrderID literals 1 and 2 are embedded directly in the query branches.
-
-5. HardCodedLiteral | line 81 | warning
-   Order identifier 2 is embedded directly in the second UNION branch.
-
-6. CorrelatedScalarSubquery | line 84 | warning
-   Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
-
-7. TopWithoutOrderBy | line 98 | warning
-   SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
-
-8. MagicDateLiteral | line 141 | warning
-   The date value '01/02/2016' is embedded directly in the expression.
-
-9. AggregateWithoutFilter | line 159 | warning
-   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-
-10. UpdateWithoutMeaningfulChange | line 170 | warning
-   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
-
-11. HardCodedLiteral | line 213 | warning
-   Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
-
-12. InsertWithoutColumnList | line 215 | warning
-   INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
-
-13. LeadingWildcardLike | line 221 | warning
-   The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
-
-
-EXTRA FINDINGS (Actual but not expected)
-----------------------------------------------------------------------
-
-SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
-----------------------------------------------------------------------
-1. PrintDiagnostic | line 133
-   Expected: warning
-   Actual:   info
-
-2. RedundantOrderBy | line 160
-   Expected: warning
-   Actual:   info
-
-3. DeleteWithWeakPredicate | line 174
-   Expected: error
-   Actual:   warning
-
-4. ExplicitTransactionWithoutTryCatch | line 183
-   Expected: error
-   Actual:   warning
-
-
-SUMMARY
-----------------------------------------------------------------------
-Recall:    82 / 95 = 86.3%
-Precision: 82 / 82 = 100.0%
-Most missed rules: HardCodedLiteral (4), SessionSettingChanged (2), CorrelatedScalarSubquery (1), TopWithoutOrderBy (1), MagicDateLiteral (1), AggregateWithoutFilter (1), UpdateWithoutMeaningfulChange (1), InsertWithoutColumnList (1), LeadingWildcardLike (1)
+Severity mismatches (same rule matched, different severity):
+  expected line 133 (output line 132): PrintDiagnostic - expected warning, got info
+  expected line 160 (output line 159): RedundantOrderBy - expected warning, got info
+  expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning

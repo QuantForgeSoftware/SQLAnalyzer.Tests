@@ -93,10 +93,11 @@ This post walks through the results, the kinds of mistakes each model makes, and
 | gemini-flash-latest | 83.2% | 79 | 16 | 0 | 7 | $0.061 | 79.6 |
 | MiniMax M3 | 81.1% | 77 | 18 | 0 | 3 | $0.055 | 260.6 |
 | qwen3.7-plus | 73.7% | 70 | 25 | 0 | 3 | $0.036 | 346.9 |
+| gemini-3.6-flash | 83.2% | 79 | 16 | 0 | 3 | $0.056 | 68.2 |
 | qwen3.6-35b-a3b-ud-mlx | 71.6% | 68 | 27 | 1 | 3 | $0.000* | 307.9 |
 | gemini-3.1-flash-lite | 11.6% | 11 | 84 | 46 | 2 | $0.009 | 10.2 |
 
-*The Qwen MLX entry was run locally via MLX, so the listed cost is $0; the real cost is hardware amortization and latency.
+*The Qwen MLX entry was run locally via MLX, so the listed cost is $0; the real cost is hardware amortization and latency. The Gemini 3.6 Flash result was added after the main run and is not included in the original summary totals.
 
 ---
 
@@ -146,9 +147,10 @@ Models in this band score **86.3%–89.5%** recall. They are good enough for man
 - **gemini-flash-latest** scores **83.2%** recall with zero extra findings and costs only **$0.061**. It is faster than Gemini 3.1 Pro (79.6 s) and nearly as cheap as the budget tier, but it misses 16 findings and has 7 severity mismatch types.
 - **MiniMax M3** hits **81.1%** for only **$0.055** — almost as cheap as Grok, but 18 misses and a very large 42,754-token output suggest it is verbose and less precise.
 
-### ⚠️ Budget tier with caveats: qwen3.7-plus, qwen3.6-35b-a3b-ud-mlx
+### ⚠️ Budget tier with caveats: qwen3.7-plus, qwen3.6-35b-a3b-ud-mlx, gemini-3.6-flash
 
 - **qwen3.7-plus** is cheap (**$0.036**) but only manages **73.7%** recall. Its Stats notes reveal the core problem: it tends to emit **only one finding per rule/line combination**, so it misses duplicate `TopWithoutOrderBy` and `HardCodedLiteral` violations on the same line. This is a structural pattern failure, not a random miss.
+- **gemini-3.6-flash** costs **$0.056**, runs in **68.2 seconds**, and reaches **83.2% recall** (79/95) with **zero extra findings**. That matches gemini-flash-latest on recall and cost, but the newer Gemini 3.6 Flash is slightly faster. Its misses concentrate on literal-sensitive rules (`HardCodedLiteral`, `MagicDateLiteral`) and contextual patterns such as `SessionSettingChanged` and `SqlInjectionViaDynamicSql`, suggesting the model understands broad anti-patterns well but under-counts embedded constants and parameter concatenation.
 - **qwen3.6-35b-a3b-ud-mlx** (local MLX) reaches **71.6%** at zero API cost, but 307 seconds of local inference is not free when you count hardware and electricity.
 
 ### ❌ Not recommended: gemini-3.1-flash-lite
@@ -280,6 +282,8 @@ If you are running static analysis in CI, a model that misses 10–15 findings p
   - Only **Grok 4.5** is top-tier accurate. **gemini-flash-latest** is the best sub-$0.10 option if you can accept 83.2% recall.
 - **$0.10–$0.30**: gemini-3.1-pro-preview ($0.099), glm-5.2 ($0.082), gpt-5.6-terra ($0.147), qwen3.7-max ($0.183), claude-sonnet-5 ($0.289), claude-opus-4-8 ($0.295).
   - Best here: **gemini-3.1-pro-preview** and **glm-5.2**.
+- **$0.05–$0.10**: Grok 4.5 ($0.058), gemini-flash-latest ($0.061), gemini-3.6-flash ($0.056).
+  - **Grok 4.5** is the obvious accuracy leader in this band. Between the two Gemini Flash options, **Gemini 3.6 Flash** is newer, slightly faster, and lands in the same recall band as gemini-flash-latest; either is a viable sub-$0.10 alternative if you accept ~83% recall.
 - **Over $0.30**: qwen3.8-max-preview ($0.368), gpt-5.6-sol ($0.371), kimi-k3 ($0.449), claude-fable-5 ($1.084).
   - None justify the premium over Grok for this task, though **qwen3.8-max-preview** at least ties Grok on recall.
 
@@ -334,8 +338,16 @@ The key insight is that **accuracy and price are not tightly coupled**. The best
 
 - **Best overall: grok-4.5**
 - **Best alternative by ecosystem: qwen3.8-max-preview (Alibaba), gemini-3.1-pro-preview (Google), gpt-5.6-terra (OpenAI), claude-sonnet-5 (Anthropic), glm-5.2 (Zhipu), kimi-k2.7-code (Moonshot)**
-- **Best ultra-budget filter: MiniMax M3, gpt-5.6-luna, or gemini-flash-latest**
+- **Best ultra-budget filter: MiniMax M3, gpt-5.6-luna, gemini-flash-latest, or gemini-3.6-flash**
 - **Avoid for this task: gemini-3.1-flash-lite** unless you only need a deliberately wrong first pass.
+
+### Addendum: Gemini 3.6 Flash
+
+After the main comparison was published, **Gemini 3.6 Flash** was run through the same test. It scored **79/95 matched findings (83.2% recall)**, with **16 misses**, **0 extra findings**, and **3 severity mismatches**. It used **14,402 input tokens**, produced **4,647 output tokens**, took **68.2 seconds**, and cost **$0.056**.
+
+The accuracy is effectively identical to **gemini-flash-latest**, but the newer model is slightly faster and cheaper. The miss pattern is also similar: the largest bucket is literal detection (six `HardCodedLiteral` misses and one `MagicDateLiteral` miss), followed by `SessionSettingChanged` (two misses) and `SqlInjectionViaDynamicSql` (two misses). The remaining misses are scattered across a correlated scalar subquery, an aggregate without filter, an update without meaningful change, an insert without a column list, and a leading-wildcard LIKE.
+
+Severity mismatches were modest: it downgraded `DeleteWithWeakPredicate` and `ExplicitTransactionWithoutTryCatch` from error to warning, and upgraded `OuterJoinToFilter` from warning to error. Like the other Gemini Flash model, it produced no hallucinated extra findings, making it a clean budget option for teams already in the Google ecosystem.
 
 Whichever model you pick, the strongest near-term improvement is not switching models — it is adding a second-pass prompt that specifically asks the model to re-examine lines with multiple expected findings. Every model in this benchmark leaves points on the table there.
 

@@ -1,10 +1,10 @@
-Comparison (line differences < 5 ignored): claude-opus-4-8-1.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): claude-opus-4-8.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
 Total output findings:   86
 Matched within +/-4 lines: 82
 Missing from output:     13
-Extra in output:          4
+Extra in output:         4
 Severity mismatches:     6
 
 Missing findings (expected but not within line tolerance):

@@ -1,91 +1,35 @@
-gpt-5.6-sol Evaluation
-========================================
+Comparison (line differences < 5 ignored): gpt-5.6-sol.json vs Test.ExpectedFindings.json
 
-Expected findings: 95
-Actual findings:   92
-Matched findings:  85  (not listed per instructions)
-Missing findings:  10
-Extra findings:    7
-Severity mismatches: 4
+Total expected findings: 95
+Total output findings:   92
+Matched within +/-4 lines: 85
+Missing from output:     10
+Extra in output:         7
+Severity mismatches:     4
 
-MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
-----------------------------------------------------------------------
-1. SessionSettingChanged | line 13 | warning
-   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  line 90: TableVariableEstimate - Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
 
-2. SessionSettingChanged | line 16 | warning
-   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+Extra findings (in output but not within line tolerance):
+  line 51: HardCodedLiteral - The sentinel value 0 is embedded directly in the CustomerID predicate.
+  line 51: HardCodedLiteral - Customer identifier 1 is embedded directly in the predicate.
+  line 69: HardCodedLiteral - The quantity threshold 1 is embedded directly in the OrderLines predicate.
+  line 144: CoalesceInJoin - COALESCE wraps Sales.Invoices.CustomerID in the join predicate and inhibits direct index matching.
+  line 144: HardCodedLiteral - The sentinel value 0 is embedded in the COALESCE expression for Orders.CustomerID.
+  line 144: HardCodedLiteral - The sentinel value 0 is embedded in the COALESCE expression for Invoices.CustomerID.
+  line 229: AmbiguousDateConversion - The implicitly converted hyphenated date string has no explicit conversion style and can be session-sensitive.
 
-3. HardCodedLiteral | line 36 | warning
-   Year value 2016 is embedded directly in the predicate instead of being parameterized.
-
-4. NotInNullableSubquery | line 48 | error
-   NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
-
-5. TableVariableEstimate | line 90 | warning
-   Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
-
-6. SqlInjectionViaDynamicSql | line 111 | error
-   User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-
-7. SqlInjectionViaDynamicSql | line 115 | error
-   User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-
-8. MagicDateLiteral | line 141 | warning
-   The date value '01/02/2016' is embedded directly in the expression.
-
-9. AggregateWithoutFilter | line 159 | warning
-   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-
-10. InsertWithoutColumnList | line 215 | warning
-   INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
-
-
-EXTRA FINDINGS (Actual but not expected)
-----------------------------------------------------------------------
-1. HardCodedLiteral | line 51 | warning
-   The sentinel value 0 is embedded directly in the CustomerID predicate.
-
-2. HardCodedLiteral | line 51 | warning
-   Customer identifier 1 is embedded directly in the predicate.
-
-3. HardCodedLiteral | line 69 | warning
-   The quantity threshold 1 is embedded directly in the OrderLines predicate.
-
-4. CoalesceInJoin | line 144 | warning
-   COALESCE wraps Sales.Invoices.CustomerID in the join predicate and inhibits direct index matching.
-
-5. HardCodedLiteral | line 144 | warning
-   The sentinel value 0 is embedded in the COALESCE expression for Orders.CustomerID.
-
-6. HardCodedLiteral | line 144 | warning
-   The sentinel value 0 is embedded in the COALESCE expression for Invoices.CustomerID.
-
-7. AmbiguousDateConversion | line 229 | warning
-   The implicitly converted hyphenated date string has no explicit conversion style and can be session-sensitive.
-
-
-SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
-----------------------------------------------------------------------
-1. AmbiguousDateConversion | line 142
-   Expected: warning
-   Actual:   error
-
-2. ExplicitTransactionWithoutTryCatch | line 183
-   Expected: error
-   Actual:   warning
-
-3. OuterJoinToFilter | line 230
-   Expected: warning
-   Actual:   error
-
-4. CatchSwallowsError | line 244
-   Expected: warning
-   Actual:   error
-
-
-SUMMARY
-----------------------------------------------------------------------
-Recall:    85 / 95 = 89.5%
-Precision: 85 / 92 = 92.4%
-Most missed rules: SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), HardCodedLiteral (1), NotInNullableSubquery (1), TableVariableEstimate (1), MagicDateLiteral (1), AggregateWithoutFilter (1), InsertWithoutColumnList (1)
+Severity mismatches (same rule matched, different severity):
+  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error
+  expected line 244 (output line 243): CatchSwallowsError - expected warning, got error

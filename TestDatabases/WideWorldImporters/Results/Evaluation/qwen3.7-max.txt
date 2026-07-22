@@ -1,74 +1,32 @@
-qwen3.7-max Evaluation
-========================================
+Comparison (line differences < 5 ignored): qwen3.7-max.json vs Test.ExpectedFindings.json
 
-Expected findings: 95
-Actual findings:   81
-Matched findings:  81  (not listed per instructions)
-Missing findings:  14
-Extra findings:    0
+Total expected findings: 95
+Total output findings:   81
+Matched within +/-4 lines: 81
+Missing from output:     14
+Extra in output:         0
+Severity mismatches:     3
 
-MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
-----------------------------------------------------------------------
-1. SessionSettingChanged | line 13 | warning
-   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
+  line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
+  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 170: UpdateWithoutMeaningfulChange - UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+  line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
 
-2. SessionSettingChanged | line 16 | warning
-   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+Extra findings (in output but not within line tolerance):
+  (none)
 
-3. HardCodedLiteral | line 36 | warning
-   Year value 2016 is embedded directly in the predicate instead of being parameterized.
-
-4. HardCodedLiteral | line 57 | warning
-   Business identifier 1 is hard-coded in the CustomerID predicate.
-
-5. HardCodedLiteral | line 81 | warning
-   OrderID literals 1 and 2 are embedded directly in the query branches.
-
-6. HardCodedLiteral | line 81 | warning
-   Order identifier 2 is embedded directly in the second UNION branch.
-
-7. CorrelatedScalarSubquery | line 84 | warning
-   Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
-
-8. SqlInjectionViaDynamicSql | line 111 | error
-   User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-
-9. SqlInjectionViaDynamicSql | line 115 | error
-   User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-
-10. MagicDateLiteral | line 141 | warning
-   The date value '01/02/2016' is embedded directly in the expression.
-
-11. AggregateWithoutFilter | line 159 | warning
-   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-
-12. UpdateWithoutMeaningfulChange | line 170 | warning
-   UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
-
-13. HardCodedLiteral | line 174 | warning
-   Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
-
-14. InsertWithoutColumnList | line 215 | warning
-   INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
-
-EXTRA FINDINGS (Actual but not expected)
-----------------------------------------------------------------------
-SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
-----------------------------------------------------------------------
-1. DeleteWithWeakPredicate | line 174
-   Expected: error
-   Actual:   warning
-
-2. ExplicitTransactionWithoutTryCatch | line 183
-   Expected: error
-   Actual:   warning
-
-3. OuterJoinToFilter | line 230
-   Expected: warning
-   Actual:   error
-
-SUMMARY
-----------------------------------------------------------------------
-Recall:    81 / 95 = 85.3%
-Precision: 81 / 81 = 100.0%
-Most missing rules: HardCodedLiteral (5), SessionSettingChanged (2), SqlInjectionViaDynamicSql (2), CorrelatedScalarSubquery (1), MagicDateLiteral (1)
+Severity mismatches (same rule matched, different severity):
+  expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error

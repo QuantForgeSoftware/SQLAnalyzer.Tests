@@ -1,11 +1,11 @@
-Comparison (line differences < 5 ignored): grok-4.5-1.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): grok-4.5.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
 Total output findings:   89
 Matched within +/-4 lines: 89
-Missing from output:      6
-Extra in output:          0
-Severity mismatches:      7
+Missing from output:     6
+Extra in output:         0
+Severity mismatches:     7
 
 Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.

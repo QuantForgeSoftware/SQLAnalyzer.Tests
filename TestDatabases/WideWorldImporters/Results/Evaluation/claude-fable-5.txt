@@ -1,4 +1,4 @@
-Comparison (line differences < 5 ignored): claude-fable-5-1.json vs Test.ExpectedFindings.json
+Comparison (line differences < 5 ignored): claude-fable-5.json vs Test.ExpectedFindings.json
 
 Total expected findings: 95
 Total output findings:   82

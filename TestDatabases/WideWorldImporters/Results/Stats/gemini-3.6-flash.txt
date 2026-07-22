@@ -1,0 +1,21 @@
+Model: gemini-3.6-flash
+Input tokens: 14,402
+Output tokens: 4,647
+Total tokens: 19,049
+AI time: 68.20 seconds
+Tokens/second: 279
+Estimated total cost: $0.056455 USD
+
+Notes
+Gemini 3.6 Flash correctly identifies 79 of 95 expected findings, with no extra findings and three severity mismatches. The main gap is literal detection: six of the 16 misses are HardCodedLiteral, covering year values, order IDs, a sentinel -1, a category ID, and a customer category ID. This suggests the model often accepts constants embedded in predicates or DML without flagging them as hard-coded.
+
+Other misses show narrower blind spots:
+- SessionSettingChanged is missed at lines 13 and 16, while the sibling rules NoCountDisabled and XactAbortDisabled at the same lines are caught. The model appears to recognize the setting itself but not the requirement that it be restored before the procedure exits.
+- SqlInjectionViaDynamicSql is missed at lines 111 and 115, both involving parameter concatenation into dynamic SQL, even though nearby dynamic-SQL rules were found elsewhere. The model flags general dynamic SQL use but not the specific injection vector when parameters are concatenated.
+- The remaining misses span a correlated scalar subquery, a magic date literal, an aggregate without filter, an update that changes nothing, an insert without a column list, and a leading-wildcard LIKE. These are smaller, contextual rules rather than broad syntactic patterns.
+
+Severity mismatches:
+- DeleteWithWeakPredicate (line 174) and ExplicitTransactionWithoutTryCatch (line 183) were reported as warnings instead of errors.
+- OuterJoinToFilter (line 230) was reported as error instead of warning.
+
+Overall, Gemini 3.6 Flash is fast (279 tokens/second, ~$0.056) and avoids hallucinated extra findings. Its biggest weakness is literal-sensitive rules: HardCodedLiteral and MagicDateLiteral together account for nearly half the misses. Tightening the prompt examples around embedded numeric and date constants, and explicitly calling out parameter concatenation as an injection case, would likely close most of the gap.

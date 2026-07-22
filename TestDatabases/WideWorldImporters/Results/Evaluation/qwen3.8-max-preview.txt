@@ -1,54 +1,24 @@
-qwen3.8-max-preview Evaluation
-========================================
+Comparison (line differences < 5 ignored): qwen3.8-max-preview.json vs Test.ExpectedFindings.json
 
-Expected findings: 95
-Actual findings:   90
-Matched findings:  89  (not listed per instructions)
-Missing findings:  6
-Extra findings:    1
-Severity mismatches: 3
+Total expected findings: 95
+Total output findings:   90
+Matched within +/-4 lines: 89
+Missing from output:     6
+Extra in output:         1
+Severity mismatches:     3
 
-MISSING FINDINGS (Expected but not found, line differences <= 5 allowed)
-----------------------------------------------------------------------
-1. SessionSettingChanged | line 13 | warning
-   SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
-2. SessionSettingChanged | line 16 | warning
-   SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+Extra findings (in output but not within line tolerance):
+  line 51: HardCodedLiteral - The predicate compares CustomerID to hard-coded value 1 instead of using a parameter or lookup.
 
-3. HardCodedLiteral | line 36 | warning
-   Year value 2016 is embedded directly in the predicate instead of being parameterized.
-
-4. SqlInjectionViaDynamicSql | line 115 | error
-   User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
-
-5. AggregateWithoutFilter | line 159 | warning
-   COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
-
-6. LeadingWildcardLike | line 221 | warning
-   The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
-
-EXTRA FINDINGS (Actual but not expected)
-----------------------------------------------------------------------
-1. HardCodedLiteral | line 51 | warning
-   The predicate compares CustomerID to hard-coded value 1 instead of using a parameter or lookup.
-
-SEVERITY MISMATCHES (Matched by rule + line, but severity differs)
-----------------------------------------------------------------------
-1. NotInNullableSubquery | line 48
-   Expected: error
-   Actual:   warning
-
-2. DeleteWithWeakPredicate | line 174
-   Expected: error
-   Actual:   warning
-
-3. ExplicitTransactionWithoutTryCatch | line 183
-   Expected: error
-   Actual:   warning
-
-SUMMARY
-----------------------------------------------------------------------
-Recall:    89 / 95 = 93.7%
-Precision: 89 / 90 = 98.9%
-Most missed rules: SessionSettingChanged (2), HardCodedLiteral (1), SqlInjectionViaDynamicSql (1), AggregateWithoutFilter (1), LeadingWildcardLike (1)
+Severity mismatches (same rule matched, different severity):
+  expected line 48 (output line 48): NotInNullableSubquery - expected error, got warning
+  expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
