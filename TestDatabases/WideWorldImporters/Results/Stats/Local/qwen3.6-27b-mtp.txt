@@ -1,0 +1,16 @@
+...
+Starting AI for the first pass...
+AI generation took 95.43 seconds.
+Building final prompt and calling AI...
+Starting AI for the second pass...
+AI generation took 542.42 seconds.
+
+
+
+Model: qwen3.6-27b-mtp
+Input tokens: 13,294
+Output tokens: 12,960
+Total tokens: 26,254
+AI time: 637.85 seconds
+Tokens/second: 41
+Estimated total cost: $0.000000 USD
