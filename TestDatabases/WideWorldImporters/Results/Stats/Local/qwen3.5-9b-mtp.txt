@@ -1,7 +1,141 @@
-Model: gemma-4-12b-it
-Input tokens: 14,368
-Output tokens: 27,697
-Total tokens: 42,065
-AI time: 825.68 seconds
-Tokens/second: 51
+Model: qwen3.5-9b-mtp
+Input tokens: 16,517
+Output tokens: 19,515
+Total tokens: 36,032
+AI time: 443.38 seconds
+Tokens/second: 81
 Estimated total cost: $0.000000 USD
+Notes
+=====
+Comparison performed: 2026-07-24
+Total expected findings: 95 (across 61 rules)
+Matched within tolerance: 2
+Missed expected findings: 93
+Extra findings in actual output: 62
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 8 expected (matched 0); expected lines [36, 57, 81, 136, 174, 213, 224]
+  TopWithoutOrderBy: 8 missed out of 8 expected (matched 0); expected lines [27, 60, 63, 92, 95, 98, 145, 148]
+  LeadingWildcardLike: 4 missed out of 4 expected (matched 0); expected lines [45, 219, 221, 258]
+  DynamicSqlConcatenation: 3 missed out of 3 expected (matched 0); expected lines [111, 115, 221]
+  DynamicSqlWithoutParameters: 3 missed out of 3 expected (matched 0); expected lines [112, 116, 222]
+  MagicDateLiteral: 3 missed out of 3 expected (matched 0); expected lines [139, 141, 230]
+  SessionSettingChanged: 3 missed out of 3 expected (matched 0); expected lines [13, 16, 198]
+  SqlInjectionViaDynamicSql: 3 missed out of 3 expected (matched 0); expected lines [111, 115, 221]
+  AggregateWithoutFilter: 2 missed out of 2 expected (matched 0); expected lines [154, 159]
+  CatchSwallowsError: 2 missed out of 2 expected (matched 0); expected lines [125, 244]
+  CorrelatedScalarSubquery: 2 missed out of 2 expected (matched 0); expected lines [66, 84]
+  InsertWithoutColumnList: 2 missed out of 2 expected (matched 0); expected lines [213, 215]
+  SelectStar: 2 missed out of 2 expected (matched 0); expected lines [24, 263]
+  UnqualifiedProcedureName: 2 missed out of 2 expected (matched 0); expected lines [195, 222]
+  UpdateWithoutMeaningfulChange: 2 missed out of 2 expected (matched 0); expected lines [165, 170]
+  AmbiguousDateConversion: 1 missed out of 1 expected (matched 0); expected lines [142]
+  ArithmeticOnColumn: 1 missed out of 1 expected (matched 0); expected lines [54]
+  CartesianJoin: 1 missed out of 1 expected (matched 0); expected lines [60]
+  CatchWithoutRollback: 1 missed out of 1 expected (matched 0); expected lines [244]
+  CoalesceInJoin: 1 missed out of 1 expected (matched 0); expected lines [145]
+  CorrelatedExists: 1 missed out of 1 expected (matched 0); expected lines [69]
+  CountStarForExistence: 1 missed out of 1 expected (matched 0); expected lines [84]
+  CursorRowByRow: 1 missed out of 1 expected (matched 0); expected lines [98]
+  DeleteWithWeakPredicate: 1 missed out of 1 expected (matched 0); expected lines [174]
+  ExplicitTransactionWithoutTryCatch: 1 missed out of 1 expected (matched 0); expected lines [183]
+  FunctionOnColumn: 1 missed out of 1 expected (matched 0); expected lines [36]
+  HavingForRowFilter: 1 missed out of 1 expected (matched 0); expected lines [157]
+  ImplicitConversion: 1 missed out of 1 expected (matched 0); expected lines [39]
+  IndexHintHardcoded: 1 missed out of 1 expected (matched 0); expected lines [249]
+  LegacyRaiseError: 1 missed out of 1 expected (matched 0); expected lines [130]
+  MergeStatement: 1 missed out of 1 expected (matched 0); expected lines [164]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  NegativePredicate: 1 missed out of 1 expected (matched 0); expected lines [57]
+  NestedSubqueryDepth: 1 missed out of 1 expected (matched 0); expected lines [252]
+  NonSargableIsNull: 1 missed out of 1 expected (matched 0); expected lines [51]
+  NondeterministicPagination: 1 missed out of 1 expected (matched 0); expected lines [78]
+  NotInNullableSubquery: 1 missed out of 1 expected (matched 0); expected lines [48]
+  NullEquality: 1 missed out of 1 expected (matched 0); expected lines [234]
+  OldStyleJoin: 1 missed out of 1 expected (matched 0); expected lines [63]
+  OptionalParameterOr: 1 missed out of 1 expected (matched 0); expected lines [42]
+  OrderByOrdinal: 1 missed out of 1 expected (matched 0); expected lines [75]
+  OuterJoinToFilter: 1 missed out of 1 expected (matched 0); expected lines [230]
+  PrintDiagnostic: 1 missed out of 1 expected (matched 0); expected lines [133]
+  ReadUncommittedHint: 1 missed out of 1 expected (matched 0); expected lines [33]
+  RedundantOrderBy: 1 missed out of 1 expected (matched 0); expected lines [160]
+  RepeatedExpression: 1 missed out of 1 expected (matched 0); expected lines [72]
+  ScalarUdfInSelect: 1 missed out of 1 expected (matched 0); expected lines [236]
+  SelectIntoTempTable: 1 missed out of 1 expected (matched 0); expected lines [95]
+  SelfJoinWithoutNeed: 1 missed out of 1 expected (matched 0); expected lines [148]
+  SetIdentityInsert: 1 missed out of 1 expected (matched 0); expected lines [190]
+  TableVariableEstimate: 1 missed out of 1 expected (matched 0); expected lines [90]
+  TempTableWithoutCleanup: 1 missed out of 1 expected (matched 0); expected lines [119]
+  UnionInsteadOfUnionAll: 1 missed out of 1 expected (matched 0); expected lines [81]
+  UnnecessaryDistinct: 1 missed out of 1 expected (matched 0); expected lines [30]
+  UpdateWithoutWhere: 1 missed out of 1 expected (matched 0); expected lines [224]
+  VariableAssignmentSelect: 1 missed out of 1 expected (matched 0); expected lines [87]
+  WaitForDelay: 1 missed out of 1 expected (matched 0); expected lines [178]
+  WhileLoopRowByRow: 1 missed out of 1 expected (matched 0); expected lines [105]
+  WideSort: 1 missed out of 1 expected (matched 0); expected lines [151]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): ['AggregateWithoutFilter', 'AmbiguousDateConversion', 'ArithmeticOnColumn', 'CartesianJoin', 'CatchSwallowsError', 'CatchWithoutRollback', 'CoalesceInJoin', 'CorrelatedExists', 'CorrelatedScalarSubquery', 'CountStarForExistence', 'CursorRowByRow', 'DeleteWithWeakPredicate', 'DynamicSqlConcatenation', 'DynamicSqlWithoutParameters', 'ExplicitTransactionWithoutTryCatch', 'FunctionOnColumn', 'HardCodedLiteral', 'HavingForRowFilter', 'ImplicitConversion', 'IndexHintHardcoded', 'InsertWithoutColumnList', 'LeadingWildcardLike', 'LegacyRaiseError', 'MagicDateLiteral', 'MergeStatement', 'MultiStatementTvfInsteadOfInline', 'NegativePredicate', 'NestedSubqueryDepth', 'NonSargableIsNull', 'NondeterministicPagination', 'NotInNullableSubquery', 'NullEquality', 'OldStyleJoin', 'OptionalParameterOr', 'OrderByOrdinal', 'OuterJoinToFilter', 'PrintDiagnostic', 'ReadUncommittedHint', 'RedundantOrderBy', 'RepeatedExpression', 'ScalarUdfInSelect', 'SelectIntoTempTable', 'SelectStar', 'SelfJoinWithoutNeed', 'SessionSettingChanged', 'SetIdentityInsert', 'SqlInjectionViaDynamicSql', 'TableVariableEstimate', 'TempTableWithoutCleanup', 'TopWithoutOrderBy', 'UnionInsteadOfUnionAll', 'UnnecessaryDistinct', 'UnqualifiedProcedureName', 'UpdateWithoutMeaningfulChange', 'UpdateWithoutWhere', 'VariableAssignmentSelect', 'WaitForDelay', 'WhileLoopRowByRow', 'WideSort']
+  - Missed findings by broad category:
+      Other predicate / schema issues: 29
+      Ordering, paging, and aggregation semantics: 13
+      Hard-coded / magic literals: 12
+      Joins, subqueries, and correlated lookups: 11
+      Error handling and session settings: 10
+      Procedural / DML constructs: 9
+      Dynamic SQL / injection: 9
+
+Extra findings in actual output by rule:
+  DynamicSqlConcatenation: 3 at lines [52, 54, 90]
+  DynamicSqlWithoutParameters: 3 at lines [53, 55, 91]
+  LeadingWildcardLike: 2 at lines [26, 89]
+  MagicDateLiteral: 2 at lines [64, 93]
+  RepeatedExpression: 2 at lines [35, 36]
+  ScalarUdfInSelect: 2 at lines [94, 101]
+  SelectStar: 2 at lines [19, 113]
+  AggregateWithoutFilter: 1 at lines [69]
+  AmbiguousDateConversion: 1 at lines [65]
+  ArithmeticOnColumn: 1 at lines [29]
+  CartesianJoin: 1 at lines [31]
+  CatchSwallowsError: 1 at lines [60]
+  CatchWithoutRollback: 1 at lines [99]
+  CoalesceInJoin: 1 at lines [66]
+  CorrelatedExists: 1 at lines [34]
+  CorrelatedScalarSubquery: 1 at lines [33]
+  CountStarForExistence: 1 at lines [40]
+  CursorRowByRow: 1 at lines [45]
+  DeleteWithWeakPredicate: 1 at lines [75]
+  ExplicitTransactionWithoutTryCatch: 1 at lines [77]
+  FunctionOnColumn: 1 at lines [23]
+  HardCodedLiteral: 1 at lines [63]
+  HavingForRowFilter: 1 at lines [70]
+  ImplicitConversion: 1 at lines [24]
+  IndexHintHardcoded: 1 at lines [105]
+  LegacyRaiseError: 1 at lines [61]
+  MergeStatement: 1 at lines [72]
+  NegativePredicate: 1 at lines [30]
+  NestedSubqueryDepth: 1 at lines [107]
+  NonSargableIsNull: 1 at lines [28]
+  NondeterministicPagination: 1 at lines [38]
+  NotInNullableSubquery: 1 at lines [27]
+  OldStyleJoin: 1 at lines [32]
+  OptionalParameterOr: 1 at lines [25]
+  OrderByOrdinal: 1 at lines [37]
+  PrintDiagnostic: 1 at lines [62]
+  ReadUncommittedHint: 1 at lines [22]
+  RedundantOrderBy: 1 at lines [71]
+  SelectIntoTempTable: 1 at lines [44]
+  SelfJoinWithoutNeed: 1 at lines [67]
+  SessionSettingChanged: 1 at lines [83]
+  SetIdentityInsert: 1 at lines [81]
+  TableVariableEstimate: 1 at lines [42]
+  TempTableWithoutCleanup: 1 at lines [56]
+  TopWithoutOrderBy: 1 at lines [20]
+  UnionInsteadOfUnionAll: 1 at lines [39]
+  UnnecessaryDistinct: 1 at lines [21]
+  UnqualifiedProcedureName: 1 at lines [82]
+  UpdateWithoutMeaningfulChange: 1 at lines [74]
+  VariableAssignmentSelect: 1 at lines [41]
+  WaitForDelay: 1 at lines [76]
+  WhileLoopRowByRow: 1 at lines [51]
+  WideSort: 1 at lines [68]

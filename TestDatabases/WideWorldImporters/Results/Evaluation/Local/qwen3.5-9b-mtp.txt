@@ -1,0 +1,29 @@
+Comparison: qwen3.5-9b-mtp actual findings vs. Test.ExpectedFindings.json
+Tolerance: ruleName matches and |actual.lineNumber - expected.lineNumber| < 5
+Matched findings are not listed.
+
+Summary counts
+==============
+Total expected findings: 95
+Matched within tolerance: 2
+Missed expected findings: 93
+Extra findings in actual output: 62
+
+Missed findings pattern
+=======================
+Only two expected rules matched within tolerance:
+- NoCountDisabled (expected line 13, actual line 11)
+- XactAbortDisabled (expected line 16, actual line 12)
+
+All other expected rules were missed. The model output does contain many of the same rule names, but the reported line numbers differ from the ground truth by more than the tolerance. This indicates the model is recognizing rule categories but failing to map them to the correct source locations in the expected finding set.
+
+The largest missed categories are:
+- Predicate / schema issues: 29
+- Ordering, paging, and aggregation semantics: 13
+- Hard-coded / magic literals: 12
+- Joins, subqueries, and correlated lookups: 11
+- Error handling and session settings: 10
+- Procedural / DML constructs: 9
+- Dynamic SQL / injection: 9
+
+Key observation: qwen3.5-9b-mtp produced a line-by-line reinterpretation of the procedure rather than the expected static-analysis finding list, making its output essentially non-scorable against the SQLAnalyzer ground truth.

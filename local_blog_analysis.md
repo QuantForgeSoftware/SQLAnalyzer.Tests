@@ -1,0 +1,122 @@
+# AI Models for Static SQL Analysis: A Head-to-Head Benchmark with Quant Forge Software SQLAnalyzer
+
+> Evaluating downloadable AI models for static SQL analysis on a real-world SQLAnalyzer task.
+
+Running a large language model under your own control is now practical, but not every model translates well to a narrow expert task like static SQL analysis. This benchmark uses **Quant Forge Software SQLAnalyzer** to score every model evaluated on the same deliberately flawed stored procedure: `usp_TestProcedure.sql`. That procedure is only available as part of SQLAnalyzer, and the ground truth contains **95 expected findings** across **61 distinct T-SQL static-analysis rules**.
+
+The question is simple: if you want to run AI SQL review with a model you control, which one should you pick?
+
+## The Contenders
+
+The benchmark set includes eleven runnable weights. All were evaluated with the same prompt and scoring harness.
+
+| Model | Input Tokens | Output Tokens | Total Tokens |
+|-------|-------------:|--------------:|-------------:|
+| gemma-4-12b-it | 14,368 | 9,985 | 24,353 |
+| gemma-4-26b-a4b-it-qat-nvfp4 | 14,362 | 3,814 | 18,176 |
+| gemma-4-31b-it-qat | 14,368 | 11,711 | 26,079 |
+| ornith-1.0-35b | 13,234 | 24,295 | 37,529 |
+| qwen3.5-9b-mtp | 14,368 | 27,697 | 42,065 |
+| qwen3.6-27b-mtp | 13,234 | 20,159 | 33,393 |
+| qwen3.6-35b-a3b-mtp | 13,294 | 18,358 | 31,652 |
+| glm-5.2 | 12,540 | 14,740 | 27,280 |
+| kimi-k2.7-code | 12,773 | 37,180 | 49,953 |
+| kimi-k3 | 12,929 | 29,696 | 42,625 |
+| MiniMax M3 | 13,290 | 42,754 | 56,044 |
+
+Token usage is the dominant cost driver when you serve a model yourself. Input tokens are essentially fixed by the prompt and procedure, so the big differences are in output verbosity.
+
+## Correctness: Exact, Near, and Missed
+
+A match only counts when the **rule name and line number** line up with the ground truth. A "near" match is the same rule within five lines — useful signal, but not precise enough for automated remediation. Some Stats files report exact + near + missed, while others report matched + missed using the same five-line tolerance. The table below presents a unified view.
+
+| Model | Exact | Near | Missed | Effective Recall | High-Severity Errors Missed |
+|-------|------:|-----:|-------:|-----------------:|----------------------------:|
+| kimi-k2.7-code | 87 | 0 | 8 | **91.6%** | 1 |
+| glm-5.2 | 82 | 0 | 13 | 86.3% | 0 |
+| kimi-k3 | 83 | 0 | 12 | 87.4% | 2 |
+| MiniMax M3 | 77 | 0 | 18 | 81.1% | 1 |
+| qwen3.6-27b-mtp | 25 | 46 | 23 | 74.7%* | 3 |
+| qwen3.6-35b-a3b-mtp | 29 | 40 | 25 | 72.6%* | 3 |
+| gemma-4-31b-it-qat | 6 | 49 | 39 | 57.9%* | 7 |
+| gemma-4-12b-it | 24 | 9 | 61 | 34.7%* | 7 |
+| gemma-4-26b-a4b-it-qat-nvfp4 | 3 | 42 | 49 | 47.4%* | 8 |
+| ornith-1.0-35b | 1 | 3 | 90 | 4.2%* | 9 |
+| qwen3.5-9b-mtp | 2 | 0 | 93 | 2.1% | 0 |
+
+\* For files reporting exact/near, effective recall is (exact + near) / 95. The files reporting matched are already scored with the same five-line tolerance.
+
+Three tiers are immediately visible:
+
+- **Top tier (≥81% recall):** `kimi-k2.7-code`, `glm-5.2`, `kimi-k3`, and `MiniMax M3`.
+- **Middle tier (47–75% recall):** the larger Qwen and Gemma runs.
+- **Bottom tier (<50% recall):** the smaller Gemma variants, `ornith-1.0-35b`, and `qwen3.5-9b-mtp`.
+
+`qwen3.5-9b-mtp` technically produced a findings report, but only two of the 95 expected findings matched within tolerance. The rest were either missed entirely or reported at line numbers far enough from the expected positions to be unusable.
+
+## What the Models Get Wrong
+
+The missed findings cluster in the same recurring buckets across nearly every model:
+
+| Pattern | Total Miss Count Across Models | Why it matters |
+|---------|--------------------------------:|----------------|
+| Hard-coded literals | 38 | Maintenance bombs and security/policy risks. |
+| SELECT TOP without ORDER BY | 35 | Nondeterministic results; easy to miss when nested. |
+| Session setting changes | 16 | Unrestored `SET` options leak to the caller. |
+| SQL injection via dynamic SQL | 14 | The most severe security issue on the list. |
+| Dynamic SQL concatenation | 9 | Usually the companion warning right next to injection. |
+
+### The four kinds of incorrect answers
+
+1. **Duplicate violations on the same line.** The benchmark deliberately places multiple instances of the same rule on one line. Models that emit only one finding per rule/line combination miss a large share of expected output. This is the dominant failure mode for the middle-tier models.
+2. **Clustered violations on multi-rule lines.** Once a model commits to one or two issues on a dense line, it often stops looking for the rest.
+3. **Subtle contextual rules.** Every model misses `SessionSettingChanged`, numeric `HardCodedLiteral`, and some `SqlInjectionViaDynamicSql` cases. These require understanding context rather than just matching a surface pattern.
+4. **Severe errors treated lightly.** `ornith-1.0-35b` missed 9 high-severity issues; the smaller Gemma models missed 7–8. Only `kimi-k2.7-code` (1 miss) and `glm-5.2` (0 misses) kept severe-error misses to a minimum.
+
+## Best Model Regardless of Expense
+
+If correctness is the only criterion:
+
+> **kimi-k2.7-code** is the most accurate model in this benchmark, with **91.6% recall**, **87 exact matches**, only **8 missed findings**, and just **1 missed high-severity error**.
+
+It is the only model above 90% recall. The trade-off is token consumption: it emitted 37,180 output tokens.
+
+## Best Value Model
+
+When you are paying for the model one token at a time, correctness per token matters more than wall-clock time. Dividing exact matches by total tokens (×1000) gives a rough correctness-per-thousand-tokens score:
+
+| Model | Exact Matches / 1k Tokens |
+|-------|----------------------------:|
+| glm-5.2 | **3.01** |
+| kimi-k3 | 1.95 |
+| kimi-k2.7-code | 1.74 |
+| MiniMax M3 | 1.37 |
+| gemma-4-12b-it | 0.99 |
+| qwen3.6-35b-a3b-mtp | 0.92 |
+| qwen3.6-27b-mtp | 0.75 |
+| gemma-4-31b-it-qat | 0.23 |
+| gemma-4-26b-a4b-it-qat-nvfp4 | 0.17 |
+| ornith-1.0-35b | 0.03 |
+
+**glm-5.2** is the value leader: 82 exact matches out of 27,280 total tokens and only 13 misses. If you want near-best accuracy without burning the most tokens, `glm-5.2` is the sweet spot — 86.3% recall with 45% fewer tokens than `kimi-k2.7-code`.
+
+## The Choices You Actually Have to Make
+
+1. **Highest possible accuracy:** `kimi-k2.7-code`. Accept the high token count.
+2. **Best balance of accuracy and efficiency:** `glm-5.2`. Nearly as accurate as `kimi-k2.7-code` and far cheaper in tokens.
+3. **Constrained to fully open weights you quantize yourself:** the Qwen and Gemma runs are usable but require prompt engineering or a second pass to catch duplicate and clustered violations.
+4. **High recall, high verbosity first-pass filter:** `MiniMax M3` gives 81.1% recall, though it is the most verbose model tested.
+5. **Models to avoid:** `ornith-1.0-35b`, `qwen3.5-9b-mtp`, and the smaller Gemma quantized variants are not ready as a single pass. `qwen3.5-9b-mtp` found only 2 of the 95 expected issues, reporting the rest at wrong line numbers.
+
+## Why SQLAnalyzer Changes the Game
+
+The hardest part of AI-assisted code review is not picking a model — it is knowing whether the model is right. SQLAnalyzer provides the ground-truth expected findings, the scoring harness, and the repeatable prompt used in this benchmark. Because `usp_TestProcedure.sql` and its expected findings ship only with SQLAnalyzer, this comparison is a built-in capability of the product, not a one-off blog stunt.
+
+## Bottom Line
+
+- **Best regardless of expense:** `kimi-k2.7-code` — 91.6% recall, fewest severe misses.
+- **Best value:** `glm-5.2` — 86.3% recall with the highest correctness-per-token ratio.
+- **Best open-weight middleweight:** `qwen3.6-35b-a3b-mtp` — the strongest fully open-weight model at 72.6% effective recall, though it still misses one in four findings.
+- **Key trade-off:** top accuracy costs tokens; the most efficient accurate model is `glm-5.2`, not the fastest or cheapest standalone option.
+
+*Analysis produced with Quant Forge Software SQLAnalyzer.*
