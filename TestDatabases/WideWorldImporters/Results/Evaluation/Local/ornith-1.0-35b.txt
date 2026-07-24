@@ -1,0 +1,179 @@
+Evaluation for ornith-1.0-35b (Local)
+============================================================
+
+Total expected findings: 95
+Total actual findings:   66
+Matched (same rule + line): 1
+Line-shifted matches (<5 lines): 3
+Missing expected findings: 90
+Extra (unmatched) findings: 62
+
+Missing findings by severity:
+  error: 9
+  warning: 82
+
+Missing expected findings (not matched or line-shifted)
+------------------------------------------------------------
+  13 [warning] SessionSettingChanged: SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  16 [warning] SessionSettingChanged: SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  30 [warning] UnnecessaryDistinct: DISTINCT on Sales.Orders.OrderID is unnecessary because OrderID is the primary key.
+  33 [warning] ReadUncommittedHint: WITH (NOLOCK) on Sales.Orders can return uncommitted, missing, or duplicated rows.
+  36 [warning] FunctionOnColumn: YEAR(o.OrderDate) in the predicate prevents a direct range seek on OrderDate.
+  36 [warning] HardCodedLiteral: Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  39 [warning] ImplicitConversion: Comparing Sales.Orders.CustomerID (int) with @CustomerIdText (nvarchar) forces an implicit conversion.
+  42 [warning] OptionalParameterOr: OR-based optional filter @CustomerID IS NULL OR o.CustomerID = @CustomerID harms cardinality estimation and seeking.
+  45 [warning] LeadingWildcardLike: LIKE pattern N'%urgent%' on Sales.Orders.Comments starts with a leading wildcard, preventing an index seek.
+  48 [error  ] NotInNullableSubquery: NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  51 [warning] NonSargableIsNull: ISNULL(o.CustomerID, 0) in the predicate wraps the column and makes the filter non-sargable.
+  54 [warning] ArithmeticOnColumn: Arithmetic o.OrderID + 0 on the primary key column prevents direct index matching.
+  57 [warning] HardCodedLiteral: Business identifier 1 is hard-coded in the CustomerID predicate.
+  57 [warning] NegativePredicate: Inequality o.CustomerID <> 1 on Sales.Orders often scans broad portions of the table.
+  60 [warning] CartesianJoin: CROSS JOIN between Sales.Orders and Sales.Customers multiplies rows with no join predicate.
+  60 [warning] TopWithoutOrderBy: SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
+  63 [warning] OldStyleJoin: Comma-separated FROM clause with join predicate in WHERE is old-style syntax and error-prone.
+  63 [warning] TopWithoutOrderBy: SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+  66 [warning] CorrelatedScalarSubquery: Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  69 [warning] CorrelatedExists: Correlated EXISTS against Sales.OrderLines could be expressed as a set join instead of a per-row lookup.
+  72 [warning] RepeatedExpression: The CASE expression on Sales.Orders.Comments is repeated in both the SELECT list and ORDER BY clause.
+  75 [warning] OrderByOrdinal: ORDER BY 2 references a select-list position and breaks if the column list changes.
+  78 [warning] NondeterministicPagination: OFFSET/FETCH ordered only by Sales.Orders.OrderDate lacks a stable tie-breaker.
+  81 [warning] HardCodedLiteral: OrderID literals 1 and 2 are embedded directly in the query branches.
+  81 [warning] HardCodedLiteral: Order identifier 2 is embedded directly in the second UNION branch.
+  81 [warning] UnionInsteadOfUnionAll: UNION combines disjoint branches (OrderID = 1 and OrderID = 2), causing unnecessary duplicate removal.
+  84 [warning] CorrelatedScalarSubquery: Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  84 [warning] CountStarForExistence: COUNT(*) > 0 from Sales.OrderLines counts all matching rows when only existence is needed.
+  87 [warning] VariableAssignmentSelect: SELECT @OrderID = o.OrderID FROM Sales.Orders silently accepts multiple rows and keeps the last value.
+  90 [warning] TableVariableEstimate: Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+  92 [warning] TopWithoutOrderBy: SELECT TOP (5) inserted into @OrderIds has no ORDER BY, so the chosen rows are nondeterministic.
+  95 [warning] SelectIntoTempTable: SELECT ... INTO #ImplicitOrders from Sales.Orders creates the temp table schema implicitly.
+  95 [warning] TopWithoutOrderBy: SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  98 [warning] CursorRowByRow: Cursor order_cursor over Sales.Orders processes rows one at a time instead of set-wise.
+  98 [warning] TopWithoutOrderBy: SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+ 105 [warning] WhileLoopRowByRow: WHILE loop increments @Counter iteratively rather than using a set-based approach.
+ 111 [warning] DynamicSqlConcatenation: SQL string is built by concatenating @CustomerID directly into the query text.
+ 111 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 112 [warning] DynamicSqlWithoutParameters: EXEC (@Sql) executes dynamic SQL without parameterized inputs.
+ 115 [warning] DynamicSqlConcatenation: SQL string is built by concatenating @OrderID directly into the query text.
+ 115 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 116 [warning] DynamicSqlWithoutParameters: sp_executesql is used but the statement is concatenated rather than parameterized.
+ 119 [warning] TempTableWithoutCleanup: Explicitly created temp table #Scratch is not dropped before the procedure ends.
+ 125 [warning] CatchSwallowsError: CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+ 130 [warning] LegacyRaiseError: RAISERROR is used instead of THROW for the new error path.
+ 133 [warning] PrintDiagnostic: PRINT is buffered and unsuitable for structured diagnostics.
+ 136 [warning] HardCodedLiteral: Hard-coded CustomerID value 1 is embedded in the query instead of being parameterized or looked up.
+ 139 [warning] MagicDateLiteral: Unlabelled date constant '20160101' is embedded in the Sales.Orders filter logic.
+ 141 [warning] MagicDateLiteral: The date value '01/02/2016' is embedded directly in the expression.
+ 142 [warning] AmbiguousDateConversion: CONVERT(date, '01/02/2016') relies on session-sensitive date string interpretation.
+ 145 [warning] CoalesceInJoin: COALESCE in the join predicate between Sales.Orders and Sales.Invoices inhibits normal join optimization.
+ 145 [warning] TopWithoutOrderBy: SELECT TOP (1) on the COALESCE join has no ORDER BY, so the returned row is nondeterministic.
+ 148 [warning] SelfJoinWithoutNeed: Self-join on Sales.Orders only retrieves OrderID, which is already available in the same row.
+ 148 [warning] TopWithoutOrderBy: SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+ 151 [warning] WideSort: ORDER BY Sales.Orders.Comments (nvarchar(MAX)) performs a wide, unselective sort.
+ 154 [warning] AggregateWithoutFilter: SUM(Quantity) over the entire Sales.OrderLines table aggregates a large fact-like table without a restrictive filter.
+ 157 [warning] HavingForRowFilter: Row-level predicate ol.OrderID > 0 on Sales.OrderLines is placed in HAVING instead of WHERE.
+ 159 [warning] AggregateWithoutFilter: COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+ 160 [warning] RedundantOrderBy: ORDER BY OrderCount is redundant for a single-row aggregate result from Sales.Orders.
+ 164 [warning] MergeStatement: MERGE on Sales.Orders has documented concurrency and correctness edge cases.
+ 165 [warning] UpdateWithoutMeaningfulChange: MERGE UPDATE sets target.Comments = target.Comments, producing writes/logging with no data change.
+ 170 [warning] UpdateWithoutMeaningfulChange: UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+ 174 [error  ] DeleteWithWeakPredicate: DELETE from Sales.OrderLines uses the non-key column Quantity = -1 rather than a stable key predicate.
+ 174 [warning] HardCodedLiteral: Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+ 178 [warning] WaitForDelay: WAITFOR DELAY blocks a worker instead of using asynchronous scheduling.
+ 183 [error  ] ExplicitTransactionWithoutTryCatch: BEGIN TRANSACTION is not wrapped in a BEGIN TRY / BEGIN CATCH error-handling boundary.
+ 190 [warning] SetIdentityInsert: SET IDENTITY_INSERT ON on Sales.Orders changes session state and introduces fragile identity-management coupling.
+ 195 [warning] UnqualifiedProcedureName: System procedure sp_who is invoked without a schema qualifier.
+ 198 [warning] SessionSettingChanged: SET ROWCOUNT 1 changes a session setting and is not restored before the procedure ends.
+ 213 [warning] HardCodedLiteral: Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+ 213 [warning] InsertWithoutColumnList: INSERT INTO #DemoCategories VALUES omits the explicit column list.
+ 215 [warning] InsertWithoutColumnList: INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+ 219 [warning] LeadingWildcardLike: LIKE pattern '%' + @CustomerName + '%' on Sales.Customers.CustomerName starts with a leading wildcard.
+ 221 [warning] DynamicSqlConcatenation: SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+ 221 [warning] LeadingWildcardLike: The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+ 221 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 222 [warning] DynamicSqlWithoutParameters: sp_executesql is used but the statement is concatenated rather than parameterized.
+ 222 [warning] UnqualifiedProcedureName: System procedure sp_executesql is invoked without a schema qualifier.
+ 224 [warning] HardCodedLiteral: Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+ 224 [error  ] UpdateWithoutWhere: UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+ 230 [warning] MagicDateLiteral: Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic.
+ 230 [warning] OuterJoinToFilter: Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join.
+ 234 [error  ] NullEquality: Sales.Customers.DeliveryMethodID = NULL uses equality with NULL instead of IS NULL and will never match.
+ 236 [warning] ScalarUdfInSelect: Scalar user-defined function dbo.GetCustomerType in the SELECT list forces row-by-row evaluation.
+ 244 [warning] CatchSwallowsError: CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+ 244 [error  ] CatchWithoutRollback: CATCH block inside an active transaction does not roll back before handling the error.
+ 249 [warning] IndexHintHardcoded: Hard-coded index hint WITH (INDEX = 1) on Sales.Customers should be avoided in production code.
+ 252 [warning] NestedSubqueryDepth: Subquery is nested three levels deep and should be refactored to CTEs or temp tables.
+ 258 [warning] LeadingWildcardLike: LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+ 263 [warning] MultiStatementTvfInsteadOfInline: Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.
+ 263 [warning] SelectStar: SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF.
+
+Extra/unmatched actual findings
+------------------------------------------------------------
+  25 [warning] UnnecessaryDistinct: DISTINCT is applied to OrderID, which is the primary key and already guaranteed unique, adding a wasteful sort/hash operation.
+  27 [warning] ReadUncommittedHint: WITH (NOLOCK) permits reading uncommitted, torn, or duplicated rows and bypasses all locking mechanisms.
+  29 [warning] FunctionOnColumn: YEAR(o.OrderDate) wraps the indexed date column in a function, preventing the optimizer from using an index seek on OrderDate.
+  31 [warning] ImplicitConversion: Comparing int CustomerID to nvarchar @CustomerIdText forces implicit conversion of the column side, breaking index usage and causing type-conflict errors.
+  33 [warning] OptionalParameterOr: @CustomerID IS NULL OR o.CustomerID = @CustomerID prevents parameter sniffing and forces a scan because the optimizer cannot estimate cardinality reliably.
+  35 [warning] LeadingWildcardLike: LIKE N'%urgent%' starts with a wildcard, making the predicate non-sargable and forcing a full scan of Sales.Orders.
+  37 [error  ] NotInNullableSubquery: NOT IN with a subquery that can return NULL yields no rows when any NULL is present, producing incorrect results instead of the expected filter.
+  39 [warning] NonSargableIsNull: ISNULL(o.CustomerID, 0) = 1 wraps the column in a function call, preventing index seeks and forcing a scan.
+  41 [warning] ArithmeticOnColumn: o.OrderID + 0 = @OrderID applies arithmetic to the indexed key column, destroying sargability and blocking index matching.
+  43 [warning] NegativePredicate: o.CustomerID <> 1 uses an inequality that typically prevents efficient range seeks and can cause broad table scans.
+  45 [warning] CartesianJoin: CROSS JOIN between Sales.Orders and Sales.Customers without a filter multiplies rows exponentially and indicates a missing join condition.
+  47 [warning] OldStyleJoin: Comma-separated tables in FROM with predicates in WHERE obscure join intent and make accidental cartesian products easier to introduce.
+  49 [warning] CorrelatedScalarSubquery: A correlated scalar subquery executes a COUNT lookup for every qualifying row in Sales.Orders instead of using a set-based join.
+  51 [warning] CorrelatedExists: Correlated EXISTS runs per outer row; expressing this as an INNER JOIN or semi-join would allow the optimizer to choose a more efficient hash/merge strategy.
+  53 [warning] RepeatedExpression: The identical CASE expression is duplicated in the SELECT list and ORDER BY, increasing parsing cost and maintenance risk if logic changes.
+  55 [warning] OrderByOrdinal: ORDER BY 2 references a column position that will break or reorder incorrectly if the SELECT list columns are rearranged.
+  57 [warning] NondeterministicPagination: OFFSET/FETCH with only OrderDate lacks a tie-breaker column, so rows may shift between pages when duplicate dates exist.
+  59 [warning] UnionInsteadOfUnionAll: UNION performs an unnecessary distinct sort on two branches that are already disjoint by construction (OrderID = 1 vs 2).
+  61 [warning] CountStarForExistence: COUNT(*) > 0 computes a full aggregate when only row existence is required; EXISTS would short-circuit and avoid counting.
+  63 [warning] VariableAssignmentSelect: SELECT @OrderID = o.OrderID silently keeps the last row's value if multiple rows return, leading to unpredictable results.
+  65 [warning] TableVariableEstimate: @OrderIds is a table variable that will always report a cardinality of 1 to the optimizer, causing poor plan choices as data grows.
+  68 [warning] SelectIntoTempTable: SELECT ... INTO #ImplicitOrders creates a temp table with inferred schema, preventing explicit indexing and potentially causing type mismatches.
+  70 [warning] CursorRowByRow: A FAST_FORWARD cursor processes Sales.Orders row-by-row instead of using a set-based operation, degrading performance significantly.
+  76 [warning] WhileLoopRowByRow: WHILE loop iterates manually over @Counter instead of expressing the logic set-wise, adding unnecessary procedural overhead.
+  81 [warning] DynamicSqlConcatenation: String concatenation builds executable SQL with @CustomerID directly embedded, enabling injection and preventing plan caching.
+  82 [error  ] SqlInjectionViaDynamicSql: EXEC (@Sql) runs a dynamically built string containing unescaped user input, allowing arbitrary code execution.
+  84 [warning] DynamicSqlConcatenation: String concatenation builds executable SQL with @OrderID directly embedded, defeating parameterization and plan reuse.
+  85 [warning] DynamicSqlWithoutParameters: sp_executesql is called with a pre-built string that embeds values instead of using @parameter definitions, preventing plan caching and enabling injection.
+  87 [warning] TempTableWithoutCleanup: #Scratch is created explicitly but never dropped before procedure end, leaving orphaned metadata and occupying tempdb until scope cleanup.
+  92 [warning] CatchSwallowsError: The CATCH block only selects the error message without rethrowing or signaling failure, silently masking runtime exceptions.
+  96 [warning] LegacyRaiseError: RAISERROR is used for a new error path; THROW should be preferred as it preserves the original exception context and stack.
+  98 [info   ] PrintDiagnostic: PRINT output is buffered and not suitable for structured diagnostics or programmatic error handling in production procedures.
+ 100 [warning] HardCodedLiteral: CustomerID = 1 is a magic business value embedded directly instead of being passed as a parameter or looked up from a configuration table.
+ 102 [warning] MagicDateLiteral: '20160101' is an unlabelled date constant embedded in query logic, making the intent unclear and brittle to future changes.
+ 104 [warning] AmbiguousDateConversion: CONVERT(date, '01/02/2016') relies on session language settings for interpretation and can produce wrong dates or errors across locales.
+ 106 [warning] CoalesceInJoin: COALESCE in the join predicate inhibits normal join optimization and prevents index usage on CustomerID for both tables.
+ 108 [warning] SelfJoinWithoutNeed: Self-joining Sales.Orders to retrieve OrderID returns the same value already available from the outer alias without adding any filter.
+ 110 [warning] WideSort: ORDER BY o.Comments sorts by an unselective nvarchar(MAX) column, forcing a wide sort that consumes memory and disk spill.
+ 112 [warning] AggregateWithoutFilter: SUM(ol.Quantity) scans the entire Sales.OrderLines fact table without a restrictive filter, causing heavy I/O and memory usage.
+ 114 [warning] HavingForRowFilter: HAVING ol.OrderID > 0 filters individual rows after grouping; this predicate belongs in WHERE to reduce the grouped row set early.
+ 116 [warning] RedundantOrderBy: ORDER BY OrderCount is unnecessary because COUNT(*) without GROUP BY always returns exactly one row.
+ 119 [warning] MergeStatement: MERGE has known concurrency and correctness edge cases; separate IF EXISTS/UPDATE/INSERT blocks are safer for upserts.
+ 124 [warning] UpdateWithoutMeaningfulChange: SET Comments = Comments writes no actual data change but still generates transaction log entries and acquires locks.
+ 127 [error  ] DeleteWithWeakPredicate: DELETE based on Quantity = -1 uses a broad business value rather than a stable key, risking accidental mass data loss.
+ 130 [warning] WaitForDelay: WAITFOR DELAY blocks a worker thread intentionally instead of using asynchronous scheduling or retry logic.
+ 134 [warning] ExplicitTransactionWithoutTryCatch: BEGIN TRANSACTION is opened outside a TRY/CATCH block; if an error occurs after this point, the transaction may remain open and lock resources.
+ 140 [warning] SetIdentityInsert: SET IDENTITY_INSERT ON changes session state and introduces fragile identity-management coupling that can cause key collisions if not carefully managed.
+ 144 [warning] UnqualifiedProcedureName: EXEC sp_who lacks a schema qualifier; unqualified system routines can be shadowed by user objects and cause ambiguous resolution.
+ 146 [warning] SessionSettingChanged: SET ROWCOUNT 1 modifies session state permanently for the connection and is never restored, affecting all subsequent statements.
+ 158 [warning] InsertWithoutColumnList: INSERT INTO #DemoCategories VALUES (...) omits an explicit column list, making the statement fragile to schema changes and ambiguous.
+ 164 [warning] DynamicSqlConcatenation: String concatenation builds executable SQL with @CustomerName directly embedded, defeating parameterization and enabling injection.
+ 164 [error  ] SqlInjectionViaDynamicSql: User-supplied @CustomerName is concatenated into dynamic SQL before execution, allowing arbitrary T-SQL injection.
+ 165 [warning] DynamicSqlWithoutParameters: sp_executesql executes a pre-built string that embeds values rather than using @parameter definitions, preventing plan caching.
+ 166 [error  ] UpdateWithoutWhere: UPDATE #DemoCustomers lacks a WHERE clause and will modify every row in the temp table, causing unintended data loss.
+ 171 [warning] OuterJoinToFilter: Predicate on o.OrderDate placed in WHERE effectively converts the LEFT JOIN to an INNER JOIN, filtering out unmatched Customers.
+ 174 [error  ] NullEquality: WHERE DeliveryMethodID = NULL uses ANSI_NULLS-compliant comparison that always evaluates to UNKNOWN; use IS NULL instead.
+ 175 [warning] ScalarUdfInSelect: dbo.GetCustomerType(CustomerID) is a scalar UDF in the SELECT list that forces row-by-row evaluation and blocks parallelism.
+ 182 [error  ] CatchWithoutRollback: The CATCH block inside an explicit transaction does not issue ROLLBACK before handling the error, leaving an open transaction and holding locks.
+ 186 [warning] IndexHintHardcoded: WITH (INDEX = 1) hardcodes a physical index hint, overriding the optimizer's cost-based choices and breaking if the index is renamed or dropped.
+ 188 [warning] NestedSubqueryDepth: Four levels of nested subqueries (t3 -> t2 -> t1 -> base) should be refactored into CTEs or temp tables for readability and optimizer friendliness.
+ 198 [warning] MultiStatementTvfInsteadOfInline: dbo.GetCustomerOrdersMulti appears to be a multi-statement TVF; an inline TVF would allow the optimizer to push predicates and join efficiently.
+ 198 [warning] SelectStar: SELECT * on a table-valued function couples the caller to all returned columns and prevents column pruning.
+
+Line-shifted matches (within 5 lines, not counted as missing)
+------------------------------------------------------------
+Expected   16 XactAbortDisabled -> Actual   15
+Expected   24 SelectStar -> Actual   21
+Expected   27 TopWithoutOrderBy -> Actual   23
+

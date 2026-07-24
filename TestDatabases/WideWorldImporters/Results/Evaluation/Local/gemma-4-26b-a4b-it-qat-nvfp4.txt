@@ -1,0 +1,133 @@
+Evaluation for gemma-4-26b-a4b-it-qat-nvfp4 (Local)
+============================================================
+
+Total expected findings: 95
+Total actual findings:   62
+Matched (same rule + line): 3
+Line-shifted matches (<5 lines): 42
+Missing expected findings: 49
+Extra (unmatched) findings: 18
+
+Missing findings by severity:
+  error: 8
+  warning: 42
+
+Missing expected findings (not matched or line-shifted)
+------------------------------------------------------------
+  13 [warning] SessionSettingChanged: SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  16 [warning] SessionSettingChanged: SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  36 [warning] HardCodedLiteral: Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  57 [warning] HardCodedLiteral: Business identifier 1 is hard-coded in the CustomerID predicate.
+  60 [warning] TopWithoutOrderBy: SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
+  63 [warning] TopWithoutOrderBy: SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+  81 [warning] HardCodedLiteral: OrderID literals 1 and 2 are embedded directly in the query branches.
+  81 [warning] HardCodedLiteral: Order identifier 2 is embedded directly in the second UNION branch.
+  84 [warning] CorrelatedScalarSubquery: Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  92 [warning] TopWithoutOrderBy: SELECT TOP (5) inserted into @OrderIds has no ORDER BY, so the chosen rows are nondeterministic.
+  95 [warning] TopWithoutOrderBy: SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  98 [warning] TopWithoutOrderBy: SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+ 111 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 115 [warning] DynamicSqlConcatenation: SQL string is built by concatenating @OrderID directly into the query text.
+ 115 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 141 [warning] MagicDateLiteral: The date value '01/02/2016' is embedded directly in the expression.
+ 145 [warning] TopWithoutOrderBy: SELECT TOP (1) on the COALESCE join has no ORDER BY, so the returned row is nondeterministic.
+ 148 [warning] TopWithoutOrderBy: SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+ 159 [warning] AggregateWithoutFilter: COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+ 164 [warning] MergeStatement: MERGE on Sales.Orders has documented concurrency and correctness edge cases.
+ 170 [warning] UpdateWithoutMeaningfulChange: UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+ 174 [error  ] DeleteWithWeakPredicate: DELETE from Sales.OrderLines uses the non-key column Quantity = -1 rather than a stable key predicate.
+ 174 [warning] HardCodedLiteral: Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+ 178 [warning] WaitForDelay: WAITFOR DELAY blocks a worker instead of using asynchronous scheduling.
+ 183 [error  ] ExplicitTransactionWithoutTryCatch: BEGIN TRANSACTION is not wrapped in a BEGIN TRY / BEGIN CATCH error-handling boundary.
+ 190 [warning] SetIdentityInsert: SET IDENTITY_INSERT ON on Sales.Orders changes session state and introduces fragile identity-management coupling.
+ 195 [warning] UnqualifiedProcedureName: System procedure sp_who is invoked without a schema qualifier.
+ 198 [warning] SessionSettingChanged: SET ROWCOUNT 1 changes a session setting and is not restored before the procedure ends.
+ 213 [warning] HardCodedLiteral: Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+ 213 [warning] InsertWithoutColumnList: INSERT INTO #DemoCategories VALUES omits the explicit column list.
+ 215 [warning] InsertWithoutColumnList: INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+ 219 [warning] LeadingWildcardLike: LIKE pattern '%' + @CustomerName + '%' on Sales.Customers.CustomerName starts with a leading wildcard.
+ 221 [warning] DynamicSqlConcatenation: SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+ 221 [warning] LeadingWildcardLike: The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+ 221 [error  ] SqlInjectionViaDynamicSql: User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk.
+ 222 [warning] DynamicSqlWithoutParameters: sp_executesql is used but the statement is concatenated rather than parameterized.
+ 222 [warning] UnqualifiedProcedureName: System procedure sp_executesql is invoked without a schema qualifier.
+ 224 [warning] HardCodedLiteral: Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+ 224 [error  ] UpdateWithoutWhere: UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+ 230 [warning] MagicDateLiteral: Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic.
+ 230 [warning] OuterJoinToFilter: Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join.
+ 234 [error  ] NullEquality: Sales.Customers.DeliveryMethodID = NULL uses equality with NULL instead of IS NULL and will never match.
+ 236 [warning] ScalarUdfInSelect: Scalar user-defined function dbo.GetCustomerType in the SELECT list forces row-by-row evaluation.
+ 244 [warning] CatchSwallowsError: CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+ 244 [error  ] CatchWithoutRollback: CATCH block inside an active transaction does not roll back before handling the error.
+ 249 [warning] IndexHintHardcoded: Hard-coded index hint WITH (INDEX = 1) on Sales.Customers should be avoided in production code.
+ 252 [warning] NestedSubqueryDepth: Subquery is nested three levels deep and should be refactored to CTEs or temp tables.
+ 258 [warning] LeadingWildcardLike: LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+ 263 [warning] MultiStatementTvfInsteadOfInline: Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.
+ 263 [warning] SelectStar: SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF.
+
+Extra/unmatched actual findings
+------------------------------------------------------------
+ 159 [warning] MergeStatement: The MERGE statement is used; it has known concurrency and complexity issues.
+ 168 [warning] DeleteWithWeakPredicate: The DELETE statement uses a broad predicate (Quantity = -1) rather than a unique key.
+ 172 [warning] WaitForDelay: WAITFOR DELAY is used, which blocks a worker thread and should be avoided in production code.
+ 176 [warning] ExplicitTransactionWithoutTryCatch: A transaction is started without being wrapped in a TRY/CATCH block for safe error handling.
+ 182 [warning] SetIdentityInsert: SET IDENTITY_INSERT is used, which can lead to fragile data integrity management.
+ 187 [warning] UnqualifiedProcedureName: The system procedure sp_who is called without a schema qualifier.
+ 190 [warning] SessionSettingChanged: The SET ROWCOUNT setting is changed but not restored to its original state.
+ 201 [error  ] DynamicSqlConcatenation: SQL is being built by concatenating variables, which exposes the application to SQL injection.
+ 204 [warning] DynamicSqlWithoutParameters: Dynamic SQL is executed using sp_executesql but values are concatenated rather than passed as parameters.
+ 207 [error  ] UpdateWithoutWhere: The UPDATE statement lacks a WHERE clause, which will update all rows in the table.
+ 213 [warning] LeadingWildcardLike: The LIKE pattern '%[variable]%' starts with a wildcard, preventing an index seek.
+ 217 [error  ] NullEquality: The predicate uses 'WHERE Column = NULL', which is incorrect; use 'IS NULL' instead.
+ 221 [warning] ScalarUdfInSelect: A scalar user-defined function (dbo.GetCustomerType) is used in the SELECT list, forcing row-by-row evaluation.
+ 227 [warning] CatchSwallowsError: The CATCH block catches an error but does not rethrow it or return a failure status.
+ 231 [warning] IndexHintHardcoded: An explicit index hint (INDEX = 1) is used, which can cause issues if the database schema changes.
+ 232 [warning] LeadingWildcardLike: The LIKE pattern '%[variable]%' starts with a wildcard, preventing an index seek.
+ 234 [warning] NestedSubqueryDepth: The query contains deeply nested subqueries (3+ levels), which should be refactored into CTEs or temp tables.
+ 240 [warning] SelectStar: SELECT * is used; explicitly naming columns improves performance and prevents errors during schema changes.
+
+Line-shifted matches (within 5 lines, not counted as missing)
+------------------------------------------------------------
+Expected   13 NoCountDisabled -> Actual   14
+Expected   16 XactAbortDisabled -> Actual   18
+Expected   24 SelectStar -> Actual   26
+Expected   27 TopWithoutOrderBy -> Actual   29
+Expected   30 UnnecessaryDistinct -> Actual   32
+Expected   33 ReadUncommittedHint -> Actual   35
+Expected   36 FunctionOnColumn -> Actual   38
+Expected   39 ImplicitConversion -> Actual   41
+Expected   42 OptionalParameterOr -> Actual   44
+Expected   45 LeadingWildcardLike -> Actual   47
+Expected   48 NotInNullableSubquery -> Actual   50
+Expected   51 NonSargableIsNull -> Actual   53
+Expected   54 ArithmeticOnColumn -> Actual   56
+Expected   57 NegativePredicate -> Actual   59
+Expected   60 CartesianJoin -> Actual   62
+Expected   63 OldStyleJoin -> Actual   65
+Expected   66 CorrelatedScalarSubquery -> Actual   68
+Expected   69 CorrelatedExists -> Actual   71
+Expected   72 RepeatedExpression -> Actual   74
+Expected   75 OrderByOrdinal -> Actual   77
+Expected   78 NondeterministicPagination -> Actual   80
+Expected   81 UnionInsteadOfUnionAll -> Actual   83
+Expected   84 CountStarForExistence -> Actual   86
+Expected   87 VariableAssignmentSelect -> Actual   89
+Expected   90 TableVariableEstimate -> Actual   92
+Expected  111 DynamicSqlConcatenation -> Actual  110
+Expected  112 DynamicSqlWithoutParameters -> Actual  113
+Expected  116 DynamicSqlWithoutParameters -> Actual  113
+Expected  119 TempTableWithoutCleanup -> Actual  116
+Expected  125 CatchSwallowsError -> Actual  121
+Expected  130 LegacyRaiseError -> Actual  126
+Expected  133 PrintDiagnostic -> Actual  129
+Expected  136 HardCodedLiteral -> Actual  132
+Expected  139 MagicDateLiteral -> Actual  135
+Expected  142 AmbiguousDateConversion -> Actual  138
+Expected  145 CoalesceInJoin -> Actual  141
+Expected  148 SelfJoinWithoutNeed -> Actual  144
+Expected  151 WideSort -> Actual  147
+Expected  154 AggregateWithoutFilter -> Actual  150
+Expected  157 HavingForRowFilter -> Actual  153
+Expected  160 RedundantOrderBy -> Actual  156
+Expected  165 UpdateWithoutMeaningfulChange -> Actual  164
+

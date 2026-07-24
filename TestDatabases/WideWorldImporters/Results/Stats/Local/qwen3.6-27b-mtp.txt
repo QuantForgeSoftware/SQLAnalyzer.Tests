@@ -1,16 +1,23 @@
-...
-Starting AI for the first pass...
-AI generation took 95.43 seconds.
-Building final prompt and calling AI...
-Starting AI for the second pass...
-AI generation took 542.42 seconds.
-
-
-
+SQLAnalyzerCLI SQLAnalyzer v1.4.0
+Licensed user: QuantForgeSoftware (expires 2027-08-01)
+Retrieving stored procedure:
 Model: qwen3.6-27b-mtp
-Input tokens: 13,294
-Output tokens: 12,960
-Total tokens: 26,254
-AI time: 637.85 seconds
-Tokens/second: 41
+Input tokens: 13,234
+Output tokens: 20,159
+Total tokens: 33,393
+AI time: 949.60 seconds
+Tokens/second: 35
 Estimated total cost: $0.000000 USD
+Notes
+=====
+This run found 25 exact matches and 46 near-matches (line off by <5).
+23 expected findings were missed entirely.
+
+Pattern of missed findings:
+- 3 high-severity errors were missed, including SQL injection, transaction handling, and NULL-comparison bugs.
+- Repeated failure to flag SELECT TOP without ORDER BY (7 instances); the model tends to notice only the first or most prominent TOP clause.
+- HardCodedLiteral detections are inconsistent (6 missed); the model flags obvious business identifiers but misses numeric year/order/date literals embedded in predicates.
+- SessionSettingChanged warnings are missed (2 instances); SET NOCOUNT/XACT_ABORT state changes at procedure start are not being recognized as unrestored session settings.
+- SqlInjectionViaDynamicSql was missed for some concatenation points (2 instances), suggesting the model recognizes dynamic SQL but not every user-input concatenation.
+- DynamicSqlConcatenation warnings were also missed (1 instances); dynamic SQL with variable concatenation is inconsistently detected.
+- Overall pattern: the model catches broad anti-patterns but misses duplicates, companion rules at the same line, and subtle variants such as session-state changes and hard-coded numeric literals.

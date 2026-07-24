@@ -1,0 +1,21 @@
+Model: gemma-4-26b-a4b-it-qat-nvfp4
+Input tokens: 14,362
+Output tokens: 3,814
+Total tokens: 18,176
+AI time: 57.92 seconds
+Tokens/second: 314
+Estimated total cost: $0.000000 USD
+Notes
+=====
+This run found 3 exact matches and 42 near-matches (line off by <5).
+49 expected findings were missed entirely.
+
+Pattern of missed findings:
+- 8 high-severity errors were missed, including SQL injection, transaction handling, and NULL-comparison bugs.
+- Repeated failure to flag SELECT TOP without ORDER BY (7 instances); the model tends to notice only the first or most prominent TOP clause.
+- HardCodedLiteral detections are inconsistent (6 missed); the model flags obvious business identifiers but misses numeric year/order/date literals embedded in predicates.
+- SessionSettingChanged warnings are missed (3 instances); SET NOCOUNT/XACT_ABORT state changes at procedure start are not being recognized as unrestored session settings.
+- SqlInjectionViaDynamicSql was missed for some concatenation points (3 instances), suggesting the model recognizes dynamic SQL but not every user-input concatenation.
+- DynamicSqlConcatenation warnings were also missed (2 instances); dynamic SQL with variable concatenation is inconsistently detected.
+- Object-specific rule misses (multi-statement TVF, SELECT * from TVF) indicate difficulty with scoped/aliased object references.
+- Overall pattern: the model catches broad anti-patterns but misses duplicates, companion rules at the same line, and subtle variants such as session-state changes and hard-coded numeric literals.

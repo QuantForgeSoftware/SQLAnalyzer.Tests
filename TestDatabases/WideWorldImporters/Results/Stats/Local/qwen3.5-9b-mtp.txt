@@ -1,0 +1,7 @@
+Model: gemma-4-12b-it
+Input tokens: 14,368
+Output tokens: 27,697
+Total tokens: 42,065
+AI time: 825.68 seconds
+Tokens/second: 51
+Estimated total cost: $0.000000 USD

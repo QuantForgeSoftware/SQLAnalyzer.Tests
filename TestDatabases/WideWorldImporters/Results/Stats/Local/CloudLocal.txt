@@ -1,0 +1,5 @@
+The following files are to be added to the Local AI evaluation
+/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters/Results/Stats/Cloud/glm-5.2.txt
+/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters/Results/Stats/Cloud/kimi-k2.7-code.txt
+/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters/Results/Stats/Cloud/kimi-k3.txt
+/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters/Results/Stats/Cloud/MiniMax M3.txt
