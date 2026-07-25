@@ -1,0 +1,16 @@
+from pathlib import Path
+
+stats_path = Path('/Users/johnbaima/Code/SQLAnalyzer.Tests/TestDatabases/WideWorldImporters/Results/Stats/Cloud/claude-opus-5.txt')
+notes = """
+
+Notes
+
+Pattern analysis of missed expected findings:
+- Session-setting rules are the biggest blind spot. The model reported SET NOCOUNT OFF as NoCountDisabled but missed the paired SessionSettingChanged at the same line, and it missed SessionSettingChanged for SET XACT_ABORT OFF entirely. This suggests the model recognizes a setting is wrong but does not consistently flag that the setting change is left unrestored.
+- SQL-injection via dynamic SQL is under-detected. Two SqlInjectionViaDynamicSql findings were missed around the dynamic query sections even though related DynamicSqlConcatenation/DynamicSqlWithoutParameters findings were reported. The model sees the concatenation pattern but sometimes stops before raising the explicit security rule.
+- Contextual/numeric literals slip through. A HardCodedLiteral at line 36 (year 2016 inside YEAR(o.OrderDate)) and an AggregateWithoutFilter at line 159 were missed, showing surface-level literal detection misses values embedded inside expressions or simple aggregate queries without WHERE clauses.
+- Correlated subquery redundancy is missed once. The model found one CorrelatedScalarSubquery occurrence but missed the second, indicating duplicate/clustered rule instances on similar constructs are not always enumerated.
+"""
+
+stats_path.write_text(stats_path.read_text() + notes)
+print("Notes appended.")

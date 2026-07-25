@@ -1,0 +1,95 @@
+# Claude Opus 5 vs. Claude Opus 4.8 and Grok 4.5: A SQLAnalyzer Static-Analysis Showdown
+
+> Which flagship reasoning model best handles real-world T-SQL static analysis? We compare three top-tier models on the same SQLAnalyzer benchmark procedure.
+
+Quant Forge Software SQLAnalyzer includes a deliberately flawed stored procedure, `usp_TestProcedure.sql`, packed with 95 expected static-analysis findings across 61 distinct T-SQL rules. Running models against it with the same prompt and scoring harness makes head-to-head comparisons meaningful. This note focuses on three leading reasoning/heavyweight models:
+
+- **claude-opus-5**
+- **claude-opus-4.8**
+- **grok-4.5**
+
+## Correctness Summary
+
+| Model | Matched (±4 lines) | Missed | Extra | Severity Mismatches | Recall |
+|-------|-------------------:|-------:|------:|--------------------:|-------:|
+| claude-opus-5 | 88 | 7 | 9 | 0 | **92.6%** |
+| grok-4.5 | 89 | 6 | 0 | 7 | 93.7% |
+| claude-opus-4.8 | 82 | 13 | 4 | 6 | 86.3% |
+
+*Recall is matched / 95 expected.*
+
+On raw recall, Grok 4.5 edges ahead with the fewest misses and no extra findings. Claude Opus 5 is very close and produces a cleaner severity alignment (no mismatches). Claude Opus 4.8 lags both, missing more than twice as many expected findings as Grok and reporting extra and mismatched-severity findings.
+
+## Token Cost
+
+| Model | Input Tokens | Output Tokens | Total Tokens | Est. Cost |
+|-------|-------------:|--------------:|-------------:|----------:|
+| claude-opus-5 | 24,942 | 16,080 | 41,022 | $0.5267 |
+| claude-opus-4.8 | 24,942 | 6,813 | 31,755 | $0.2950 |
+| grok-4.5 | 13,287 | 5,213 | 18,500 | $0.0579 |
+
+**Percentage change from claude-opus-4.8 to claude-opus-5:**
+
+- **Total token usage:** +29.2% (31,755 → 41,022)
+- **Output tokens:** +136.0% (6,813 → 16,080)
+- **Tokens per second:** −38.9% (465 → 284 tokens/s)
+- **Overall cost:** +78.5% ($0.2950 → $0.5267)
+
+Grok 4.5 is dramatically cheaper: it used the fewest input tokens (its prompt was more compact) and the fewest output tokens. Claude Opus 5 is the most expensive, mostly because it emitted a verbose 16k-token report — 2.4× the output of Opus 4.8 and 3.1× that of Grok.
+
+## What Each Model Missed
+
+### claude-opus-5 misses (7)
+- **SessionSettingChanged** × 2 — it flags the wrong value but not the unrestored session state.
+- **SqlInjectionViaDynamicSql** × 2 — sees dynamic SQL concatenation but does not always escalate to the explicit injection rule.
+- **HardCodedLiteral** × 1 — year 2016 embedded in `YEAR(o.OrderDate)`.
+- **CorrelatedScalarSubquery** × 1 — missed a second duplicate instance on a similar construct.
+- **AggregateWithoutFilter** × 1 — a simple `COUNT(*)` over the whole table.
+
+### grok-4.5 misses (6)
+- **SessionSettingChanged** × 2 — same blind spot as Opus 5.
+- **SqlInjectionViaDynamicSql** × 1 — missed the `@OrderID` concatenation while still flagging the nearby dynamic SQL rule.
+- **AggregateWithoutFilter** × 1 — same miss as Opus 5.
+- **InsertWithoutColumnList** × 1 — a clustered-rules blind spot in the demo temp-table section.
+- **LeadingWildcardLike** × 1 — dynamic LIKE pattern with a leading wildcard.
+
+### claude-opus-4.8 misses (13)
+- **HardCodedLiteral** × 5 — the biggest weakness; missed year 2016, CustomerID 1, two OrderID literals, and the sentinel -1.
+- **SessionSettingChanged** × 2 — same as the other two.
+- **SqlInjectionViaDynamicSql** × 2 — both dynamic concatenation points.
+- Singleton misses: `TopWithoutOrderBy` on a cursor SELECT, `MagicDateLiteral`, `AggregateWithoutFilter`, and `UnqualifiedProcedureName` on `sp_executesql`.
+
+## What Each Model Invented
+
+- **claude-opus-5**: 9 extra findings, mostly duplicate `TopWithoutOrderBy` instances and additional `HardCodedLiteral`/`DynamicSql*` detections. Not harmful, but adds noise.
+- **grok-4.5**: 0 extra findings — clean output, no false positives.
+- **claude-opus-4.8**: 4 extra findings, including a plausible `CountStarForExistence` and a speculative `LeadingWildcardLike` on a variable pattern.
+
+## Severity Consistency
+
+- **claude-opus-5**: 0 severity mismatches — the only model whose severity labels exactly matched the ground truth.
+- **grok-4.5**: 7 mismatches. Tends to upgrade dynamic SQL and catch-block issues to error, while downgrading `DeleteWithWeakPredicate` and `ExplicitTransactionWithoutTryCatch` to warning.
+- **claude-opus-4.8**: 6 mismatches. Downgrades two expected errors to warning (`DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`) and upgrades two `CatchSwallowsError` findings to error; also labels two warnings as `info`.
+
+## Common Blind Spots
+
+All three models struggle with the same three families:
+
+1. **Unrestored session settings** — `SET NOCOUNT OFF` / `SET XACT_ABORT OFF` are universally missed as `SessionSettingChanged`, even though the models often detect the related `NoCountDisabled` / `XactAbortDisabled` rules.
+2. **Contextual / numeric literals** — literal values embedded inside expressions or aggregates are harder to surface than standalone magic numbers.
+3. **Duplicate/clustered rule instances** — when several rules sit on the same or adjacent lines, every model reports some subset and misses the rest.
+
+## Which Is Best?
+
+- **Best raw correctness:** `grok-4.5` — highest recall, zero extra findings.
+- **Best calibrated output:** `claude-opus-5` — recall almost as high, with perfect severity alignment and richer explanations, but at the highest token cost.
+- **Best value:** `grok-4.5` — highest accuracy and lowest cost by a wide margin.
+- **Honorable mention for speed of reading:** `claude-opus-4.8` produced the shortest output, but it missed too many findings and too many literals to be the top choice for automated SQL review.
+
+## The Choice You Have to Make
+
+- If you want the **highest possible accuracy per dollar** and can accept a few severity reclassifications, choose **Grok 4.5**.
+- If you want **clean, severity-consistent findings** with detailed rationale and can afford the token spend, choose **Claude Opus 5**.
+- If you are **cost-constrained and prefer terse output**, Claude Opus 4.8 is cheaper than Opus 5, but you will need a second pass or custom prompt engineering to catch literals and session-state issues.
+
+*Analysis produced with Quant Forge Software SQLAnalyzer.*

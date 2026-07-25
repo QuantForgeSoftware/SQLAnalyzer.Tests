@@ -1,6 +1,6 @@
 # Choosing an LLM for Static SQL Analysis: A Head-to-Head Benchmark with Quant Forge Software SQLAnalyzer
 
-> Evaluating 18 frontier models on a real-world SQL analyzer task: correctness, error patterns, speed, and cost.
+> Evaluating 19 frontier models on a real-world SQL analyzer task: correctness, error patterns, speed, and cost.
 
 Static analysis of SQL is one of the hardest single-shot prompt-engineering tasks you can give a large language model. The model must read a stored procedure, identify dozens of rule violations, emit the correct rule name, severity, line number, and a concise explanation — and it must do it in one pass. To make the job harder, many violations cluster on the same line, and a tolerance of ±5 lines is the only mercy we grant.
 
@@ -77,9 +77,10 @@ This post walks through the results, the kinds of mistakes each model makes, and
 
 | Model | Recall | Matched | Missing | Extra | Severity Mismatch Types | Cost (USD) | AI Time (s) |
 |---|---:|---:|---:|---:|---:|---:|---:|
+| claude-opus-5 | **92.6%** | 88 | 7 | 9 | 0 | $0.527 | 144.7 |
 | grok-4.5 | **93.7%** | 89 | 6 | 0 | 7 | $0.058 | 381.3 |
 | qwen3.8-max-preview | **93.7%** | 89 | 6 | 1 | 3 | $0.368 | 725.2 |
-| kimi-k2.7-code | **91.6%** | 87 | 8 | 0 | 2 | $0.151 | 535.1 |
+| kimi-k2.7-code | 91.6% | 87 | 8 | 0 | 2 | $0.151 | 535.1 |
 | gemini-3.1-pro-preview | 89.5% | 85 | 10 | 0 | 4 | $0.099 | 166.9 |
 | gpt-5.6-terra | 89.5% | 85 | 10 | 0 | 1 | $0.147 | 60.1 |
 | gpt-5.6-sol | 89.5% | 85 | 10 | 7 | 4 | $0.371 | 147.2 |
@@ -116,16 +117,17 @@ A model can have high recall but still be noisy. Conversely, a cheap model can l
 
 ## The Accuracy Tier
 
-### 🥇 Top tier: grok-4.5, qwen3.8-max-preview, kimi-k2.7-code
+### 🥇 Top tier: grok-4.5, qwen3.8-max-preview, claude-opus-5, kimi-k2.7-code
 
 The top of the leaderboard requires at least **91.6%** recall.
 
 - **grok-4.5** and **qwen3.8-max-preview** tie at **93.7% recall** (89/95).
   - **Grok** produced **zero extra findings** for **$0.058** and **381 seconds**.
   - **qwen3.8-max-preview** costs **$0.368**, took **725 seconds**, and produced **1 extra finding** with only **3 severity mismatch types**. It is the best option inside the Alibaba/Qwen ecosystem, but it is expensive and slow.
+- **claude-opus-5** reaches **92.6% recall** (88/95) with **zero severity mismatch types** — the only model whose severity labels exactly match the ground truth. It is also the fastest model in the top tier at **144.7 seconds**. The trade-off is cost (**$0.527**) and noise: **9 extra findings**, the most among top-tier models. For teams already inside the Anthropic ecosystem, it is the best-calibrated choice, but it is not the best value.
 - **kimi-k2.7-code** reaches **91.6% recall** (87/95), with **zero extra findings** and only **2 severity mismatch types**. At **$0.151** and **535 seconds** it is precise but the slowest accurate model.
 
-Grok is the clear overall leader: it ties the highest recall, has the lowest cost of the top tier, and emits no hallucinated findings.
+Grok remains the clear overall leader: it ties the highest recall, has the lowest cost of the top tier, and emits no hallucinated findings. Claude Opus 5 is the most calibrated top-tier model, but its premium cost and extra findings make it a niche choice.
 
 ### 🥈 Strong tier: gemini-3.1-pro-preview, gpt-5.6-terra, gpt-5.6-sol, kimi-k3, gpt-5.6-luna, glm-5.2, claude-sonnet-5, claude-opus-4-8, claude-fable-5
 
@@ -137,8 +139,8 @@ Models in this band score **86.3%–89.5%** recall. They are good enough for man
 - **kimi-k3** reached **87.4%** recall with zero extras, but at **$0.449** and **762 seconds** it is both expensive and glacial.
 - **gpt-5.6-luna** reaches **86.3%** recall with **1 extra finding**. It is the cheapest ($0.060) and fastest (**48.5 s**) model in this tier.
 - **glm-5.2** hits **86.3%** with zero extras for **$0.082**. It is the strongest value in this tier.
-- **claude-sonnet-5** reaches **86.3%** with **1 extra finding** for **$0.289**. It is the practical Anthropic choice over the premium models.
-- **claude-opus-4-8** also reaches **86.3%** and is the fastest Claude model at **68.4 seconds**, but it produces **4 extra findings**, the most among models above 80% recall.
+- **claude-sonnet-5** reaches **86.3%** with **1 extra finding** for **$0.289**. It is the practical budget Anthropic choice over the premium models.
+- **claude-opus-4-8** also reaches **86.3%** and is fast at **68.4 seconds**, but it produces **4 extra findings**, the most among models above 80% recall.
 - **claude-fable-5** reaches **86.3%** recall, but at **$1.084** it is the most expensive model in the benchmark. The premium is impossible to justify for this task.
 
 ### 🥉 Respectable but not leading: qwen3.7-max, gemini-flash-latest, MiniMax M3
@@ -196,7 +198,7 @@ The best models keep severity mismatches to a small number of direction pairs. *
 
 ### 4. Extra (hallucinated) findings
 
-Extra findings are rare among top models. The biggest offenders are **gemini-3.1-flash-lite** (46 extras), **gpt-5.6-sol** (7 extras), **claude-opus-4-8** (4 extras), **qwen3.8-max-preview** and **gpt-5.6-luna** (1 each), and **qwen3.6-35b-a3b-ud-mlx** (1). Extra findings are particularly costly because they require a human to verify that a reported issue is not real.
+Extra findings are rare among top models. The biggest offenders are **gemini-3.1-flash-lite** (46 extras), **claude-opus-5** (9 extras), **gpt-5.6-sol** (7 extras), **claude-opus-4-8** (4 extras), **qwen3.8-max-preview** and **gpt-5.6-luna** (1 each), and **qwen3.6-35b-a3b-ud-mlx** (1). Extra findings are particularly costly because they require a human to verify that a reported issue is not real.
 
 ---
 
@@ -215,6 +217,14 @@ Compared with those alternatives, Grok is:
 - and the only top-tier model with zero extra findings.
 
 Unless your organization has a hard policy against using Grok, there is no accuracy reason to pay the premium for the other top models.
+
+### Addendum: Claude Opus 5
+
+After the main comparison was published, **Claude Opus 5** was run through the same test. It scored **88/95 matched findings (92.6% recall)**, with **7 misses**, **9 extra findings**, and **0 severity mismatches**. It used **24,942 input tokens**, produced **16,080 output tokens**, took **144.7 seconds**, and cost **$0.527**.
+
+Opus 5 is the most calibrated model in the benchmark: it is the only one whose severity labels exactly match the ground truth. It is also the fastest top-tier model, finishing in under two and a half minutes. The 9 extra findings, however, make it the noisiest model in the top tier — mostly duplicate `TopWithoutOrderBy` instances on lines that already carry one, plus a few additional `HardCodedLiteral`, `DynamicSqlConcatenation`, and `SqlInjectionViaDynamicSql` detections. The 7 misses are concentrated on `SessionSettingChanged` and `DynamicSqlConcatenation`/`SqlInjectionViaDynamicSql` pairs, with the remaining misses scattered across `SelectStar`, `HardCodedLiteral`, `FunctionOnIndexedColumn`, and `OuterJoinToFilter`.
+
+For teams already committed to Anthropic, **claude-opus-5** is the best-calibrated option and is faster and more accurate than **claude-opus-4.8**. For teams without that constraint, **Grok 4.5** is still the better overall value because it matches one more finding, produces zero extra output, and costs roughly one-ninth as much.
 
 ---
 
@@ -250,7 +260,7 @@ It delivers the highest accuracy (93.7%) for $0.058 — cheaper than every other
 | Moonshot / Kimi | kimi-k2.7-code | 91.6% | $0.151 | Precise but slow (535 s). |
 | Google | gemini-3.1-pro-preview | 89.5% | $0.099 | Best balance in the Google ecosystem. |
 | OpenAI | gpt-5.6-terra | 89.5% | $0.147 | Faster and cleaner than gpt-5.6-sol. |
-| Anthropic | claude-sonnet-5 | 86.3% | $0.289 | Practical pick over the costlier / noisier Anthropic options. |
+| Anthropic | claude-opus-5 | 92.6% | $0.527 | Best-calibrated top-tier model, but not best value. |
 | Zhipu | glm-5.2 | 86.3% | $0.082 | Strong open-ecosystem value. |
 | MiniMax | MiniMax M3 | 81.1% | $0.055 | Cheap but misses 18 findings. |
 
@@ -266,11 +276,11 @@ If you are running static analysis in CI, a model that misses 10–15 findings p
 
 ### 2. What tolerance for false positives?
 
-**claude-opus-4-8**, **gpt-5.6-sol**, **gpt-5.6-luna**, **qwen3.8-max-preview**, and **gemini-3.1-flash-lite** produce extra findings. If your workflow can tolerate a human triage step, that may be fine. If you want fully automated reporting, zero-extra models (Grok, kimi-k2.7-code, glm-5.2, gemini-3.1-pro-preview, gpt-5.6-terra, kimi-k3, claude-fable-5) are safer.
+**claude-opus-5**, **claude-opus-4-8**, **gpt-5.6-sol**, **gpt-5.6-luna**, **qwen3.8-max-preview**, and **gemini-3.1-flash-lite** produce extra findings. If your workflow can tolerate a human triage step, that may be fine. If you want fully automated reporting, zero-extra models (Grok, kimi-k2.7-code, glm-5.2, gemini-3.1-pro-preview, gpt-5.6-terra, kimi-k3, claude-fable-5) are safer.
 
 ### 3. Latency budget
 
-- **Fastest top-tier**: **Grok 4.5** at 381 s for 93.7% recall.
+- **Fastest top-tier**: **claude-opus-5** at 144.7 s for 92.6% recall.
 - **Fastest strong-tier**: **gpt-5.6-terra** at 60.1 s for 89.5% recall.
 - **Fastest cheap accurate**: **gpt-5.6-luna** at 48.5 s for 86.3% recall.
 - **Fastest budget**: **gemini-3.1-flash-lite** at 10.2 s, but only 11.6% recall.
@@ -282,10 +292,10 @@ If you are running static analysis in CI, a model that misses 10–15 findings p
   - Only **Grok 4.5** is top-tier accurate. **gemini-flash-latest** is the best sub-$0.10 option if you can accept 83.2% recall.
 - **$0.10–$0.30**: gemini-3.1-pro-preview ($0.099), glm-5.2 ($0.082), gpt-5.6-terra ($0.147), qwen3.7-max ($0.183), claude-sonnet-5 ($0.289), claude-opus-4-8 ($0.295).
   - Best here: **gemini-3.1-pro-preview** and **glm-5.2**.
+- **Over $0.30**: qwen3.8-max-preview ($0.368), gpt-5.6-sol ($0.371), kimi-k3 ($0.449), claude-opus-5 ($0.527), claude-fable-5 ($1.084).
+  - None justify the premium over Grok for this task, though **qwen3.8-max-preview** at least ties Grok on recall and **claude-opus-5** is the best-calibrated model in the benchmark.
 - **$0.05–$0.10**: Grok 4.5 ($0.058), gemini-flash-latest ($0.061), gemini-3.6-flash ($0.056).
   - **Grok 4.5** is the obvious accuracy leader in this band. Between the two Gemini Flash options, **Gemini 3.6 Flash** is newer, slightly faster, and lands in the same recall band as gemini-flash-latest; either is a viable sub-$0.10 alternative if you accept ~83% recall.
-- **Over $0.30**: qwen3.8-max-preview ($0.368), gpt-5.6-sol ($0.371), kimi-k3 ($0.449), claude-fable-5 ($1.084).
-  - None justify the premium over Grok for this task, though **qwen3.8-max-preview** at least ties Grok on recall.
 
 ### 5. Ecosystem and trust
 
@@ -298,7 +308,7 @@ Some teams cannot or will not use certain providers. The good news is that every
 | Moonshot / Kimi | kimi-k2.7-code | 91.6% | $0.151 | Precise but slow (535 s). |
 | Google | gemini-3.1-pro-preview | 89.5% | $0.099 | Best balance in the Google ecosystem. |
 | OpenAI | gpt-5.6-terra | 89.5% | $0.147 | Faster and cleaner than gpt-5.6-sol. |
-| Anthropic | claude-sonnet-5 | 86.3% | $0.289 | Practical pick over the costlier / noisier Anthropic options. |
+| Anthropic | claude-opus-5 | 92.6% | $0.527 | Best-calibrated top-tier model, but not best value. |
 | Zhipu | glm-5.2 | 86.3% | $0.082 | Strong open-ecosystem value. |
 | MiniMax | MiniMax M3 | 81.1% | $0.055 | Cheap but misses 18 findings. |
 
@@ -326,7 +336,7 @@ Run **Grok 4.5** as the primary analyzer and **gemini-3.1-pro-preview** as a sec
 
 ### If you must stay inside Anthropic
 
-Use **claude-sonnet-5**. Avoid **claude-fable-5** unless someone else is paying the bill: it costs $1.08 for the same recall as Sonnet and produces no advantage for the premium.
+Use **claude-opus-5**. It is the most accurate Anthropic model in the benchmark (92.6% recall), the only one with zero severity mismatches, and faster than both **claude-opus-4.8** and **claude-fable-5**. The main drawback is cost ($0.527) and 9 extra findings. Avoid **claude-fable-5** unless someone else is paying the bill: it costs $1.08 for 86.3% recall and produces no advantage for the premium.
 
 ---
 
@@ -337,7 +347,8 @@ This benchmark is a single test, but it is a demanding one. The differences betw
 The key insight is that **accuracy and price are not tightly coupled**. The best model in the benchmark is also one of the cheapest. That makes the choice relatively simple for most teams:
 
 - **Best overall: grok-4.5**
-- **Best alternative by ecosystem: qwen3.8-max-preview (Alibaba), gemini-3.1-pro-preview (Google), gpt-5.6-terra (OpenAI), claude-sonnet-5 (Anthropic), glm-5.2 (Zhipu), kimi-k2.7-code (Moonshot)**
+- **Best calibrated top-tier: claude-opus-5**
+- **Best alternative by ecosystem: qwen3.8-max-preview (Alibaba), gemini-3.1-pro-preview (Google), gpt-5.6-terra (OpenAI), claude-opus-5 (Anthropic), glm-5.2 (Zhipu), kimi-k2.7-code (Moonshot)**
 - **Best ultra-budget filter: MiniMax M3, gpt-5.6-luna, gemini-flash-latest, or gemini-3.6-flash**
 - **Avoid for this task: gemini-3.1-flash-lite** unless you only need a deliberately wrong first pass.
 
