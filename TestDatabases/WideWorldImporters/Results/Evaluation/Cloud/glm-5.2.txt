@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): glm-5.2.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   82
 Matched within +/-4 lines: 82
-Missing from output:     13
+Missing from output:     14
 Extra in output:         0
 Severity mismatches:     4
 
@@ -11,6 +11,7 @@ Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
   line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
   line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
   line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.

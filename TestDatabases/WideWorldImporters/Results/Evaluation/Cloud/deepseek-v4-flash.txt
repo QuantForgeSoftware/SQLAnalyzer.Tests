@@ -1,0 +1,24 @@
+Comparison (line differences < 5 ignored): deepseek-v4-flash.json vs Test.ExpectedFindings.json
+
+Total expected findings: 96
+Total output findings:   90
+Matched within +/-4 lines: 90
+Missing from output:     6
+Extra in output:         0
+Severity mismatches:     3
+
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+
+Extra findings (in output but not within line tolerance):
+  (none)
+
+Severity mismatches (same rule matched, different severity):
+  expected line 48 (output line 48): NotInNullableSubquery - expected error, got warning
+  expected line 174 (output line 173): DeleteWithWeakPredicate - expected error, got warning
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning

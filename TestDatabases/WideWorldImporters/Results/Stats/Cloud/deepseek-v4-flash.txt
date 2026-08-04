@@ -1,0 +1,32 @@
+Model: deepseek-v4-flash
+Input tokens: 15,095
+Output tokens: 40,649
+Total tokens: 55,744
+AI time: 257.91 seconds
+Tokens/second: 216
+Estimated total cost: $0.013495 USD
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 90
+Missed expected findings: 6
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  HardCodedLiteral: 1 missed out of 9 expected (matched 8); expected lines [36]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      SessionSettingChanged: 2/3 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      HardCodedLiteral: 1/9 missed
+      AggregateWithoutFilter: 1/2 missed
+
+  - Main patterns:
+      Error handling and session settings: 2
+      Dynamic SQL / injection: 2
+      Hard-coded / magic literals: 1
+      Other predicate / schema issues: 1

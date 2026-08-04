@@ -1,26 +1,36 @@
-Model: claude-opus-5
-Total expected findings: 95
-Matched (within 5-line tolerance): 88
-Missed: 7
-Extra: 9
+Comparison (line differences < 5 ignored): claude-opus-5.json vs Test.ExpectedFindings.json
 
-Missed findings by rule:
-  SessionSettingChanged: 2
-  SqlInjectionViaDynamicSql: 2
-  HardCodedLiteral: 1
-  CorrelatedScalarSubquery: 1
-  AggregateWithoutFilter: 1
+Total expected findings: 96
+Total output findings:   87
+Matched within +/-4 lines: 86
+Missing from output:     10
+Extra in output:         1
+Severity mismatches:     11
 
-Extra findings by rule:
-  TopWithoutOrderBy: 3
-  HardCodedLiteral: 2
-  TempTableWithoutCleanup: 1
-  DynamicSqlConcatenation: 1
-  DynamicSqlWithoutParameters: 1
-  UpdateWithoutMeaningfulChange: 1
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
-Pattern analysis of missed expected findings:
-- Session-setting rules are the biggest blind spot. The model reported SET NOCOUNT OFF as NoCountDisabled but missed the paired SessionSettingChanged at the same line, and it missed SessionSettingChanged for SET XACT_ABORT OFF entirely. This suggests the model recognizes a setting is wrong but does not consistently flag that the setting change is left unrestored.
-- SQL-injection via dynamic SQL is under-detected. Two SqlInjectionViaDynamicSql findings were missed around the dynamic query sections even though related DynamicSqlConcatenation/DynamicSqlWithoutParameters findings were reported. The model sees the concatenation pattern but sometimes stops before raising the explicit security rule.
-- Contextual/numeric literals slip through. A HardCodedLiteral at line 36 (year 2016 inside YEAR(o.OrderDate)) and an AggregateWithoutFilter at line 159 were missed, showing surface-level literal detection misses values embedded inside expressions or simple aggregate queries without WHERE clauses.
-- Correlated subquery redundancy is missed once. The model found one CorrelatedScalarSubquery occurrence but missed the second, indicating duplicate/clustered rule instances on similar constructs are not always enumerated.
+Extra findings (in output but not within line tolerance):
+  line 94: TempTableWithoutCleanup - #ImplicitOrders is created but never dropped before the procedure ends, leaving tempdb allocation held for the session's scope.
+
+Severity mismatches (same rule matched, different severity):
+  expected line 39 (output line 39): ImplicitConversion - expected warning, got error
+  expected line 60 (output line 60): CartesianJoin - expected warning, got error
+  expected line 111 (output line 110): DynamicSqlConcatenation - expected warning, got error
+  expected line 115 (output line 114): DynamicSqlConcatenation - expected warning, got error
+  expected line 125 (output line 124): CatchSwallowsError - expected warning, got error
+  expected line 133 (output line 132): PrintDiagnostic - expected warning, got info
+  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
+  expected line 198 (output line 197): SessionSettingChanged - expected warning, got error
+  expected line 221 (output line 220): DynamicSqlConcatenation - expected warning, got error
+  expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error
+  expected line 244 (output line 243): CatchSwallowsError - expected warning, got error

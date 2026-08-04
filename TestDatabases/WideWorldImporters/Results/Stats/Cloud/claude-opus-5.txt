@@ -13,3 +13,42 @@ Pattern analysis of missed expected findings:
 - SQL-injection via dynamic SQL is under-detected. Two SqlInjectionViaDynamicSql findings were missed around the dynamic query sections even though related DynamicSqlConcatenation/DynamicSqlWithoutParameters findings were reported. The model sees the concatenation pattern but sometimes stops before raising the explicit security rule.
 - Contextual/numeric literals slip through. A HardCodedLiteral at line 36 (year 2016 inside YEAR(o.OrderDate)) and an AggregateWithoutFilter at line 159 were missed, showing surface-level literal detection misses values embedded inside expressions or simple aggregate queries without WHERE clauses.
 - Correlated subquery redundancy is missed once. The model found one CorrelatedScalarSubquery occurrence but missed the second, indicating duplicate/clustered rule instances on similar constructs are not always enumerated.
+
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 86
+Missed expected findings: 10
+Extra findings in output: 1
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  HardCodedLiteral: 1 missed out of 9 expected (matched 8); expected lines [36]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      SessionSettingChanged: 2/3 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      HardCodedLiteral: 1/9 missed
+      LeadingWildcardLike: 1/4 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+
+  - Main patterns:
+      Error handling and session settings: 2
+      Hard-coded / magic literals: 2
+      Dynamic SQL / injection: 2
+      Other predicate / schema issues: 2
+      Joins, subqueries, and correlated lookups: 1
+      Procedural / DML constructs: 1
+
+Extra findings in output by rule:
+  TempTableWithoutCleanup: 1 at lines [94]

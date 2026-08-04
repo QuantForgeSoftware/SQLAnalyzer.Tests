@@ -13,3 +13,33 @@ Estimated total cost: $0.057852 USD
 - Missed `AggregateWithoutFilter` at line 159 (likely because it reported `RedundantOrderBy` at that same line and did not split the aggregate count).
 - Missed one `InsertWithoutColumnList` at line 215 and one `LeadingWildcardLike` at line 221 in the dynamic-LIKE section.
 - Most severity mismatches are elevated from warning to error on dynamic SQL / catch blocks, and two are downgraded (`DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`), suggesting Grok is more aggressive on some security patterns but less consistent on explicit-transaction and weak-delete severity.
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 89
+Missed expected findings: 7
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  HardCodedLiteral: 1 missed out of 9 expected (matched 8); expected lines [51]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  SqlInjectionViaDynamicSql: 1 missed out of 3 expected (matched 2); expected lines [115]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      SessionSettingChanged: 2/3 missed
+      HardCodedLiteral: 1/9 missed
+      LeadingWildcardLike: 1/4 missed
+      SqlInjectionViaDynamicSql: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+
+  - Main patterns:
+      Error handling and session settings: 2
+      Other predicate / schema issues: 2
+      Hard-coded / magic literals: 1
+      Dynamic SQL / injection: 1
+      Procedural / DML constructs: 1

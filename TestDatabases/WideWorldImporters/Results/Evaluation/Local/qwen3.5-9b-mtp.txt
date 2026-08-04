@@ -1,29 +1,171 @@
-Comparison: qwen3.5-9b-mtp actual findings vs. Test.ExpectedFindings.json
-Tolerance: ruleName matches and |actual.lineNumber - expected.lineNumber| < 5
-Matched findings are not listed.
+Comparison (line differences < 5 ignored): qwen3.5-9b-mtp.json vs Test.ExpectedFindings.json
 
-Summary counts
-==============
-Total expected findings: 95
-Matched within tolerance: 2
-Missed expected findings: 93
-Extra findings in actual output: 62
+Total expected findings: 96
+Total output findings:   64
+Matched within +/-4 lines: 2
+Missing from output:     94
+Extra in output:         62
+Severity mismatches:     1
 
-Missed findings pattern
-=======================
-Only two expected rules matched within tolerance:
-- NoCountDisabled (expected line 13, actual line 11)
-- XactAbortDisabled (expected line 16, actual line 12)
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 24: SelectStar - SELECT * on Sales.Orders couples callers to every current and future column.
+  line 27: TopWithoutOrderBy - SELECT TOP (10) on Sales.Orders has no ORDER BY, so the returned rows are nondeterministic.
+  line 30: UnnecessaryDistinct - DISTINCT on Sales.Orders.OrderID is unnecessary because OrderID is the primary key.
+  line 33: ReadUncommittedHint - WITH (NOLOCK) on Sales.Orders can return uncommitted, missing, or duplicated rows.
+  line 36: FunctionOnColumn - YEAR(o.OrderDate) in the predicate prevents a direct range seek on OrderDate.
+  line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 39: ImplicitConversion - Comparing Sales.Orders.CustomerID (int) with @CustomerIdText (nvarchar) forces an implicit conversion.
+  line 42: OptionalParameterOr - OR-based optional filter @CustomerID IS NULL OR o.CustomerID = @CustomerID harms cardinality estimation and seeking.
+  line 45: LeadingWildcardLike - LIKE pattern N'%urgent%' on Sales.Orders.Comments starts with a leading wildcard, preventing an index seek.
+  line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  line 51: NonSargableIsNull - ISNULL(o.CustomerID, 0) in the predicate wraps the column and makes the filter non-sargable.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
+  line 54: ArithmeticOnColumn - Arithmetic o.OrderID + 0 on the primary key column prevents direct index matching.
+  line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
+  line 57: NegativePredicate - Inequality o.CustomerID <> 1 on Sales.Orders often scans broad portions of the table.
+  line 60: CartesianJoin - CROSS JOIN between Sales.Orders and Sales.Customers multiplies rows with no join predicate.
+  line 60: TopWithoutOrderBy - SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
+  line 63: OldStyleJoin - Comma-separated FROM clause with join predicate in WHERE is old-style syntax and error-prone.
+  line 63: TopWithoutOrderBy - SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.
+  line 66: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 69: CorrelatedExists - Correlated EXISTS against Sales.OrderLines could be expressed as a set join instead of a per-row lookup.
+  line 72: RepeatedExpression - The CASE expression on Sales.Orders.Comments is repeated in both the SELECT list and ORDER BY clause.
+  line 75: OrderByOrdinal - ORDER BY 2 references a select-list position and breaks if the column list changes.
+  line 78: NondeterministicPagination - OFFSET/FETCH ordered only by Sales.Orders.OrderDate lacks a stable tie-breaker.
+  line 81: HardCodedLiteral - OrderID literals 1 and 2 are embedded directly in the query branches.
+  line 81: HardCodedLiteral - Order identifier 2 is embedded directly in the second UNION branch.
+  line 81: UnionInsteadOfUnionAll - UNION combines disjoint branches (OrderID = 1 and OrderID = 2), causing unnecessary duplicate removal.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 84: CountStarForExistence - COUNT(*) > 0 from Sales.OrderLines counts all matching rows when only existence is needed.
+  line 87: VariableAssignmentSelect - SELECT @OrderID = o.OrderID FROM Sales.Orders silently accepts multiple rows and keeps the last value.
+  line 90: TableVariableEstimate - Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+  line 92: TopWithoutOrderBy - SELECT TOP (5) inserted into @OrderIds has no ORDER BY, so the chosen rows are nondeterministic.
+  line 95: SelectIntoTempTable - SELECT ... INTO #ImplicitOrders from Sales.Orders creates the temp table schema implicitly.
+  line 95: TopWithoutOrderBy - SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  line 98: CursorRowByRow - Cursor order_cursor over Sales.Orders processes rows one at a time instead of set-wise.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+  line 105: WhileLoopRowByRow - WHILE loop increments @Counter iteratively rather than using a set-based approach.
+  line 111: DynamicSqlConcatenation - SQL string is built by concatenating @CustomerID directly into the query text.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 112: DynamicSqlWithoutParameters - EXEC (@Sql) executes dynamic SQL without parameterized inputs.
+  line 115: DynamicSqlConcatenation - SQL string is built by concatenating @OrderID directly into the query text.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 116: DynamicSqlWithoutParameters - sp_executesql is used but the statement is concatenated rather than parameterized.
+  line 119: TempTableWithoutCleanup - Explicitly created temp table #Scratch is not dropped before the procedure ends.
+  line 125: CatchSwallowsError - CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+  line 130: LegacyRaiseError - RAISERROR is used instead of THROW for the new error path.
+  line 133: PrintDiagnostic - PRINT is buffered and unsuitable for structured diagnostics.
+  line 136: HardCodedLiteral - Hard-coded CustomerID value 1 is embedded in the query instead of being parameterized or looked up.
+  line 139: MagicDateLiteral - Unlabelled date constant '20160101' is embedded in the Sales.Orders filter logic.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 142: AmbiguousDateConversion - CONVERT(date, '01/02/2016') relies on session-sensitive date string interpretation.
+  line 145: CoalesceInJoin - COALESCE in the join predicate between Sales.Orders and Sales.Invoices inhibits normal join optimization.
+  line 145: TopWithoutOrderBy - SELECT TOP (1) on the COALESCE join has no ORDER BY, so the returned row is nondeterministic.
+  line 148: SelfJoinWithoutNeed - Self-join on Sales.Orders only retrieves OrderID, which is already available in the same row.
+  line 148: TopWithoutOrderBy - SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+  line 151: WideSort - ORDER BY Sales.Orders.Comments (nvarchar(MAX)) performs a wide, unselective sort.
+  line 154: AggregateWithoutFilter - SUM(Quantity) over the entire Sales.OrderLines table aggregates a large fact-like table without a restrictive filter.
+  line 157: HavingForRowFilter - Row-level predicate ol.OrderID > 0 on Sales.OrderLines is placed in HAVING instead of WHERE.
+  line 159: AggregateWithoutFilter - COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+  line 160: RedundantOrderBy - ORDER BY OrderCount is redundant for a single-row aggregate result from Sales.Orders.
+  line 164: MergeStatement - MERGE on Sales.Orders has documented concurrency and correctness edge cases.
+  line 165: UpdateWithoutMeaningfulChange - MERGE UPDATE sets target.Comments = target.Comments, producing writes/logging with no data change.
+  line 170: UpdateWithoutMeaningfulChange - UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+  line 174: DeleteWithWeakPredicate - DELETE from Sales.OrderLines uses the non-key column Quantity = -1 rather than a stable key predicate.
+  line 174: HardCodedLiteral - Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+  line 178: WaitForDelay - WAITFOR DELAY blocks a worker instead of using asynchronous scheduling.
+  line 183: ExplicitTransactionWithoutTryCatch - BEGIN TRANSACTION is not wrapped in a BEGIN TRY / BEGIN CATCH error-handling boundary.
+  line 190: SetIdentityInsert - SET IDENTITY_INSERT ON on Sales.Orders changes session state and introduces fragile identity-management coupling.
+  line 195: UnqualifiedProcedureName - System procedure sp_who is invoked without a schema qualifier.
+  line 198: SessionSettingChanged - SET ROWCOUNT 1 changes a session setting and is not restored before the procedure ends.
+  line 213: HardCodedLiteral - Hard-coded CategoryID value 99 is embedded in the INSERT into #DemoCategories.
+  line 213: InsertWithoutColumnList - INSERT INTO #DemoCategories VALUES omits the explicit column list.
+  line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+  line 219: LeadingWildcardLike - LIKE pattern '%' + @CustomerName + '%' on Sales.Customers.CustomerName starts with a leading wildcard.
+  line 221: DynamicSqlConcatenation - SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+  line 221: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerName is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 222: DynamicSqlWithoutParameters - sp_executesql is used but the statement is concatenated rather than parameterized.
+  line 222: UnqualifiedProcedureName - System procedure sp_executesql is invoked without a schema qualifier.
+  line 224: HardCodedLiteral - Hard-coded CustomerCategoryID value 1 is embedded in the UPDATE of #DemoCustomers.
+  line 224: UpdateWithoutWhere - UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+  line 230: MagicDateLiteral - Unlabelled date constant '2016-01-01' is embedded in the Sales.Orders filter logic.
+  line 230: OuterJoinToFilter - Predicate on the outer-joined Sales.Orders table is placed in the WHERE clause, converting the LEFT JOIN to an inner join.
+  line 234: NullEquality - Sales.Customers.DeliveryMethodID = NULL uses equality with NULL instead of IS NULL and will never match.
+  line 236: ScalarUdfInSelect - Scalar user-defined function dbo.GetCustomerType in the SELECT list forces row-by-row evaluation.
+  line 244: CatchSwallowsError - CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+  line 244: CatchWithoutRollback - CATCH block inside an active transaction does not roll back before handling the error.
+  line 249: IndexHintHardcoded - Hard-coded index hint WITH (INDEX = 1) on Sales.Customers should be avoided in production code.
+  line 252: NestedSubqueryDepth - Subquery is nested three levels deep and should be refactored to CTEs or temp tables.
+  line 258: LeadingWildcardLike - LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+  line 263: MultiStatementTvfInsteadOfInline - Multi-statement table-valued function dbo.GetCustomerOrdersMulti is used where an inline TVF would optimize better.
+  line 263: SelectStar - SELECT * from dbo.GetCustomerOrdersMulti couples callers to every column returned by the TVF.
 
-All other expected rules were missed. The model output does contain many of the same rule names, but the reported line numbers differ from the ground truth by more than the tolerance. This indicates the model is recognizing rule categories but failing to map them to the correct source locations in the expected finding set.
+Extra findings (in output but not within line tolerance):
+  line 19: SelectStar - SELECT * retrieves all columns from Sales.Orders, coupling callers to schema changes and increasing bandwidth usage.
+  line 20: TopWithoutOrderBy - SELECT TOP (10) returns an arbitrary set of rows because no ORDER BY clause is specified to define the order.
+  line 21: UnnecessaryDistinct - DISTINCT is used on OrderID which is a primary key and already guaranteed unique.
+  line 22: ReadUncommittedHint - WITH (NOLOCK) can return uncommitted, missing, or duplicated rows from Sales.Orders.
+  line 23: FunctionOnColumn - YEAR() applied to the indexed OrderDate column prevents a simple range seek on the index.
+  line 24: ImplicitConversion - Comparing int CustomerID with nvarchar @CustomerIdText forces implicit conversion and can cause performance issues.
+  line 25: OptionalParameterOr - @CustomerID IS NULL OR o.CustomerID = @CustomerID makes cardinality estimation difficult and prevents seeking.
+  line 26: LeadingWildcardLike - LIKE pattern starting with % prevents a normal index seek on the Comments column.
+  line 27: NotInNullableSubquery - NOT IN subquery can produce NULL results which returns all rows unexpectedly if not handled carefully.
+  line 28: NonSargableIsNull - ISNULL() wrapping CustomerID in a predicate makes the query non-sargable and prevents index usage.
+  line 29: ArithmeticOnColumn - Arithmetic operation on OrderID prevents direct index matching for the predicate.
+  line 30: NegativePredicate - Inequality <> often scans broad portions of the table instead of using an equality seek.
+  line 31: CartesianJoin - CROSS JOIN multiplies Orders by Customers without a join predicate, causing performance degradation.
+  line 32: OldStyleJoin - Comma-separated table list in FROM clause obscures join predicates and makes accidental cartesian joins easier.
+  line 33: CorrelatedScalarSubquery - Scalar subquery executes a lookup for every qualifying order row instead of using a set-based join.
+  line 34: CorrelatedExists - Correlated EXISTS check runs per outer row instead of expressing a set join which could be optimized better.
+  line 35: RepeatedExpression - The same CASE expression is repeated in the select list and ordering logic unnecessarily.
+  line 36: RepeatedExpression - The same CASE expression is repeated in the ORDER BY clause unnecessarily.
+  line 37: OrderByOrdinal - ORDER BY 2 refers to a column position which becomes fragile when the select list changes.
+  line 38: NondeterministicPagination - OFFSET pagination has no stable tie breaker in ORDER BY, potentially returning different rows on re-execution.
+  line 39: UnionInsteadOfUnionAll - UNION performs needless duplicate removal between disjoint literal branches (OrderID = 1 vs OrderID = 2).
+  line 40: CountStarForExistence - COUNT(*) > 0 counts all matching rows when only existence is needed; EXISTS would be more efficient.
+  line 41: VariableAssignmentSelect - SELECT assignment silently accepts multiple rows and keeps the last value instead of using TOP or scalar subquery.
+  line 42: TableVariableEstimate - A table variable may receive poor cardinality estimates on older compatibility levels for non-trivial data.
+  line 44: SelectIntoTempTable - SELECT ... INTO creates a temp-table schema implicitly instead of declaring it explicitly with CREATE TABLE.
+  line 45: CursorRowByRow - Uses a cursor for work that can be expressed set-wise, causing row-by-row processing overhead.
+  line 51: WhileLoopRowByRow - WHILE loop performs iterative work instead of a set-based operation which is more efficient in SQL Server.
+  line 52: DynamicSqlConcatenation - Concatenates a value into executable SQL text instead of using parameterized queries.
+  line 53: DynamicSqlWithoutParameters - EXEC (@Sql) executes dynamic SQL without binding parameters, exposing the code to SQL injection risks.
+  line 54: DynamicSqlConcatenation - Concatenates a value into executable SQL text instead of using parameterized queries.
+  line 55: DynamicSqlWithoutParameters - sp_executesql called with only the SQL string without defining parameters for safe execution.
+  line 56: TempTableWithoutCleanup - Explicitly created temporary table #Scratch is not dropped before the procedure ends.
+  line 60: CatchSwallowsError - CATCH block captures an error but neither rethrows nor returns a failure status to the caller.
+  line 61: LegacyRaiseError - Uses RAISERROR rather than THROW for new error paths which is deprecated in newer SQL Server versions.
+  line 62: PrintDiagnostic - PRINT is buffered and unsuitable for structured diagnostics or logging to application logs.
+  line 63: HardCodedLiteral - Embeds a business identifier (CustomerID = 1) instead of accepting it as input or looking it up.
+  line 64: MagicDateLiteral - Embeds an unlabelled date constant in query logic which is hard to maintain and understand.
+  line 65: AmbiguousDateConversion - Relies on session-sensitive date string conversion without an explicit style parameter or format.
+  line 66: CoalesceInJoin - Applies COALESCE in a join predicate which inhibits normal join optimization and index usage.
+  line 67: SelfJoinWithoutNeed - Self-joins Orders solely to retrieve the same key information already available in the same row.
+  line 68: WideSort - Sorts every order by an unselective text column (Comments) which is expensive for large datasets.
+  line 69: AggregateWithoutFilter - Aggregates the entire fact-like order-line table without a restrictive filter causing high I/O.
+  line 70: HavingForRowFilter - Applies a row-level predicate in HAVING instead of WHERE which prevents early filtering before aggregation.
+  line 71: RedundantOrderBy - Orders a one-row aggregate result unnecessarily as ORDER BY has no effect on single row output.
+  line 72: MergeStatement - MERGE has documented concurrency and correctness edge cases; separate IF/UPDATE/INSERT blocks are preferred.
+  line 74: UpdateWithoutMeaningfulChange - Issues a write that changes no data (Comments = Comments) and still causes logging and locking overhead.
+  line 75: DeleteWithWeakPredicate - Deletes based on a broad business value (Quantity = -1) rather than a stable key which risks data loss.
+  line 76: WaitForDelay - Intentionally blocks a worker instead of using asynchronous scheduling or queue-based processing.
+  line 77: ExplicitTransactionWithoutTryCatch - Starts a transaction outside an error-handling boundary (TRY/CATCH) risking partial commits on failure.
+  line 81: SetIdentityInsert - Changes session state and introduces fragile identity-management coupling which can lead to data integrity issues.
+  line 82: UnqualifiedProcedureName - Invokes a system routine (sp_who) without schema qualification which degrades performance and is reserved.
+  line 83: SessionSettingChanged - Changes a session setting (ROWCOUNT) and does not restore it to the original state before procedure end.
+  line 89: LeadingWildcardLike - LIKE pattern starting with % prevents a normal index seek on CustomerName column.
+  line 90: DynamicSqlConcatenation - Building SQL strings by concatenating variables (@CustomerName) into executable text.
+  line 91: DynamicSqlWithoutParameters - sp_executesql used without parameterized inputs for the concatenated string.
+  line 93: MagicDateLiteral - Embeds an unlabelled date constant in query logic which is hard to maintain and understand.
+  line 94: ScalarUdfInSelect - A scalar user-defined function called in a SELECT list forces row-by-row evaluation instead of set-based processing.
+  line 99: CatchWithoutRollback - CATCH block inside a transaction does not roll back before handling the error, potentially committing partial state.
+  line 101: ScalarUdfInSelect - A scalar user-defined function called in a SELECT list forces row-by-row evaluation instead of set-based processing.
+  line 105: IndexHintHardcoded - Explicit table/index hints (WITH INDEX) in production code can override optimizer decisions and cause performance issues.
+  line 107: NestedSubqueryDepth - Excessively nested subqueries (3+ levels) should be refactored to CTEs or temp tables for readability and performance.
+  line 113: SelectStar - SELECT * retrieves all columns from the table-valued function result, coupling callers to schema changes.
 
-The largest missed categories are:
-- Predicate / schema issues: 29
-- Ordering, paging, and aggregation semantics: 13
-- Hard-coded / magic literals: 12
-- Joins, subqueries, and correlated lookups: 11
-- Error handling and session settings: 10
-- Procedural / DML constructs: 9
-- Dynamic SQL / injection: 9
-
-Key observation: qwen3.5-9b-mtp produced a line-by-line reinterpretation of the procedure rather than the expected static-analysis finding list, making its output essentially non-scorable against the SQLAnalyzer ground truth.
+Severity mismatches (same rule matched, different severity):
+  expected line 16 (output line 12): XactAbortDisabled - expected warning, got error

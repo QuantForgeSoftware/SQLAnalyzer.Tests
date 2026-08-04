@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): qwen3.7-plus.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   70
 Matched within +/-4 lines: 70
-Missing from output:     25
+Missing from output:     26
 Extra in output:         0
 Severity mismatches:     3
 
@@ -11,6 +11,7 @@ Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
   line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
   line 60: TopWithoutOrderBy - SELECT TOP (1) on the cross-joined result has no ORDER BY, so the returned row is nondeterministic.
   line 63: TopWithoutOrderBy - SELECT TOP (1) on the old-style join has no ORDER BY, so the returned row is nondeterministic.

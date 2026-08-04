@@ -11,3 +11,42 @@ Estimated total cost: $0.295035 USD
 - Singleton misses: `TopWithoutOrderBy` at line 98 on the cursor SELECT, `MagicDateLiteral` at line 141, `AggregateWithoutFilter` at line 159, and `UnqualifiedProcedureName` for `sp_executesql` at line 222.
 - Extra findings: one plausible new rule (`CountStarForExistence` at line 66), one unqualified-procedure variant on a dynamic EXEC, a transaction-rollback catch observation, and a leading-wildcard on a variable that may or may not contain `%`.
 - Severity drift: two expected errors downgraded to warning (`DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`), two `CatchSwallowsError` instances upgraded to error, and two warnings reclassified as `info` (`CorrelatedExists`, `PrintDiagnostic`). Opus is fast and inexpensive but less literal-aware and less consistent on severity than the fable run.
+
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 82
+Missed expected findings: 14
+Extra findings in output: 4
+
+Missed expected findings by rule:
+  HardCodedLiteral: 6 missed out of 9 expected (matched 3); expected lines [36, 51, 57, 81, 174]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  TopWithoutOrderBy: 1 missed out of 8 expected (matched 7); expected lines [98]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 6/9 missed
+      SessionSettingChanged: 2/3 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      TopWithoutOrderBy: 1/8 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UnqualifiedProcedureName: 1/2 missed
+
+  - Main patterns:
+      Hard-coded / magic literals: 7
+      Error handling and session settings: 2
+      Dynamic SQL / injection: 2
+      Other predicate / schema issues: 2
+      Ordering, paging, and aggregation semantics: 1
+
+Extra findings in output by rule:
+  CatchWithoutRollback: 1 at lines [125]
+  CountStarForExistence: 1 at lines [66]
+  LeadingWildcardLike: 1 at lines [252]
+  UnqualifiedProcedureName: 1 at lines [112]

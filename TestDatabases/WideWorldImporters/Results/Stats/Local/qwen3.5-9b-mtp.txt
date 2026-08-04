@@ -7,14 +7,13 @@ Tokens/second: 81
 Estimated total cost: $0.000000 USD
 Notes
 =====
-Comparison performed: 2026-07-24
-Total expected findings: 95 (across 61 rules)
+Total expected findings: 96 (across 61 rules)
 Matched within tolerance: 2
-Missed expected findings: 93
-Extra findings in actual output: 62
+Missed expected findings: 94
+Extra findings in output: 62
 
 Missed expected findings by rule:
-  HardCodedLiteral: 8 missed out of 8 expected (matched 0); expected lines [36, 57, 81, 136, 174, 213, 224]
+  HardCodedLiteral: 9 missed out of 9 expected (matched 0); expected lines [36, 51, 57, 81, 136, 174, 213, 224]
   TopWithoutOrderBy: 8 missed out of 8 expected (matched 0); expected lines [27, 60, 63, 92, 95, 98, 145, 148]
   LeadingWildcardLike: 4 missed out of 4 expected (matched 0); expected lines [45, 219, 221, 258]
   DynamicSqlConcatenation: 3 missed out of 3 expected (matched 0); expected lines [111, 115, 221]
@@ -76,16 +75,17 @@ Missed expected findings by rule:
 
 Pattern analysis for missed expected findings:
   - Rules completely missed (no instance detected): ['AggregateWithoutFilter', 'AmbiguousDateConversion', 'ArithmeticOnColumn', 'CartesianJoin', 'CatchSwallowsError', 'CatchWithoutRollback', 'CoalesceInJoin', 'CorrelatedExists', 'CorrelatedScalarSubquery', 'CountStarForExistence', 'CursorRowByRow', 'DeleteWithWeakPredicate', 'DynamicSqlConcatenation', 'DynamicSqlWithoutParameters', 'ExplicitTransactionWithoutTryCatch', 'FunctionOnColumn', 'HardCodedLiteral', 'HavingForRowFilter', 'ImplicitConversion', 'IndexHintHardcoded', 'InsertWithoutColumnList', 'LeadingWildcardLike', 'LegacyRaiseError', 'MagicDateLiteral', 'MergeStatement', 'MultiStatementTvfInsteadOfInline', 'NegativePredicate', 'NestedSubqueryDepth', 'NonSargableIsNull', 'NondeterministicPagination', 'NotInNullableSubquery', 'NullEquality', 'OldStyleJoin', 'OptionalParameterOr', 'OrderByOrdinal', 'OuterJoinToFilter', 'PrintDiagnostic', 'ReadUncommittedHint', 'RedundantOrderBy', 'RepeatedExpression', 'ScalarUdfInSelect', 'SelectIntoTempTable', 'SelectStar', 'SelfJoinWithoutNeed', 'SessionSettingChanged', 'SetIdentityInsert', 'SqlInjectionViaDynamicSql', 'TableVariableEstimate', 'TempTableWithoutCleanup', 'TopWithoutOrderBy', 'UnionInsteadOfUnionAll', 'UnnecessaryDistinct', 'UnqualifiedProcedureName', 'UpdateWithoutMeaningfulChange', 'UpdateWithoutWhere', 'VariableAssignmentSelect', 'WaitForDelay', 'WhileLoopRowByRow', 'WideSort']
-  - Missed findings by broad category:
+
+  - Main patterns:
       Other predicate / schema issues: 29
       Ordering, paging, and aggregation semantics: 13
-      Hard-coded / magic literals: 12
+      Hard-coded / magic literals: 13
       Joins, subqueries, and correlated lookups: 11
       Error handling and session settings: 10
       Procedural / DML constructs: 9
       Dynamic SQL / injection: 9
 
-Extra findings in actual output by rule:
+Extra findings in output by rule:
   DynamicSqlConcatenation: 3 at lines [52, 54, 90]
   DynamicSqlWithoutParameters: 3 at lines [53, 55, 91]
   LeadingWildcardLike: 2 at lines [26, 89]

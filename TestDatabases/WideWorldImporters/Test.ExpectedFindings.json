@@ -90,6 +90,12 @@
         "explanation": "ISNULL(o.CustomerID, 0) in the predicate wraps the column and makes the filter non-sargable."
     },
     {
+        "ruleName": "HardCodedLiteral",
+        "lineNumber": 51,
+        "severity": "warning",
+        "explanation": "The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup."
+    },
+    {
         "ruleName": "ArithmeticOnColumn",
         "lineNumber": 54,
         "severity": "warning",

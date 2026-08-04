@@ -1,10 +1,10 @@
 Comparison (line differences < 5 ignored): qwen3.8-max-preview.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   90
-Matched within +/-4 lines: 89
+Matched within +/-4 lines: 90
 Missing from output:     6
-Extra in output:         1
+Extra in output:         0
 Severity mismatches:     3
 
 Missing findings (expected but not within line tolerance):
@@ -16,7 +16,7 @@ Missing findings (expected but not within line tolerance):
   line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
 
 Extra findings (in output but not within line tolerance):
-  line 51: HardCodedLiteral - The predicate compares CustomerID to hard-coded value 1 instead of using a parameter or lookup.
+  (none)
 
 Severity mismatches (same rule matched, different severity):
   expected line 48 (output line 48): NotInNullableSubquery - expected error, got warning

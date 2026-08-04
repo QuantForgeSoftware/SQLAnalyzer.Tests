@@ -13,3 +13,43 @@ Most common missed rules: HardCodedLiteral (7), SessionSettingChanged (2), Magic
 Severity distribution of misses: {'warning': 17, 'error': 1}
 Misses on lines with multiple expected rules: 15/18 (83.3%)
 Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 57 (1)
+
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 77
+Missed expected findings: 19
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  SqlInjectionViaDynamicSql: 1 missed out of 3 expected (matched 2); expected lines [115]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 8/9 missed
+      SessionSettingChanged: 2/3 missed
+      MagicDateLiteral: 2/3 missed
+      LeadingWildcardLike: 1/4 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      SqlInjectionViaDynamicSql: 1/3 missed
+      CatchSwallowsError: 1/2 missed
+      AggregateWithoutFilter: 1/2 missed
+      UnqualifiedProcedureName: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+
+  - Main patterns:
+      Hard-coded / magic literals: 10
+      Error handling and session settings: 3
+      Other predicate / schema issues: 3
+      Joins, subqueries, and correlated lookups: 1
+      Dynamic SQL / injection: 1
+      Procedural / DML constructs: 1

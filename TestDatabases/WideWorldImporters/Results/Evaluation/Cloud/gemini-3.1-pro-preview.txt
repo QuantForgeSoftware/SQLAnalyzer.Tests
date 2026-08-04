@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): gemini-3.1-pro-preview.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   85
 Matched within +/-4 lines: 85
-Missing from output:     10
+Missing from output:     11
 Extra in output:         0
 Severity mismatches:     4
 
@@ -11,6 +11,7 @@ Missing findings (expected but not within line tolerance):
   line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
   line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
   line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
   line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.

@@ -10,14 +10,49 @@ Tokens/second: 35
 Estimated total cost: $0.000000 USD
 Notes
 =====
-This run found 25 exact matches and 46 near-matches (line off by <5).
-23 expected findings were missed entirely.
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 66
+Missed expected findings: 30
+Extra findings in output: 0
 
-Pattern of missed findings:
-- 3 high-severity errors were missed, including SQL injection, transaction handling, and NULL-comparison bugs.
-- Repeated failure to flag SELECT TOP without ORDER BY (7 instances); the model tends to notice only the first or most prominent TOP clause.
-- HardCodedLiteral detections are inconsistent (6 missed); the model flags obvious business identifiers but misses numeric year/order/date literals embedded in predicates.
-- SessionSettingChanged warnings are missed (2 instances); SET NOCOUNT/XACT_ABORT state changes at procedure start are not being recognized as unrestored session settings.
-- SqlInjectionViaDynamicSql was missed for some concatenation points (2 instances), suggesting the model recognizes dynamic SQL but not every user-input concatenation.
-- DynamicSqlConcatenation warnings were also missed (1 instances); dynamic SQL with variable concatenation is inconsistently detected.
-- Overall pattern: the model catches broad anti-patterns but misses duplicates, companion rules at the same line, and subtle variants such as session-state changes and hard-coded numeric literals.
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  LeadingWildcardLike: 2 missed out of 4 expected (matched 2); expected lines [221, 258]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [115]
+  DynamicSqlWithoutParameters: 1 missed out of 3 expected (matched 2); expected lines [116]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+  UpdateWithoutWhere: 1 missed out of 1 expected (matched 0); expected lines [224]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): ['UpdateWithoutWhere']
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 8/9 missed
+      TopWithoutOrderBy: 7/8 missed
+      SessionSettingChanged: 2/3 missed
+      LeadingWildcardLike: 2/4 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      DynamicSqlConcatenation: 1/3 missed
+      DynamicSqlWithoutParameters: 1/3 missed
+      CatchSwallowsError: 1/2 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+
+  - Main patterns:
+      Hard-coded / magic literals: 9
+      Ordering, paging, and aggregation semantics: 7
+      Dynamic SQL / injection: 4
+      Other predicate / schema issues: 4
+      Error handling and session settings: 3
+      Procedural / DML constructs: 2
+      Joins, subqueries, and correlated lookups: 1

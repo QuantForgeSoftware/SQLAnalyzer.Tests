@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): gemini-3.1-flash-lite.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   57
 Matched within +/-4 lines: 11
-Missing from output:     84
+Missing from output:     85
 Extra in output:         46
 Severity mismatches:     2
 
@@ -23,6 +23,7 @@ Missing findings (expected but not within line tolerance):
   line 45: LeadingWildcardLike - LIKE pattern N'%urgent%' on Sales.Orders.Comments starts with a leading wildcard, preventing an index seek.
   line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
   line 51: NonSargableIsNull - ISNULL(o.CustomerID, 0) in the predicate wraps the column and makes the filter non-sargable.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
   line 54: ArithmeticOnColumn - Arithmetic o.OrderID + 0 on the primary key column prevents direct index matching.
   line 57: HardCodedLiteral - Business identifier 1 is hard-coded in the CustomerID predicate.
   line 57: NegativePredicate - Inequality o.CustomerID <> 1 on Sales.Orders often scans broad portions of the table.

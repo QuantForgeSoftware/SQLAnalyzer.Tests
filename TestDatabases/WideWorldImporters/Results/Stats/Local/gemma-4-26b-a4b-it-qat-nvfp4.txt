@@ -7,15 +7,80 @@ Tokens/second: 314
 Estimated total cost: $0.000000 USD
 Notes
 =====
-This run found 3 exact matches and 42 near-matches (line off by <5).
-49 expected findings were missed entirely.
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 44
+Missed expected findings: 52
+Extra findings in output: 18
 
-Pattern of missed findings:
-- 8 high-severity errors were missed, including SQL injection, transaction handling, and NULL-comparison bugs.
-- Repeated failure to flag SELECT TOP without ORDER BY (7 instances); the model tends to notice only the first or most prominent TOP clause.
-- HardCodedLiteral detections are inconsistent (6 missed); the model flags obvious business identifiers but misses numeric year/order/date literals embedded in predicates.
-- SessionSettingChanged warnings are missed (3 instances); SET NOCOUNT/XACT_ABORT state changes at procedure start are not being recognized as unrestored session settings.
-- SqlInjectionViaDynamicSql was missed for some concatenation points (3 instances), suggesting the model recognizes dynamic SQL but not every user-input concatenation.
-- DynamicSqlConcatenation warnings were also missed (2 instances); dynamic SQL with variable concatenation is inconsistently detected.
-- Object-specific rule misses (multi-statement TVF, SELECT * from TVF) indicate difficulty with scoped/aliased object references.
-- Overall pattern: the model catches broad anti-patterns but misses duplicates, companion rules at the same line, and subtle variants such as session-state changes and hard-coded numeric literals.
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  LeadingWildcardLike: 3 missed out of 4 expected (matched 1); expected lines [219, 221, 258]
+  SessionSettingChanged: 3 missed out of 3 expected (matched 0); expected lines [13, 16, 198]
+  SqlInjectionViaDynamicSql: 3 missed out of 3 expected (matched 0); expected lines [111, 115, 221]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  DynamicSqlWithoutParameters: 2 missed out of 3 expected (matched 1); expected lines [116, 222]
+  InsertWithoutColumnList: 2 missed out of 2 expected (matched 0); expected lines [213, 215]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  UnqualifiedProcedureName: 2 missed out of 2 expected (matched 0); expected lines [195, 222]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  CatchWithoutRollback: 1 missed out of 1 expected (matched 0); expected lines [244]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DeleteWithWeakPredicate: 1 missed out of 1 expected (matched 0); expected lines [174]
+  ExplicitTransactionWithoutTryCatch: 1 missed out of 1 expected (matched 0); expected lines [183]
+  IndexHintHardcoded: 1 missed out of 1 expected (matched 0); expected lines [249]
+  MergeStatement: 1 missed out of 1 expected (matched 0); expected lines [164]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  NestedSubqueryDepth: 1 missed out of 1 expected (matched 0); expected lines [252]
+  NullEquality: 1 missed out of 1 expected (matched 0); expected lines [234]
+  OuterJoinToFilter: 1 missed out of 1 expected (matched 0); expected lines [230]
+  ScalarUdfInSelect: 1 missed out of 1 expected (matched 0); expected lines [236]
+  SelectStar: 1 missed out of 2 expected (matched 1); expected lines [263]
+  SetIdentityInsert: 1 missed out of 1 expected (matched 0); expected lines [190]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+  UpdateWithoutWhere: 1 missed out of 1 expected (matched 0); expected lines [224]
+  WaitForDelay: 1 missed out of 1 expected (matched 0); expected lines [178]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): ['CatchWithoutRollback', 'DeleteWithWeakPredicate', 'ExplicitTransactionWithoutTryCatch', 'IndexHintHardcoded', 'InsertWithoutColumnList', 'MergeStatement', 'MultiStatementTvfInsteadOfInline', 'NestedSubqueryDepth', 'NullEquality', 'OuterJoinToFilter', 'ScalarUdfInSelect', 'SessionSettingChanged', 'SetIdentityInsert', 'SqlInjectionViaDynamicSql', 'UnqualifiedProcedureName', 'UpdateWithoutWhere', 'WaitForDelay']
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 8/9 missed
+      TopWithoutOrderBy: 7/8 missed
+      LeadingWildcardLike: 3/4 missed
+      DynamicSqlConcatenation: 2/3 missed
+      DynamicSqlWithoutParameters: 2/3 missed
+      MagicDateLiteral: 2/3 missed
+      SelectStar: 1/2 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      CatchSwallowsError: 1/2 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+
+  - Main patterns:
+      Other predicate / schema issues: 13
+      Hard-coded / magic literals: 10
+      Error handling and session settings: 7
+      Ordering, paging, and aggregation semantics: 7
+      Dynamic SQL / injection: 7
+      Joins, subqueries, and correlated lookups: 4
+      Procedural / DML constructs: 4
+
+Extra findings in output by rule:
+  LeadingWildcardLike: 2 at lines [213, 232]
+  CatchSwallowsError: 1 at lines [227]
+  DeleteWithWeakPredicate: 1 at lines [168]
+  DynamicSqlConcatenation: 1 at lines [201]
+  DynamicSqlWithoutParameters: 1 at lines [204]
+  ExplicitTransactionWithoutTryCatch: 1 at lines [176]
+  IndexHintHardcoded: 1 at lines [231]
+  MergeStatement: 1 at lines [159]
+  NestedSubqueryDepth: 1 at lines [234]
+  NullEquality: 1 at lines [217]
+  ScalarUdfInSelect: 1 at lines [221]
+  SelectStar: 1 at lines [240]
+  SessionSettingChanged: 1 at lines [190]
+  SetIdentityInsert: 1 at lines [182]
+  UnqualifiedProcedureName: 1 at lines [187]
+  UpdateWithoutWhere: 1 at lines [207]
+  WaitForDelay: 1 at lines [172]

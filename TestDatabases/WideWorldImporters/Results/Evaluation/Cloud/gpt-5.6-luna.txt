@@ -1,9 +1,9 @@
 Comparison (line differences < 5 ignored): gpt-5.6-luna.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   83
 Matched within +/-4 lines: 82
-Missing from output:     13
+Missing from output:     14
 Extra in output:         1
 Severity mismatches:     3
 
@@ -12,6 +12,7 @@ Missing findings (expected but not within line tolerance):
   line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
   line 36: HardCodedLiteral - Year value 2016 is embedded directly in the predicate instead of being parameterized.
   line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  line 51: HardCodedLiteral - The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
   line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
   line 90: TableVariableEstimate - Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
   line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.

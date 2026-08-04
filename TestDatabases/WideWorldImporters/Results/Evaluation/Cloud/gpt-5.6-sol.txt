@@ -1,10 +1,10 @@
 Comparison (line differences < 5 ignored): gpt-5.6-sol.json vs Test.ExpectedFindings.json
 
-Total expected findings: 95
+Total expected findings: 96
 Total output findings:   92
-Matched within +/-4 lines: 85
+Matched within +/-4 lines: 86
 Missing from output:     10
-Extra in output:         7
+Extra in output:         6
 Severity mismatches:     4
 
 Missing findings (expected but not within line tolerance):
@@ -20,7 +20,6 @@ Missing findings (expected but not within line tolerance):
   line 215: InsertWithoutColumnList - INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
 
 Extra findings (in output but not within line tolerance):
-  line 51: HardCodedLiteral - The sentinel value 0 is embedded directly in the CustomerID predicate.
   line 51: HardCodedLiteral - Customer identifier 1 is embedded directly in the predicate.
   line 69: HardCodedLiteral - The quantity threshold 1 is embedded directly in the OrderLines predicate.
   line 144: CoalesceInJoin - COALESCE wraps Sales.Invoices.CustomerID in the join predicate and inhibits direct index matching.

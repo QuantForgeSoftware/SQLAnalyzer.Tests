@@ -14,3 +14,41 @@ Severity distribution of misses: {'warning': 13}
 Misses on lines with multiple expected rules: 1/13 (7.7%)
 Top lines with misses: line 81 (2), line 13 (1), line 16 (1), line 36 (1), line 84 (1)
 Notable patterns: session-setting changes (SessionSettingChanged) are missed; hard-coded literals are under-reported, often on lines that also carry other rules.
+
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 82
+Missed expected findings: 14
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  HardCodedLiteral: 5 missed out of 9 expected (matched 4); expected lines [36, 51, 81, 213]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  TopWithoutOrderBy: 1 missed out of 8 expected (matched 7); expected lines [98]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 5/9 missed
+      SessionSettingChanged: 2/3 missed
+      TopWithoutOrderBy: 1/8 missed
+      LeadingWildcardLike: 1/4 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+
+  - Main patterns:
+      Hard-coded / magic literals: 6
+      Other predicate / schema issues: 3
+      Error handling and session settings: 2
+      Joins, subqueries, and correlated lookups: 1
+      Ordering, paging, and aggregation semantics: 1
+      Procedural / DML constructs: 1

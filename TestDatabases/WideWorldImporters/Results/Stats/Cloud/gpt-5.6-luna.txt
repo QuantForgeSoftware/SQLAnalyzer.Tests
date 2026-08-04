@@ -14,3 +14,47 @@ Severity distribution of misses: {'warning': 11, 'error': 2}
 Misses on lines with multiple expected rules: 0/13 (0.0%)
 Top lines with misses: line 13 (1), line 16 (1), line 36 (1), line 48 (1), line 84 (1)
 Notable patterns: session-setting changes (SessionSettingChanged) are missed; dynamic-SQL / concatenation issues are missed or line-shifted; some error-severity findings are absent.
+
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 82
+Missed expected findings: 14
+Extra findings in output: 1
+
+Missed expected findings by rule:
+  HardCodedLiteral: 2 missed out of 9 expected (matched 7); expected lines [36, 51]
+  LeadingWildcardLike: 2 missed out of 4 expected (matched 2); expected lines [219, 221]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  NotInNullableSubquery: 1 missed out of 1 expected (matched 0); expected lines [48]
+  SqlInjectionViaDynamicSql: 1 missed out of 3 expected (matched 2); expected lines [115]
+  TableVariableEstimate: 1 missed out of 1 expected (matched 0); expected lines [90]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): ['NotInNullableSubquery', 'TableVariableEstimate']
+  - Rules partially missed (some instances detected, others not):
+      SessionSettingChanged: 2/3 missed
+      HardCodedLiteral: 2/9 missed
+      LeadingWildcardLike: 2/4 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      SqlInjectionViaDynamicSql: 1/3 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+      UnqualifiedProcedureName: 1/2 missed
+
+  - Main patterns:
+      Other predicate / schema issues: 5
+      Hard-coded / magic literals: 3
+      Error handling and session settings: 2
+      Joins, subqueries, and correlated lookups: 2
+      Procedural / DML constructs: 1
+      Dynamic SQL / injection: 1
+
+Extra findings in output by rule:
+  MagicDateLiteral: 1 at lines [36]

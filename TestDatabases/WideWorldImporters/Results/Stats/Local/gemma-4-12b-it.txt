@@ -7,15 +7,97 @@ Tokens/second: 77
 Estimated total cost: $0.000000 USD
 Notes
 =====
-This run found 24 exact matches and 9 near-matches (line off by <5).
-61 expected findings were missed entirely.
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 32
+Missed expected findings: 64
+Extra findings in output: 30
 
-Pattern of missed findings:
-- 7 high-severity errors were missed, including SQL injection, transaction handling, and NULL-comparison bugs.
-- Repeated failure to flag SELECT TOP without ORDER BY (7 instances); the model tends to notice only the first or most prominent TOP clause.
-- HardCodedLiteral detections are inconsistent (7 missed); the model flags obvious business identifiers but misses numeric year/order/date literals embedded in predicates.
-- SessionSettingChanged warnings are missed (3 instances); SET NOCOUNT/XACT_ABORT state changes at procedure start are not being recognized as unrestored session settings.
-- SqlInjectionViaDynamicSql was missed for some concatenation points (2 instances), suggesting the model recognizes dynamic SQL but not every user-input concatenation.
-- DynamicSqlConcatenation warnings were also missed (2 instances); dynamic SQL with variable concatenation is inconsistently detected.
-- Object-specific rule misses (multi-statement TVF, SELECT * from TVF) indicate difficulty with scoped/aliased object references.
-- Overall pattern: the model catches broad anti-patterns but misses duplicates, companion rules at the same line, and subtle variants such as session-state changes and hard-coded numeric literals.
+Missed expected findings by rule:
+  HardCodedLiteral: 9 missed out of 9 expected (matched 0); expected lines [36, 51, 57, 81, 136, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  LeadingWildcardLike: 3 missed out of 4 expected (matched 1); expected lines [219, 221, 258]
+  MagicDateLiteral: 3 missed out of 3 expected (matched 0); expected lines [139, 141, 230]
+  SessionSettingChanged: 3 missed out of 3 expected (matched 0); expected lines [13, 16, 198]
+  AggregateWithoutFilter: 2 missed out of 2 expected (matched 0); expected lines [154, 159]
+  CatchSwallowsError: 2 missed out of 2 expected (matched 0); expected lines [125, 244]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  DynamicSqlWithoutParameters: 2 missed out of 3 expected (matched 1); expected lines [116, 222]
+  InsertWithoutColumnList: 2 missed out of 2 expected (matched 0); expected lines [213, 215]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  UnqualifiedProcedureName: 2 missed out of 2 expected (matched 0); expected lines [195, 222]
+  AmbiguousDateConversion: 1 missed out of 1 expected (matched 0); expected lines [142]
+  CatchWithoutRollback: 1 missed out of 1 expected (matched 0); expected lines [244]
+  CoalesceInJoin: 1 missed out of 1 expected (matched 0); expected lines [145]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DeleteWithWeakPredicate: 1 missed out of 1 expected (matched 0); expected lines [174]
+  ExplicitTransactionWithoutTryCatch: 1 missed out of 1 expected (matched 0); expected lines [183]
+  HavingForRowFilter: 1 missed out of 1 expected (matched 0); expected lines [157]
+  IndexHintHardcoded: 1 missed out of 1 expected (matched 0); expected lines [249]
+  LegacyRaiseError: 1 missed out of 1 expected (matched 0); expected lines [130]
+  MergeStatement: 1 missed out of 1 expected (matched 0); expected lines [164]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  NestedSubqueryDepth: 1 missed out of 1 expected (matched 0); expected lines [252]
+  NoCountDisabled: 1 missed out of 1 expected (matched 0); expected lines [13]
+  NullEquality: 1 missed out of 1 expected (matched 0); expected lines [234]
+  OuterJoinToFilter: 1 missed out of 1 expected (matched 0); expected lines [230]
+  PrintDiagnostic: 1 missed out of 1 expected (matched 0); expected lines [133]
+  RedundantOrderBy: 1 missed out of 1 expected (matched 0); expected lines [160]
+  ScalarUdfInSelect: 1 missed out of 1 expected (matched 0); expected lines [236]
+  SelectStar: 1 missed out of 2 expected (matched 1); expected lines [263]
+  SelfJoinWithoutNeed: 1 missed out of 1 expected (matched 0); expected lines [148]
+  SetIdentityInsert: 1 missed out of 1 expected (matched 0); expected lines [190]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+  UpdateWithoutWhere: 1 missed out of 1 expected (matched 0); expected lines [224]
+  WaitForDelay: 1 missed out of 1 expected (matched 0); expected lines [178]
+  WideSort: 1 missed out of 1 expected (matched 0); expected lines [151]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): ['AggregateWithoutFilter', 'AmbiguousDateConversion', 'CatchSwallowsError', 'CatchWithoutRollback', 'CoalesceInJoin', 'DeleteWithWeakPredicate', 'ExplicitTransactionWithoutTryCatch', 'HardCodedLiteral', 'HavingForRowFilter', 'IndexHintHardcoded', 'InsertWithoutColumnList', 'LegacyRaiseError', 'MagicDateLiteral', 'MergeStatement', 'MultiStatementTvfInsteadOfInline', 'NestedSubqueryDepth', 'NoCountDisabled', 'NullEquality', 'OuterJoinToFilter', 'PrintDiagnostic', 'RedundantOrderBy', 'ScalarUdfInSelect', 'SelfJoinWithoutNeed', 'SessionSettingChanged', 'SetIdentityInsert', 'UnqualifiedProcedureName', 'UpdateWithoutWhere', 'WaitForDelay', 'WideSort']
+  - Rules partially missed (some instances detected, others not):
+      TopWithoutOrderBy: 7/8 missed
+      LeadingWildcardLike: 3/4 missed
+      DynamicSqlConcatenation: 2/3 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      DynamicSqlWithoutParameters: 2/3 missed
+      SelectStar: 1/2 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+
+  - Main patterns:
+      Other predicate / schema issues: 16
+      Hard-coded / magic literals: 13
+      Error handling and session settings: 10
+      Ordering, paging, and aggregation semantics: 9
+      Joins, subqueries, and correlated lookups: 6
+      Dynamic SQL / injection: 6
+      Procedural / DML constructs: 4
+
+Extra findings in output by rule:
+  CatchSwallowsError: 2 at lines [120, 223]
+  MagicDateLiteral: 2 at lines [134, 214]
+  AggregateWithoutFilter: 1 at lines [149]
+  AmbiguousDateConversion: 1 at lines [137]
+  CoalesceInJoin: 1 at lines [140]
+  DeleteWithWeakPredicate: 1 at lines [167]
+  DynamicSqlConcatenation: 1 at lines [207]
+  ExplicitTransactionWithoutTryCatch: 1 at lines [174]
+  HardCodedLiteral: 1 at lines [131]
+  HavingForRowFilter: 1 at lines [152]
+  IndexHintHardcoded: 1 at lines [229]
+  LeadingWildcardLike: 1 at lines [204]
+  LegacyRaiseError: 1 at lines [125]
+  MergeStatement: 1 at lines [158]
+  NestedSubqueryDepth: 1 at lines [234]
+  NonCountDisabled: 1 at lines [13]
+  NullEquality: 1 at lines [217]
+  PrintDiagnostic: 1 at lines [128]
+  RedundantOrderBy: 1 at lines [155]
+  ScalarUdfInSelect: 1 at lines [220]
+  SelectStar: 1 at lines [239]
+  SelfJoinWithoutNeed: 1 at lines [143]
+  SessionSettingChanged: 1 at lines [190]
+  SetIdentityInsert: 1 at lines [180]
+  SqlInjectionViaDynamicSql: 1 at lines [207]
+  UnqualifiedProcedureName: 1 at lines [187]
+  WaitForDelay: 1 at lines [170]
+  WideSort: 1 at lines [146]
