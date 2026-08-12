@@ -1,0 +1,21 @@
+Model: grok-4.6
+Input tokens: 13,287
+Output tokens: 5,664
+Total tokens: 18,951
+AI time: 346.29 seconds
+Tokens/second: 55
+Estimated total cost: $0.060558 USD
+Notes
+-----
+Missing expected findings: 0
+
+The five expected findings that did not match by rule name are all detected by Grok 4.6 under different rule names at the same locations:
+  line 13: SessionSettingChanged (expected) -> NoCountDisabled at line 13
+  line 16: SessionSettingChanged (expected) -> XactAbortDisabled at line 16
+  line 36: HardCodedLiteral (expected) -> MagicDateLiteral at line 36
+  line 111: SqlInjectionViaDynamicSql (expected) -> DynamicSqlConcatenation at line 110/111
+  line 115: SqlInjectionViaDynamicSql (expected) -> DynamicSqlConcatenation at line 114/115
+
+These are rule-name mismatches, not omissions. All five anti-patterns were reported.
+
+Severity mismatches remain: XactAbortDisabled, CatchSwallowsError (twice), AmbiguousDateConversion, and OuterJoinToFilter were upgraded to error; ExplicitTransactionWithoutTryCatch was downgraded to warning. These are real differences in severity assignment, not missed findings.

@@ -1,0 +1,63 @@
+Comparison for muse-glimmer-30b@q4_k_xl
+Expected findings: 96
+Actual findings:   75
+Matched findings:  73
+Missing findings:  23
+Extra findings:    2
+
+MISSING EXPECTED FINDINGS
+(line differences within 5 are treated as matches and not listed here)
+
+Line  13 [warning] SessionSettingChanged
+    SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+Line  16 [warning] SessionSettingChanged
+    SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+Line  36 [warning] HardCodedLiteral
+    Year value 2016 is embedded directly in the predicate instead of being parameterized.
+Line  51 [warning] HardCodedLiteral
+    The predicate compares o.CustomerID to hard-coded value 1 instead of using a parameter or lookup.
+Line  57 [warning] HardCodedLiteral
+    Business identifier 1 is hard-coded in the CustomerID predicate.
+Line  81 [warning] HardCodedLiteral
+    OrderID literals 1 and 2 are embedded directly in the query branches.
+Line  81 [warning] HardCodedLiteral
+    Order identifier 2 is embedded directly in the second UNION branch.
+Line  84 [warning] CorrelatedScalarSubquery
+    Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+Line 115 [warning] DynamicSqlConcatenation
+    SQL string is built by concatenating @OrderID directly into the query text.
+Line 115 [error  ] SqlInjectionViaDynamicSql
+    User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+Line 116 [warning] DynamicSqlWithoutParameters
+    sp_executesql is used but the statement is concatenated rather than parameterized.
+Line 141 [warning] MagicDateLiteral
+    The date value '01/02/2016' is embedded directly in the expression.
+Line 159 [warning] AggregateWithoutFilter
+    COUNT(*) scans and aggregates all rows in Sales.Orders without a filter.
+Line 170 [warning] UpdateWithoutMeaningfulChange
+    UPDATE Sales.Orders SET Comments = Comments changes no data but still causes logging and locking.
+Line 174 [warning] HardCodedLiteral
+    Hard-coded sentinel value -1 is embedded in the Sales.OrderLines delete predicate.
+Line 183 [error  ] ExplicitTransactionWithoutTryCatch
+    BEGIN TRANSACTION is not wrapped in a BEGIN TRY / BEGIN CATCH error-handling boundary.
+Line 215 [warning] InsertWithoutColumnList
+    INSERT INTO #DemoCustomers relies on implicit column ordering with no explicit column list.
+Line 221 [warning] LeadingWildcardLike
+    The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+Line 222 [warning] UnqualifiedProcedureName
+    System procedure sp_executesql is invoked without a schema qualifier.
+Line 224 [error  ] UpdateWithoutWhere
+    UPDATE #DemoCustomers lacks a WHERE clause and would change every row.
+Line 244 [warning] CatchSwallowsError
+    CATCH block selects ERROR_MESSAGE() but neither rethrows with THROW nor returns a failure status.
+Line 244 [error  ] CatchWithoutRollback
+    CATCH block inside an active transaction does not roll back before handling the error.
+Line 258 [warning] LeadingWildcardLike
+    LIKE pattern '%A%' on Sales.Customers.CustomerName starts with a leading wildcard.
+
+EXTRA FINDINGS
+
+Line 182 [warning] ExplicitTransactionWithoutTryCatch
+    BEGIN TRANSACTION started outside TRY...CATCH error handling boundary.
+Line 243 [warning] CatchWithoutRollback
+    CATCH block inside transaction does not ROLLBACK before handling error.

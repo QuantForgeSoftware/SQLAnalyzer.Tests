@@ -1,0 +1,46 @@
+Model: muse-glimmer-30b@q4_k_xl
+Input tokens: 13,266
+Output tokens: 18,067
+Total tokens: 31,333
+AI time: 840.13 seconds
+Tokens/second: 37
+Estimated total cost: $0.000000 USD
+
+Notes
+
+=== Pattern Analysis of Missed Expected Findings ===
+
+Overall comparison: 96 expected, 75 actual, 73 matched, 23 missing, 2 extra.
+
+1. Session / state-setting rules are largely missed
+   - Lines 13 and 16: SessionSettingChanged (SET NOCOUNT OFF and SET XACT_ABORT OFF) are both missing.
+   The model only caught the later SET ROWCOUNT 1 at line 198. This suggests it recognizes obvious session-state changes when they occur later in the procedure, but misses the two early SET statements after the header.
+
+2. HardCodedLiteral is inconsistently detected
+   - Line 36 (DECLARE @CustomerIdText nvarchar(20) = N'1') and line 81 (WHERE o.Comments LIKE N'%urgent%') were missed.
+   - The same rule at lines 51, 57, 174, and 224 were also missed.
+   - There are duplicate HardCodedLiteral entries on line 81, indicating two literals on one line; the model failed to report either instance.
+   - Hard-coded values are spread across literals, parameter defaults, and patterns, and the model appears to only surface some of the more obvious scalar constants while skipping string/pattern literals and parameter defaults.
+
+3. Dynamic SQL cluster is fragmented
+   - Lines 115-116 form a contiguous dynamic-SQL block. The model missed DynamicSqlConcatenation (115), SqlInjectionViaDynamicSql (115), and DynamicSqlWithoutParameters (116).
+   - It did catch the similar cluster at lines 111-112, so the analyzer is capable of detecting these patterns, but missed the second closely-spaced cluster entirely.
+
+4. Error-handling / transaction rules are partially off by one line
+   - Line 183 ExplicitTransactionWithoutTryCatch (expected error) was missed.
+   - The model instead reported the same rule as a warning at line 182, and CatchWithoutRollback as a warning at line 243 (expected as an error at line 244).
+   This indicates the model detects transaction/error-handling constructs but misidentifies their severity and shifts the line numbers by one, suggesting it is parsing the code slightly differently from the expected positions.
+
+5. Subquery / aggregate / join rules in the middle of the procedure are under-reported
+   - Line 84 CorrelatedScalarSubquery and line 159 AggregateWithoutFilter were missed.
+   - These occur in a dense region with many adjacent findings; the model likely loses some hits in heavily-populated sections.
+
+6. INSERT / UPDATE / DELETE and LIKE patterns are missed near the end of the procedure
+   - Lines 215 InsertWithoutColumnList, 221 LeadingWildcardLike, 222 UnqualifiedProcedureName, 224 UpdateWithoutWhere, and 258 LeadingWildcardLike were missed.
+   - This region contains dynamic SQL, INSERT VALUES, and a broad UPDATE, and the model seems to stop surfacing warnings once the code shifts to ad-hoc temp-table/DML operations.
+
+7. Other isolated misses
+   - Line 141 MagicDateLiteral, line 170 UpdateWithoutMeaningfulChange, and line 244 CatchSwallowsError/CatchWithoutRollback were missed.
+   - Some of these are near extra or matched findings (e.g., MagicDateLiteral was matched at line 139 and 230), so the model may simply fail to recognize the specific literal or pattern at that single location.
+
+Summary pattern: The model has strong coverage of structural rules in the first half of the procedure but degrades in dense, multi-statement regions. It struggles with repeated similar patterns (HardCodedLiteral, DynamicSql, LeadingWildcardLike), state-setting statements near the top, and it sometimes misattributes severity and line numbers for transaction/error-handling rules.

@@ -1,0 +1,49 @@
+Model: deepseek-v4-pro
+Input tokens: 15,095
+Output tokens: 38,504
+Total tokens: 53,599
+AI time: 503.52 seconds
+Tokens/second: 106
+Estimated total cost: $0.020524 USD
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 86
+Missed expected findings: 10
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  HardCodedLiteral: 2 missed out of 9 expected (matched 7); expected lines [36, 51]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+
+Misses by line range:
+  1-99: 4
+  100-149: 2
+  150-199: 2
+  200-249: 2
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      SessionSettingChanged: 2/3 missed
+      HardCodedLiteral: 2/9 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+      LeadingWildcardLike: 1/4 missed
+
+  - Main patterns:
+      dynamic SQL / injection: 3
+      session settings: 2
+      hard-coded literals: 2
+      date/conversion issues: 2
+      transaction/error-handling: 1
+      aggregate issues: 1
+
+Observation:
+  DeepSeek v4 Pro matched 86 of 96 expected findings. Its misses cluster around session-setting restoration (SessionSettingChanged), explicit SQL-injection labeling (SqlInjectionViaDynamicSql), a single hard-coded literal on line 36, and one aggregate-without-filter case. Many of these are sibling labels that the model reports under alternate rule names (e.g., NoCountDisabled/XactAbortDisabled for the session settings), suggesting the issue was noticed but not tagged with the exact expected rule.

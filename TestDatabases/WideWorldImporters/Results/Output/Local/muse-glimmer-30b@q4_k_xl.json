@@ -1,0 +1,452 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 13,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF leaves rowcount messages enabled, increasing client and network noise."
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 16,
+    "severity": "warning",
+    "explanation": "SET XACT_ABORT OFF allows runtime errors to leave a transaction partially applied."
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 24,
+    "severity": "warning",
+    "explanation": "SELECT * from Sales.Orders couples callers to all current and future columns."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 27,
+    "severity": "warning",
+    "explanation": "SELECT TOP (10) without ORDER BY returns an arbitrary set of rows."
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 30,
+    "severity": "warning",
+    "explanation": "DISTINCT on OrderID is unnecessary because OrderID is the primary key and already unique."
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 33,
+    "severity": "warning",
+    "explanation": "WITH (NOLOCK) can return uncommitted, missing or duplicated rows."
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 36,
+    "severity": "warning",
+    "explanation": "YEAR(o.OrderDate) on an indexed date column prevents a simple range seek."
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 39,
+    "severity": "warning",
+    "explanation": "Comparing int column o.CustomerID to nvarchar @CustomerIdText forces implicit conversion."
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 42,
+    "severity": "warning",
+    "explanation": "@CustomerID IS NULL OR o.CustomerID = @CustomerID makes cardinality estimation and seeking difficult."
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 45,
+    "severity": "warning",
+    "explanation": "LIKE N'%urgent%' with leading wildcard prevents an index seek on Comments."
+  },
+  {
+    "ruleName": "NotInNullableSubquery",
+    "lineNumber": 48,
+    "severity": "error",
+    "explanation": "NOT IN with subquery selecting nullable CustomerID can yield incorrect results when NULL is returned."
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 51,
+    "severity": "warning",
+    "explanation": "ISNULL(o.CustomerID,0) wraps the column making the predicate non-sargable."
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 54,
+    "severity": "warning",
+    "explanation": "o.OrderID + 0 prevents direct index matching on OrderID."
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 57,
+    "severity": "warning",
+    "explanation": "o.CustomerID <> 1 is a negative predicate that often scans broad portions of the table."
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 60,
+    "severity": "warning",
+    "explanation": "CROSS JOIN between Sales.Orders and Sales.Customers multiplies rows without a join predicate."
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 63,
+    "severity": "warning",
+    "explanation": "Comma-separated tables in FROM with join in WHERE obscures predicates and risks cartesian joins."
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 66,
+    "severity": "warning",
+    "explanation": "Scalar subquery COUNT(*) per outer order row forces row-by-row evaluation."
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 69,
+    "severity": "warning",
+    "explanation": "Correlated EXISTS per outer row could be expressed as a set join."
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 72,
+    "severity": "warning",
+    "explanation": "CASE WHEN o.Comments IS NULL THEN 0 ELSE 1 END is repeated in SELECT and ORDER BY."
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 75,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 references select-list position and becomes fragile when the list changes."
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 78,
+    "severity": "warning",
+    "explanation": "OFFSET...FETCH without a stable tie-breaker ORDER BY can return non-deterministic pages."
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 81,
+    "severity": "warning",
+    "explanation": "UNION between disjoint OrderID =1 and OrderID =2 performs needless duplicate removal."
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 84,
+    "severity": "warning",
+    "explanation": "COUNT(*) > 0 counts all rows when only existence is needed."
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 87,
+    "severity": "warning",
+    "explanation": "SELECT @OrderID = o.OrderID silently accepts multiple rows and keeps the last value."
+  },
+  {
+    "ruleName": "TableVariableEstimate",
+    "lineNumber": 90,
+    "severity": "warning",
+    "explanation": "Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels."
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 94,
+    "severity": "warning",
+    "explanation": "SELECT ... INTO #ImplicitOrders creates temp table schema implicitly instead of explicit CREATE TABLE."
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 97,
+    "severity": "warning",
+    "explanation": "Cursor declared for SELECT TOP (2) processes rows one at a time instead of set-wise."
+  },
+  {
+    "ruleName": "WhileLoopRowByRow",
+    "lineNumber": 104,
+    "severity": "warning",
+    "explanation": "WHILE loop performs iterative work that could be set-based."
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 110,
+    "severity": "warning",
+    "explanation": "SQL string built by concatenating CONVERT(nvarchar, @CustomerID) into executable text."
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 115,
+    "severity": "warning",
+    "explanation": "sp_executesql called with @Sql only, no parameterized inputs."
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 118,
+    "severity": "warning",
+    "explanation": "CREATE TABLE #Scratch is not dropped before procedure end."
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 125,
+    "severity": "warning",
+    "explanation": "CATCH block selects ERROR_MESSAGE() but does not rethrow or return failure status."
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 129,
+    "severity": "warning",
+    "explanation": "RAISERROR used for new error path instead of THROW."
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 132,
+    "severity": "warning",
+    "explanation": "PRINT used for diagnostics is buffered and unsuitable for structured logging."
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 135,
+    "severity": "warning",
+    "explanation": "Business identifier CustomerID = 1 embedded directly in SQL."
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 138,
+    "severity": "warning",
+    "explanation": "Unlabelled date constant '20160101' embedded in query logic."
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 141,
+    "severity": "warning",
+    "explanation": "CONVERT(date, '01/02/2016') relies on session-sensitive date format."
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 144,
+    "severity": "warning",
+    "explanation": "COALESCE in join predicate inhibits normal join optimization."
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 147,
+    "severity": "warning",
+    "explanation": "Self-join on Orders to retrieve same OrderID adds no value."
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 150,
+    "severity": "warning",
+    "explanation": "ORDER BY o.Comments sorts by unselective wide text column."
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 153,
+    "severity": "warning",
+    "explanation": "SUM(ol.Quantity) aggregates entire OrderLines fact table without restrictive filter."
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 156,
+    "severity": "warning",
+    "explanation": "Row-level predicate ol.OrderID > 0 placed in HAVING instead of WHERE."
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 159,
+    "severity": "warning",
+    "explanation": "ORDER BY OrderCount on single-row aggregate result is unnecessary."
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 164,
+    "severity": "warning",
+    "explanation": "MERGE used with known concurrency and correctness edge cases."
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 169,
+    "severity": "warning",
+    "explanation": "UPDATE sets Comments = Comments causing logging and locking with no data change."
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 173,
+    "severity": "error",
+    "explanation": "DELETE FROM Sales.OrderLines WHERE Quantity = -1 uses broad business value instead of stable key."
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 177,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY blocks a worker instead of using asynchronous scheduling."
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 182,
+    "severity": "warning",
+    "explanation": "BEGIN TRANSACTION started outside TRY...CATCH error handling boundary."
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 189,
+    "severity": "warning",
+    "explanation": "SET IDENTITY_INSERT ON introduces fragile identity management coupling."
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 194,
+    "severity": "warning",
+    "explanation": "EXEC sp_who invoked without schema qualifier."
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 197,
+    "severity": "warning",
+    "explanation": "SET ROWCOUNT 1 changes session setting and is not restored."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 60,
+    "severity": "warning",
+    "explanation": "SELECT TOP (1) without ORDER BY returns arbitrary row from cartesian join."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 63,
+    "severity": "warning",
+    "explanation": "SELECT TOP (1) without ORDER BY returns arbitrary row."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 91,
+    "severity": "warning",
+    "explanation": "SELECT TOP (5) without ORDER BY in INSERT into table variable is non-deterministic."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 94,
+    "severity": "warning",
+    "explanation": "SELECT TOP (5) INTO #ImplicitOrders without ORDER BY is non-deterministic."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 97,
+    "severity": "warning",
+    "explanation": "Cursor source SELECT TOP (2) without ORDER BY is non-deterministic."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 144,
+    "severity": "warning",
+    "explanation": "SELECT TOP (1) with COALESCE join lacks ORDER BY."
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 147,
+    "severity": "warning",
+    "explanation": "SELECT TOP (1) self-join lacks ORDER BY."
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "SQL string built by concatenating @CustomerName into LIKE pattern."
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 221,
+    "severity": "warning",
+    "explanation": "sp_executesql called with concatenated @sql and no parameters."
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 110,
+    "severity": "error",
+    "explanation": "User-supplied @CustomerID concatenated directly into dynamic SQL."
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 220,
+    "severity": "error",
+    "explanation": "User-supplied @CustomerName concatenated directly into dynamic SQL."
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 218,
+    "severity": "warning",
+    "explanation": "LIKE '%' + @CustomerName + '%' has leading wildcard preventing index seek."
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 229,
+    "severity": "warning",
+    "explanation": "Predicate on outer-joined o.OrderDate in WHERE converts LEFT JOIN to inner join."
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 233,
+    "severity": "error",
+    "explanation": "WHERE DeliveryMethodID = NULL uses equality instead of IS NULL."
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 235,
+    "severity": "warning",
+    "explanation": "Scalar UDF dbo.GetCustomerType called in SELECT list forces row-by-row evaluation."
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 243,
+    "severity": "warning",
+    "explanation": "CATCH block inside transaction does not ROLLBACK before handling error."
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 248,
+    "severity": "warning",
+    "explanation": "WITH (INDEX = 1) hardcodes index hint in production code."
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Four levels of nested subqueries should be refactored to CTEs or temp tables."
+  },
+  {
+    "ruleName": "MultiStatementTvfInsteadOfInline",
+    "lineNumber": 262,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerOrdersMulti used where inline TVF would be more optimizable."
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 262,
+    "severity": "warning",
+    "explanation": "SELECT * from dbo.GetCustomerOrdersMulti couples to all output columns."
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 213,
+    "severity": "warning",
+    "explanation": "INSERT INTO #DemoCategories VALUES without explicit column list."
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 213,
+    "severity": "warning",
+    "explanation": "Magic value 99 embedded in INSERT VALUES."
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 224,
+    "severity": "warning",
+    "explanation": "UPDATE sets CustomerCategoryID = 1 with hard-coded business identifier."
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 229,
+    "severity": "warning",
+    "explanation": "Unlabelled date literal '2016-01-01' embedded in query logic."
+  }
+]

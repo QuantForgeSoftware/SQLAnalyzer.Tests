@@ -1,0 +1,33 @@
+Comparison (line differences < 5 ignored): grok-4.6.json vs Test.ExpectedFindings.json
+
+Total expected findings: 96
+Total output findings:   98
+Matched within +/-4 lines: 91
+Missing from output:     5
+Extra in output:         7
+Severity mismatches:     6
+
+Missing findings (expected but not within line tolerance):
+  None. The five expected findings below were detected by Grok 4.6 under different rule names at the same lines, so they are not true misses:
+  line 13: SessionSettingChanged (expected) -> output reports NoCountDisabled at line 13 for the same SET NOCOUNT OFF statement.
+  line 16: SessionSettingChanged (expected) -> output reports XactAbortDisabled at line 16 for the same SET XACT_ABORT OFF statement.
+  line 36: HardCodedLiteral (expected) -> output reports MagicDateLiteral at line 36 for the same 2016 predicate.
+  line 111: SqlInjectionViaDynamicSql (expected) -> output reports DynamicSqlConcatenation at line 110 for the same @CustomerID concatenation (within tolerance it matched DynamicSqlConcatenation at line 111, but the injection risk itself was not labeled SqlInjectionViaDynamicSql).
+  line 115: SqlInjectionViaDynamicSql (expected) -> output reports DynamicSqlConcatenation at line 114 for the same @OrderID concatenation (within tolerance it matched DynamicSqlConcatenation at line 115, but the injection risk itself was not labeled SqlInjectionViaDynamicSql).
+
+Extra findings (in output but not within line tolerance):
+  line 36: MagicDateLiteral - The unlabelled year 2016 is embedded directly in the OrderDate filter.
+  line 45: HardCodedLiteral - Business search term 'urgent' is embedded directly in the Comments predicate.
+  line 69: HardCodedLiteral - Quantity > 1 embeds a hard-coded business threshold in the EXISTS predicate.
+  line 138: ImplicitConversion - date column o.OrderDate is compared to varchar literal '20160101', causing an implicit conversion.
+  line 229: ImplicitConversion - date column o.OrderDate is compared to varchar literal '2016-01-01', causing an implicit conversion.
+  line 229: AmbiguousDateConversion - Date string '2016-01-01' is converted without an explicit style parameter.
+  line 257: HardCodedLiteral - LIKE pattern '%A%' embeds a hard-coded search value.
+
+Severity mismatches (same rule matched, different severity):
+  expected line 16 (output line 16): XactAbortDisabled - expected warning, got error
+  expected line 125 (output line 124): CatchSwallowsError - expected warning, got error
+  expected line 142 (output line 141): AmbiguousDateConversion - expected warning, got error
+  expected line 183 (output line 182): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 230 (output line 229): OuterJoinToFilter - expected warning, got error
+  expected line 244 (output line 243): CatchSwallowsError - expected warning, got error

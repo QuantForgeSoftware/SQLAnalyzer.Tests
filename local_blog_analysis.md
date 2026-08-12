@@ -12,6 +12,7 @@ The benchmark set includes eleven runnable weights. All were evaluated with the 
 
 | Model | Input Tokens | Output Tokens | Total Tokens |
 |-------|-------------:|--------------:|-------------:|
+| muse-glimmer-30b@q4_k_xl | 13,266 | 18,067 | 31,333 |
 | gemma-4-12b-it | 14,368 | 9,985 | 24,353 |
 | gemma-4-26b-a4b-it-qat-nvfp4 | 14,362 | 3,814 | 18,176 |
 | gemma-4-31b-it-qat | 14,368 | 11,711 | 26,079 |
@@ -24,7 +25,7 @@ The benchmark set includes eleven runnable weights. All were evaluated with the 
 | kimi-k3 | 12,929 | 29,696 | 42,625 |
 | MiniMax M3 | 13,290 | 42,754 | 56,044 |
 
-Token usage is the dominant cost driver when you serve a model yourself. Input tokens are essentially fixed by the prompt and procedure, so the big differences are in output verbosity.
+Token usage is the dominant cost driver when you serve a model yourself. Input tokens are essentially fixed by the prompt and procedure, so the big differences are in output verbosity. `muse-glimmer-30b@q4_k_xl` sits in the middle of the pack at 18,067 output tokens, producing a report of moderate length.
 
 ## Correctness: Exact, Near, and Missed
 
@@ -36,6 +37,7 @@ A match only counts when the **rule name and line number** line up with the grou
 | glm-5.2 | 82 | 0 | 13 | 86.3% | 0 |
 | kimi-k3 | 83 | 0 | 12 | 87.4% | 2 |
 | MiniMax M3 | 77 | 0 | 18 | 81.1% | 1 |
+| muse-glimmer-30b@q4_k_xl | 73 | 0 | 23 | 76.8% | 4 |
 | qwen3.6-27b-mtp | 25 | 46 | 23 | 74.7%* | 3 |
 | qwen3.6-35b-a3b-mtp | 29 | 40 | 25 | 72.6%* | 3 |
 | gemma-4-31b-it-qat | 6 | 49 | 39 | 57.9%* | 7 |
@@ -49,10 +51,13 @@ A match only counts when the **rule name and line number** line up with the grou
 Three tiers are immediately visible:
 
 - **Top tier (≥81% recall):** `kimi-k2.7-code`, `glm-5.2`, `kimi-k3`, and `MiniMax M3`.
+- **Upper-mid tier (~76% recall):** `muse-glimmer-30b@q4_k_xl`, which produces a clean report with 73 exact matches and only 2 extras.
 - **Middle tier (47–75% recall):** the larger Qwen and Gemma runs.
 - **Bottom tier (<50% recall):** the smaller Gemma variants, `ornith-1.0-35b`, and `qwen3.5-9b-mtp`.
 
 `qwen3.5-9b-mtp` technically produced a findings report, but only two of the 95 expected findings matched within tolerance. The rest were either missed entirely or reported at line numbers far enough from the expected positions to be unusable.
+
+`muse-glimmer-30b@q4_k_xl` lands just above the middle tier with 76.8% recall. Its misses are concentrated in hard-coded literals (7 instances), session-setting changes at the top of the procedure, the second dynamic-SQL cluster around line 115, and several rules in the dense latter half of the procedure such as `InsertWithoutColumnList`, `UpdateWithoutWhere`, and `LeadingWildcardLike`. The model also tends to misplace line numbers by one for transaction and error-handling rules. It is a competent single-pass analyzer but is clearly a step behind the top four.
 
 ## What the Models Get Wrong
 
