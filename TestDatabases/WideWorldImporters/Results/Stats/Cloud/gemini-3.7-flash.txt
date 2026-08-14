@@ -1,0 +1,59 @@
+Model: gemini-3.7-flash
+Input tokens: 14,339
+Output tokens: 4,118
+Total tokens: 18,457
+AI time: 24.82 seconds
+Tokens/second: 744
+Estimated total cost: $0.056585 USD
+Notes
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 68
+Missed expected findings: 28
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  DynamicSqlWithoutParameters: 2 missed out of 3 expected (matched 1); expected lines [116, 222]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [115]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+
+Misses by line range:
+  1-99: 13
+  100-149: 7
+  150-199: 3
+  200-249: 5
+
+Pattern analysis for missed expected findings:
+  - Rules partially missed (some instances detected, others not):
+      HardCodedLiteral: 8/9 missed
+      TopWithoutOrderBy: 7/8 missed
+      SessionSettingChanged: 2/3 missed
+      SqlInjectionViaDynamicSql: 2/3 missed
+      DynamicSqlWithoutParameters: 2/3 missed
+      CorrelatedScalarSubquery: 1/2 missed
+      DynamicSqlConcatenation: 1/3 missed
+      MagicDateLiteral: 1/3 missed
+      AggregateWithoutFilter: 1/2 missed
+      UpdateWithoutMeaningfulChange: 1/2 missed
+      InsertWithoutColumnList: 1/2 missed
+      LeadingWildcardLike: 1/4 missed
+
+  - Main patterns:
+      hard-coded literals: 9
+      date/conversion issues: 5
+      dynamic SQL / injection: 3
+      session settings: 2
+      aggregate issues: 2
+      transaction/error-handling: 1
+
+Observation:
+  Gemini 3.7 Flash matched 68 of 96 expected findings. Its misses cluster around session-setting restoration (SessionSettingChanged), explicit SQL-injection labeling (SqlInjectionViaDynamicSql), a single hard-coded literal on line 36, and one aggregate-without-filter case. Many of these are sibling labels that the model reports under alternate rule names (e.g., NoCountDisabled/XactAbortDisabled for the session settings), suggesting the issue was noticed but not tagged with the exact expected rule.
