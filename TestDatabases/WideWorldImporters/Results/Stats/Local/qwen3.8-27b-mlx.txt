@@ -1,0 +1,12 @@
+Model: qwen3.8-27b-mlx
+Input tokens: 13,318
+Output tokens: 56,176
+Total tokens: 69,494
+AI time: 2454.73 seconds
+Tokens/second: 28
+Estimated total cost: $0.000000 USD
+Notes
+
+qwen3.8-27b-mlx detected 83 of 96 expected findings within a +/-5 line tolerance, missing 13 expected findings and producing 3 extra findings. The missed expected findings are overwhelmingly warnings (12 warnings, 1 error), with HardCodedLiteral accounting for nearly half of the misses (6 of 13). The model also failed to report both SessionSettingChanged occurrences (NOCOUNT OFF and XACT_ABORT OFF), one SqlInjectionViaDynamicSql error, one MagicDateLiteral, one AggregateWithoutFilter, one InsertWithoutColumnList, and one LeadingWildcardLike. The extra findings are reasonable SQL-analyzer observations (ImplicitConversion and an additional CoalesceInJoin) that were not in the expected set rather than outright hallucinations.
+
+Pattern for missed findings: the model is good at flagging structural anti-patterns such as SELECT *, old-style joins, cursors, and obvious dynamic-SQL injection, but it is not consistent at enumerating every line-level occurrence. It tends to collapse or skip nearby issues—especially repeated hard-coded literals, adjacent TOP statements without ORDER BY, and session-setting changes—so a post-processing step that re-scans lines already flagged for a nearby issue would likely recover many of the missed findings.

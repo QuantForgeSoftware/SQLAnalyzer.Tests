@@ -1,0 +1,56 @@
+Comparison: qwen3.8-27b-mlx (Local) vs Test.ExpectedFindings.json
+Line tolerance: +/-5 (ignored if within 5 lines)
+
+Expected findings: 96
+Actual findings:   86
+Matched (within tolerance): 83
+Missed expected findings: 13
+Extra/unmatched findings: 3
+
+=== Missed Expected Findings ===
+- SessionSettingChanged at line 13 (warning)
+- SessionSettingChanged at line 16 (warning)
+- HardCodedLiteral at line 36 (warning)
+- HardCodedLiteral at line 51 (warning)
+- HardCodedLiteral at line 57 (warning)
+- HardCodedLiteral at line 81 (warning)
+- HardCodedLiteral at line 81 (warning)
+- SqlInjectionViaDynamicSql at line 115 (error)
+- MagicDateLiteral at line 141 (warning)
+- AggregateWithoutFilter at line 159 (warning)
+- HardCodedLiteral at line 174 (warning)
+- InsertWithoutColumnList at line 215 (warning)
+- LeadingWildcardLike at line 221 (warning)
+
+=== Extra / Unmatched Findings ===
+- ImplicitConversion at line 138 (warning) - Comparing date OrderDate with varchar literal '20160101' forces implicit conversion.
+- CoalesceInJoin at line 144 (warning) - COALESCE(i.CustomerID, 0) in the join predicate inhibits normal join optimization.
+- ImplicitConversion at line 229 (warning) - Comparing date OrderDate with varchar literal '2016-01-01' forces implicit conversion.
+
+=== Severity Mismatches Among Matched ===
+- XactAbortDisabled at line 16: expected warning, actual error
+- NotInNullableSubquery at line 48: expected error, actual warning
+- ReadUncommittedHint at line 33: expected warning, actual error
+
+=== Missed Rules Count ===
+- HardCodedLiteral: 6
+- SessionSettingChanged: 2
+- SqlInjectionViaDynamicSql: 1
+- MagicDateLiteral: 1
+- AggregateWithoutFilter: 1
+- InsertWithoutColumnList: 1
+- LeadingWildcardLike: 1
+
+=== Extra Rules Count ===
+- ImplicitConversion: 2
+- CoalesceInJoin: 1
+
+=== Pattern Analysis (Missed Expected Findings) ===
+Severity distribution of missed: {'warning': 12, 'error': 1}
+
+Session-setting warnings missed (2): the model failed to flag NOCOUNT OFF / XACT_ABORT OFF / ROWCOUNT as session-setting changes that are not restored.
+Hard-coded literal misses (6): the model often missed business/numeric literals embedded in predicates and temp-table inserts.
+Dynamic SQL misses (1): concatenated dynamic SQL without parameters was under-reported.
+Aggregate anti-pattern misses (1): unfiltered aggregates and redundant ORDER BY were missed.
+
+Overall pattern: qwen3.8-27b-mlx catches many structural anti-patterns (SELECT *, old-style joins, cursors, dynamic SQL injection, etc.) but is less consistent at line-level detail. It misses duplicate or adjacent findings—especially hard-coded literals, session-setting changes, TOP-without-ORDER BY, and unfiltered aggregates—likely because it groups or simplifies nearby issues rather than enumerating each occurrence.
