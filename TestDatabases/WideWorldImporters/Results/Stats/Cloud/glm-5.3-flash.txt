@@ -1,0 +1,35 @@
+
+Model: glm-5.3-flash
+Input tokens: 12,668
+Output tokens: 49,146
+Total tokens: 61,814
+AI time: 752.64 seconds
+Tokens/second: 82
+Estimated total cost: $0.233978 USD
+
+
+Notes
+
+glm-5.3-flash missed 18 expected findings (within a ±4 line tolerance).
+
+Rule-level breakdown of misses:
+  HardCodedLiteral: 8
+  SessionSettingChanged: 2
+  SqlInjectionViaDynamicSql: 2
+  CorrelatedScalarSubquery: 1
+  MagicDateLiteral: 1
+  AggregateWithoutFilter: 1
+  UpdateWithoutMeaningfulChange: 1
+  InsertWithoutColumnList: 1
+  LeadingWildcardLike: 1
+
+Observed patterns:
+- Literal/hard-coded values are a recurring blind spot. Multiple HardCodedLiteral and MagicDateLiteral misses suggest the model often flags the predicate shape (e.g., function-on-column, implicit conversion) but skips the embedded constant itself.
+- Session-setting restore findings were missed. The model reported the sibling rules (NoCountDisabled / XactAbortDisabled) at the same lines, but did not note that the settings are not restored before the procedure ends.
+- Correlated-subquery and COUNT(*)-for-existence variants are inconsistently detected; one variant at a given line may be reported while the other is omitted.
+- A dynamic-SQL LIKE leading-wildcard finding was missed at the same line where SqlInjectionViaDynamicSql was caught, indicating the model prioritizes security over sargability when both apply.
+- INSERT-without-column-list detection is hit-or-miss; one INSERT at line 213 was caught while the adjacent one at line 215 was not.
+- The self-updating UPDATE (Comments = Comments) inside a MERGE was missed, while a similar standalone UPDATE was flagged, suggesting the model loses nested-update rules inside MERGE statements.
+- Aggregate-without-filter detection is inconsistent: the SUM on Sales.OrderLines was reported, but the COUNT(*) on Sales.Orders was not.
+
+Overall: glm-5.3-flash has broad coverage but tends to report one representative issue per problematic code region. It frequently misses co-located secondary findings—especially hard-coded literals, session-setting restoration, nested-update rules, and some dynamic-SQL sargability issues—when a stronger primary issue (security, performance, or syntax) is present.

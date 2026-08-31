@@ -1,0 +1,27 @@
+Model: glm-5.3
+Input tokens: 12,668
+Output tokens: 39,261
+Total tokens: 51,929
+AI time: 389.22 seconds
+Tokens/second: 133
+Estimated total cost: $0.190484 USD
+Notes
+
+glm-5.3 missed 13 expected findings (within a ±4 line tolerance).
+
+Rule-level breakdown of misses:
+  HardCodedLiteral: 6
+  SessionSettingChanged: 2
+  SqlInjectionViaDynamicSql: 2
+  AggregateWithoutFilter: 1
+  InsertWithoutColumnList: 1
+  MagicDateLiteral: 1
+
+Observed patterns:
+- Hard-coded/magic literals dominate the misses. Multiple HardCodedLiteral entries and MagicDateLiteral indicate the model often flags the surrounding predicate shape (e.g., FunctionOnColumn, ImplicitConversion) but omits the embedded constant itself.
+- Session-setting restore findings (SessionSettingChanged) were missed while sibling NOCOUNT/XACT_ABORT rules at the same lines were reported.
+- Dynamic-SQL security and form issues were partially missed: SqlInjectionViaDynamicSql at lines 111/115 was absent, even though related DynamicSqlConcatenation / DynamicSqlWithoutParameters rules were present.
+- AggregateWithoutFilter for COUNT(*) over Sales.Orders was missed, while the SUM over Sales.OrderLines was caught, showing inconsistency in aggregate rule detection.
+- InsertWithoutColumnList on line 215 was missed, though a nearby HardCodedLiteral at line 213 was caught, suggesting co-located insert-form issues are sometimes skipped.
+
+Overall: glm-5.3 has solid coverage for the primary issue on each code region, but it frequently omits co-located secondary findings—especially hard-coded literals and session-setting restoration—when a stronger or adjacent primary issue is present. Four expected error-severity findings were reported as warnings, suggesting a tendency to downgrade severity.

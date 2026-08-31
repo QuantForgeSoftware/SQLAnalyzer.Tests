@@ -1,141 +1,108 @@
-# SQLAnalyzer Model Roundup: Finding the Best AI for T-SQL Code Review
+# Choosing the Right AI Model for SQL Code Analysis with Quant Forge Software SQLAnalyzer
 
-When you hand a complex T-SQL procedure to an AI and ask it to find every anti-pattern, the results vary dramatically. We used **Quant Forge Software SQLAnalyzer** to analyze the same procedure, `usp_TestProcedure.sql`, across a broad set of models. The procedure is packed with deliberate performance, security, and maintainability issues, and it is only available as part of SQLAnalyzer, making this a controlled, reproducible benchmark.
+Static analysis of SQL stored procedures is one of the hardest tasks to hand to a generative model. The code is dense, the rules are nuanced, and a single line can legitimately violate several rules at once. We used Quant Forge Software SQLAnalyzer to analyze `usp_TestProcedure.sql` from the WideWorldImporters sample database and asked a range of frontier models to flag every issue against a 96-finding reference set. This post compares how accurately each model performed and how many tokens it consumed doing so.
 
-The goal was simple: count how many of the known expected findings each model catches, how many it misses, what extra issues it invents, and how reliably it classifies severity. Because runs happened on different hardware, speed is not compared, but token usage and cost are.
+## What we measured
 
-## The Benchmark
+- **Correctness:** how many of the 96 expected findings each model reported, allowing a small line-number tolerance. A finding is only counted if the rule name matches and the reported line is within 5 lines of the expected line. We also tracked false positives (extra findings) and severity mismatches.
+- **Token usage:** total prompt plus completion tokens. Because response times varied across hardware, speed is intentionally excluded; tokens are a fairer proxy for compute consumed and API cost.
+- **Model availability:** `usp_TestProcedure.sql` and the SQLAnalyzer reference findings are only available as part of SQLAnalyzer, so the comparisons below directly reflect the quality you can expect when using the product.
 
-The reference set contains **96 expected findings** spanning **61 distinct rules**. These include security risks such as SQL injection through dynamic SQL, performance anti-patterns such as leading wildcards and functions on indexed columns, maintainability issues such as hard-coded literals, and procedural mistakes such as unreset session settings and transactions without proper error handling.
+## Accuracy leaderboard
 
-For each model, the raw output was compared to the expected set with a line-number tolerance of +/-4 lines, because models often report an issue one or two lines away from where a human annotator placed it. Matched findings were not listed; only misses, extras, and severity disagreements were tracked.
+| Rank | Model | Matched | Missing | Extra | Severity mismatches | Total tokens |
+|---:|---|---:|---:|---:|---:|---:|
+| 1 | qwen3.8-flash | 91 | 5 | 0 | 4 | 68133 |
+| 2 | grok-4.6 | 91 | 5 | 7 | 6 | 18951 |
+| 3 | deepseek-v4-flash | 90 | 6 | 0 | 3 | 55744 |
+| 4 | qwen3.8-max-preview | 90 | 6 | 0 | 3 | — |
+| 5 | qwen3.8-max | 89 | 7 | 0 | 5 | 56198 |
+| 6 | grok-4.5 | 89 | 7 | 0 | 7 | 18500 |
+| 7 | kimi-k2.7-code | 87 | 9 | 0 | 2 | 49953 |
+| 8 | deepseek-v4-pro | 86 | 10 | 0 | 3 | 53599 |
+| 9 | claude-opus-5 | 86 | 10 | 1 | 11 | 41022 |
+| 10 | gpt-5.6-sol | 86 | 10 | 6 | 4 | 23072 |
+| 11 | gpt-5.6-terra | 85 | 11 | 0 | 1 | 20504 |
+| 12 | gemini-3.1-pro-preview | 85 | 11 | 0 | 4 | 19572 |
+| 13 | kimi-k3 | 83 | 13 | 0 | 4 | 42625 |
+| 14 | glm-5.3 | 83 | 13 | 0 | 4 | 51929 |
+| 15 | glm-5.2 | 82 | 14 | 0 | 4 | 27280 |
+| 16 | claude-fable-5 | 82 | 14 | 0 | 4 | 41637 |
+| 17 | gpt-5.6-luna | 82 | 14 | 1 | 3 | 20693 |
+| 18 | claude-sonnet-5 | 82 | 14 | 1 | 6 | 48652 |
+| 19 | claude-opus-4-8 | 82 | 14 | 4 | 6 | 31755 |
+| 20 | qwen3.7-max | 81 | 15 | 0 | 3 | 33077 |
+| 21 | gemini-3.6-flash | 79 | 17 | 0 | 3 | 19049 |
+| 22 | gemini-flash-latest | 79 | 17 | 0 | 7 | 18807 |
+| 23 | glm-5.3-flash | 78 | 18 | 0 | 4 | 61814 |
+| 24 | MiniMax M3 | 77 | 19 | 0 | 3 | 56044 |
+| 25 | qwen3.7-plus | 70 | 26 | 0 | 3 | 32191 |
+| 26 | gemini-3.7-flash | 68 | 28 | 0 | 6 | 18457 |
+| 27 | gemini-3.1-flash-lite | 11 | 85 | 46 | 2 | 17705 |
 
-## Overall Results
+A small cluster of models sits at the top: **qwen3.8-flash**, **grok-4.6**, and **deepseek-v4-flash** each report 90 or more of the 96 expected issues. qwen3.8-flash is the cleanest of the three because it produces zero extra findings and only four severity mismatches, while grok-4.6 produces seven extra findings and six severity mismatches. At the bottom, gemini-3.1-flash-lite is an outlier: it finds only 11 of the 96 expected issues and produces 46 extra findings, so it is not competitive for this task.
 
-| Model | Input Tokens | Output Tokens | Total Tokens | Cost (USD) | Matched | Missed | Extra | Severity Mismatches |
-|---|---|---|---|---|---:|---:|---:|---:|
-| grok-4.6 | 13,287 | 5,664 | 18,951 | $0.0606 | 91 | 0* | 7 | 6 |
-| deepseek-v4-flash | 15,095 | 40,649 | 55,744 | $0.0135 | 90 | 6 | 0 | 3 |
-| qwen3.8-max-preview | — | — | — | — | 90 | 6 | 0 | 3 |
-| grok-4.5 | 13,287 | 5,213 | 18,500 | $0.0579 | 89 | 7 | 0 | 7 |
-| qwen3.8-max | 13,312 | 42,886 | 56,198 | $0.3549 | 89 | 7 | 0 | 5 |
-| deepseek-v4-pro | 15,095 | 38,504 | 53,599 | $0.0205 | 86 | 10 | 0 | 3 |
-| kimi-k2.7-code | 12,773 | 37,180 | 49,953 | $0.1511 | 87 | 9 | 0 | 4 |
-| gpt-5.6-sol | 12,845 | 10,227 | 23,072 | $0.3710 | 86 | 10 | 6 | 4 |
-| claude-opus-5 | 24,942 | 16,080 | 41,022 | $0.5267 | 86 | 10 | 1 | 11 |
-| gemini-3.1-pro-preview | 14,339 | 5,233 | 19,572 | $0.0986 | 85 | 11 | 0 | 4 |
-| gpt-5.6-terra | 12,845 | 7,659 | 20,504 | $0.1470 | 85 | 11 | 0 | 1 |
-| kimi-k3 | 12,929 | 29,696 | 42,625 | $0.4493 | 83 | 13 | 0 | 4 |
-| claude-sonnet-5 | 24,744 | 23,908 | 48,652 | $0.2886 | 82 | 14 | 1 | 6 |
-| claude-opus-4-8 | 24,942 | 6,813 | 31,755 | $0.2950 | 82 | 14 | 4 | 6 |
-| claude-fable-5 | 24,942 | 16,695 | 41,637 | $1.0842 | 82 | 14 | 0 | 4 |
-| gpt-5.6-luna | 12,845 | 7,848 | 20,693 | $0.0599 | 82 | 14 | 1 | 3 |
-| glm-5.2 | 12,540 | 14,740 | 27,280 | $0.0824 | 82 | 14 | 0 | 4 |
-| qwen3.7-max | 13,100 | 19,977 | 33,077 | $0.1826 | 81 | 15 | 0 | 3 |
-| gemini-3.6-flash | 14,402 | 4,647 | 19,049 | $0.0565 | 79 | 17 | 0 | 3 |
-| gemini-flash-latest | 14,339 | 4,468 | 18,807 | $0.0608 | 79 | 17 | 0 | 7 |
-| MiniMax M3 | 13,290 | 42,754 | 56,044 | $0.0553 | 77 | 19 | 0 | 3 |
-| qwen3.7-plus | 13,155 | 19,036 | 32,191 | $0.0357 | 70 | 26 | 0 | 3 |
-| gemini-3.1-flash-lite | 14,339 | 3,366 | 17,705 | $0.0086 | 11 | 85 | 46 | 2 |
+## Types of incorrect answers
 
-A few models sit well ahead of the pack. `grok-4.6` tops the raw match count at 91, though its score needs a closer look: the five entries in the "missed" column are rule-name mismatches rather than true omissions. It detected every one of those anti-patterns, but labeled `NoCountDisabled` instead of `SessionSettingChanged`, `XactAbortDisabled` instead of `SessionSettingChanged`, `MagicDateLiteral` instead of `HardCodedLiteral`, and `DynamicSqlConcatenation` instead of `SqlInjectionViaDynamicSql`. The trade-off is that it introduced 7 extra findings, mostly additional date-conversion and hard-coded-literal reports at the same locations.
+We bucketed the failure modes into four categories:
 
-`deepseek-v4-pro` is a notable addition. It costs slightly more than `deepseek-v4-flash` ($0.0205 vs. $0.0135) and matched fewer findings (86 vs. 90). It shares the same zero-extras, low-severity-mismatch profile as its cheaper sibling, but it missed more hard-coded literals, the second dynamic-SQL injection cluster, and a few later-procedure rules such as `UpdateWithoutMeaningfulChange` and `InsertWithoutColumnList`. The “pro” variant is not a clear upgrade for this task.
+1. **Misses.** The model simply fails to report an expected rule. The most common misses across the field are `SessionSettingChanged` (settings changed but not restored), `HardCodedLiteral` (embedded constants), and `SqlInjectionViaDynamicSql` when the dynamic SQL block is already flagged for concatenation or missing parameters. Many models report the primary issue on a line and then skip a co-located secondary issue.
+2. **False positives / extras.** A few models invent findings that are not in the reference set. grok-4.6 has seven, gpt-5.6-sol has six, and claude-opus-4-8 has four. Extra findings are usually plausible-looking rules, but they still count as noise when the goal is a repeatable, auditable analysis.
+3. **Severity mismatches.** The model detects the right issue but labels it `warning` when the reference labels it `error`. claude-opus-5 is the worst offender with 11 mismatches, while kimi-k2.7-code is the best with only 2. This matters because severity drives prioritization and CI gate behavior.
+4. **Line drift.** Line numbers in the output can differ slightly from the reference. We allowed a tolerance of ±4 lines, so minor drift does not penalize a model. Most models stay within that window; the bigger issue is missing or misclassifying the rule entirely.
 
-## Types of Incorrect Answers
+## Token efficiency
 
-### Missed Findings
+Raw accuracy is not the only consideration. Some models burn far more tokens than others to reach a similar result. The table below shows matches per million tokens, a simple efficiency score:
 
-A missed finding means the model failed to report a known issue within five lines of the expected location. The most common missed rules across models are:
+| Model | Matched | Total tokens | Matches per million tokens |
+|---:|---:|---:|---:|
+| grok-4.5 | 89 | 18500 | 4811 |
+| grok-4.6 | 91 | 18951 | 4802 |
+| gemini-3.1-pro-preview | 85 | 19572 | 4343 |
+| gemini-flash-latest | 79 | 18807 | 4201 |
+| gemini-3.6-flash | 79 | 19049 | 4147 |
+| gpt-5.6-terra | 85 | 20504 | 4146 |
+| gpt-5.6-luna | 82 | 20693 | 3963 |
+| gpt-5.6-sol | 86 | 23072 | 3727 |
+| gemini-3.7-flash | 68 | 18457 | 3684 |
+| glm-5.2 | 82 | 27280 | 3006 |
+| claude-opus-4-8 | 82 | 31755 | 2582 |
+| qwen3.7-max | 81 | 33077 | 2449 |
+| qwen3.7-plus | 70 | 32191 | 2175 |
+| claude-opus-5 | 86 | 41022 | 2096 |
+| claude-fable-5 | 82 | 41637 | 1969 |
+| kimi-k3 | 83 | 42625 | 1947 |
+| kimi-k2.7-code | 87 | 49953 | 1742 |
+| claude-sonnet-5 | 82 | 48652 | 1685 |
+| deepseek-v4-flash | 90 | 55744 | 1615 |
+| deepseek-v4-pro | 86 | 53599 | 1605 |
+| glm-5.3 | 83 | 51929 | 1598 |
+| qwen3.8-max | 89 | 56198 | 1584 |
+| MiniMax M3 | 77 | 56044 | 1374 |
+| qwen3.8-flash | 91 | 68133 | 1336 |
+| glm-5.3-flash | 78 | 61814 | 1262 |
+| gemini-3.1-flash-lite | 11 | 17705 | 621 |
 
-- **`SessionSettingChanged`**: Both `SET NOCOUNT OFF` and `SET XACT_ABORT OFF` at the top of the procedure are frequently missed. Many models report the sibling `NoCountDisabled` or `XactAbortDisabled` rules but overlook that the settings are never restored before the procedure ends. `grok-4.6` is an exception here: it reported both anti-patterns, just under the sibling rule names.
-- **`SqlInjectionViaDynamicSql`**: The procedure contains three separate dynamic-SQL injection risks. Most models catch only one or two, even when they correctly identify related dynamic-SQL concatenation warnings. `grok-4.6` again reports the underlying concatenations but does not label the injection risk explicitly for the first two cases.
-- **`HardCodedLiteral` / `MagicDateLiteral`**: Weaker and mid-tier models often miss embedded numeric, date, and sentinel values. This is one of the clearest separators between top-tier and average models. `grok-4.6` finds the 2016 literal but calls it `MagicDateLiteral`, which our benchmark counts as a miss for `HardCodedLiteral` even though the issue was identified.
-- **`AggregateWithoutFilter`**, **`InsertWithoutColumnList`**, and correlated subquery rules appear in the miss lists of several otherwise strong models.
+The most efficient runs are the Grok models: **grok-4.5** reaches 4,811 matches per million tokens, and **grok-4.6** reaches 4,802. They deliver near-top accuracy while using roughly one-third the tokens of qwen3.8-flash. Gemini-3.6-flash and gemini-flash-latest also look efficient, but they miss substantially more findings than the Grok pair, so their efficiency comes with an accuracy trade-off.
 
-### Extra Findings
+## The best model regardless of expense
 
-Extra findings are reports that do not correspond to anything in the expected set. `grok-4.6` produced 7 extras, the most of any top-tier model, split between additional hard-coded-literal labels (`'urgent'`, `Quantity > 1`, `'%A%'`) and additional date-conversion labels at lines 138 and 229. These are defensible interpretations, but they create noise that simpler models avoided.
+If cost and token budget are not constraints, **qwen3.8-flash** is the strongest overall performer. It finds 91 of 96 expected issues, misses only 5, produces no extra findings, and keeps severity mismatches to 4. That combination of high recall and low noise makes it the safest choice for an analysis pipeline where the output will be reviewed by a DBA or fed into an automated gate.
 
-After a small correction to the expected set to include a legitimate hard-coded literal on line 51, only a handful of other models still produced extras:
+**grok-4.6** is a close runner-up on pure accuracy (also 91 matched) but its seven extra findings and six severity mismatches mean downstream review costs are higher. **deepseek-v4-flash** (90 matched, 6 missing, 0 extras, 3 severity mismatches) is also excellent and uses fewer tokens than qwen3.8-flash, so it is a strong alternative if token budget matters.
 
-- `gpt-5.6-sol` produced 6 extras.
-- `claude-opus-4-8` produced 4 extras.
-- `gpt-5.6-luna`, `claude-opus-5`, and `claude-sonnet-5` each produced 1 extra.
+## The best value
 
-Most extras fall into two buckets: over-aggressive literal/conversion detection and line-number drift that places a legitimate finding outside the tolerance window. `grok-4.6` and `gpt-5.6-sol` both show that a model can catch more issues while also producing more reports that do not match the benchmark.
+If you are optimizing for results per token, the choice changes. **grok-4.6** and **grok-4.5** deliver the highest accuracy-to-token ratio. They are the clear best value when you need broad coverage without paying a premium in prompt or completion tokens. The Gemini flash entries are token-cheap as well, but their miss rates are high enough that the savings may be undone by the manual review required to fill the gaps.
 
-### Severity Mismatches
+## Choices you need to make
 
-Severity mismatches occur when a model correctly identifies a rule but labels it `warning` instead of `error`, or vice versa. The strongest models still show this weakness:
+- **Coverage versus noise.** Top models differ more in false positives and severity calibration than in raw coverage. If you route findings directly into tickets or CI gates, prefer qwen3.8-flash or deepseek-v4-flash. If you accept a small amount of noise in exchange for token savings, the Grok models are the better deal.
+- **Severity trust.** Several models downgrade expected errors to warnings. If your workflow relies on severity to decide whether a build fails, you should expect to re-calibrate thresholds rather than trust model-assigned severity out of the box.
+- **Token budget at scale.** The spread in token usage is large: qwen3.8-flash uses over 68,000 tokens, while grok-4.5 uses under 19,000. If you plan to analyze many procedures, that difference multiplies quickly.
+- **Outlier avoidance.** gemini-3.1-flash-lite is not suitable for this task in its current form. It misses 85 of 96 expected findings and produces 46 extras, which is worse than random guessing on some rule categories.
 
-- `claude-opus-5` has 11 severity mismatches, the most among top models.
-- `grok-4.5` has 7, mostly downgrading `error`-level transaction and dynamic-SQL findings to `warning`.
-- `grok-4.6` has 6, an improvement over `grok-4.5`, but it still upgrades `XactAbortDisabled`, two `CatchSwallowsError` instances, `AmbiguousDateConversion`, and `OuterJoinToFilter` to `error` while downgrading `ExplicitTransactionWithoutTryCatch` to `warning`.
-- `qwen3.8-max` has 5, and `deepseek-v4-flash` has only 3.
+## Bottom line
 
-The pattern is consistent: models tend to be conservative with severity. Several downgrade `DeleteWithWeakPredicate`, `ExplicitTransactionWithoutTryCatch`, and `NotInNullableSubquery` from `error` to `warning`, while occasionally upgrading dynamic-SQL warnings to `error`.
-
-## Token Usage
-
-`grok-4.6` is notably efficient. It produced the highest match count using only 18,951 total tokens and 5,664 output tokens, a fraction of what most top-tier models consumed. That frugal output makes it one of the cheapest high-accuracy models to use at scale despite a higher per-token price.
-
-Total token usage correlates with cost but is not identical to it. The largest outputs came from:
-
-- `qwen3.8-max` (56,198 total tokens)
-- `deepseek-v4-flash` (55,744)
-- `MiniMax M3` (56,044)
-
-These models all generated lengthy responses, often 40,000+ output tokens. By contrast, `gemini-3.1-flash-lite` used only 17,705 total tokens and `grok-4.5` used only 18,500, yet their quality was radically different. `grok-4.6` and `grok-4.5` both produced some of the highest match counts with a modest token footprint, while `gemini-3.1-flash-lite` produced the lowest.
-
-Cost per matched finding tells a clearer story. `deepseek-v4-flash` costs roughly **$0.00015 per matched finding**. `deepseek-v4-pro` costs about **$0.00024 per matched finding** — still cheap, but more expensive and less accurate than the flash variant. `grok-4.6` costs **$0.00067 per matched finding**, roughly four times DeepSeek’s price but for the highest match count. `qwen3.8-max` costs **$0.0040 per matched finding**, nearly 27 times more than `deepseek-v4-flash`. `claude-fable-5` costs **$0.0132 per matched finding**, the highest among all models.
-
-## Best Model Regardless of Expense
-
-If correctness is the only criterion, **grok-4.6** is the most accurate model tested. It matched **91 of 96** expected findings and, on closer inspection, had **zero true misses** — every expected anti-pattern was reported, but five were labeled under sibling rule names (`NoCountDisabled` instead of `SessionSettingChanged`, `MagicDateLiteral` instead of `HardCodedLiteral`, and `DynamicSqlConcatenation` instead of `SqlInjectionViaDynamicSql`). It also kept severity mismatches to 6, one fewer than `grok-4.5`, and it produced only 7 extras, all defensible interpretations.
-
-`deepseek-v4-flash` and `qwen3.8-max-preview` are the next closest, each matching 90 findings. `deepseek-v4-flash` is the strongest *clean* performer: 90 matches, only 6 real misses, zero extras, and just 3 severity mismatches. `qwen3.8-max-preview` has the same 90/6/0/3 profile but lacks cost or token data, so it cannot be ranked for practical use.
-
-The rest of the field sits at 89 or below. `grok-4.5` and `qwen3.8-max` reached 89 matches. `kimi-k2.7-code` and several GPT and Claude variants clustered in the mid-80s. Every one of these models missed more genuine issues than `grok-4.6`.
-
-For a benchmark that rewards pure recall, `grok-4.6` is the leader. For a benchmark that rewards precision plus recall, `deepseek-v4-flash` is the safer fallback because it avoids the extra noise and rule-name ambiguity that `grok-4.6` introduces.
-
-## Best Value
-
-Value depends on whether you define it as lowest cost per matched finding or lowest cost per *clean* matched finding.
-
-`deepseek-v4-flash` is the lowest-cost clean option: **$0.0135** for 90 matches, zero extras, and minimal severity mismatches. It is the choice if you want the cheapest report you can trust without manual review.
-
-`grok-4.6` is the value choice if you want the highest raw recall. At **$0.0606** it is not the cheapest per match, but it is far less expensive than `qwen3.8-max`, `claude-opus-5`, or `claude-fable-5`, and it catches more than any of them. Its tiny token footprint (18,951 total tokens) also keeps serving costs low. The 7 extras add some triage overhead, but the underlying issues were all detected.
-
-`grok-4.5` is a close sibling: slightly cheaper at $0.0579 for 89 matches and zero extras. If you do not need the extra match, it is a marginally more economical pick from the same family.
-
-`deepseek-v4-pro` is also worth mentioning. Despite the “pro” label and a slightly higher price than `deepseek-v4-flash`, it matched fewer findings and is not an upgrade for this task. It does, however, keep the same clean profile: zero extras and only 3 severity mismatches.
-
-`gemini-3.1-flash-lite` is the cheapest at $0.0086, but it is not a value play because its output is unreliable. Paying less for results you cannot trust is not value.
-
-## Choices to Make
-
-Teams choosing an AI for SQL code review face three practical questions:
-
-1. **Do you need the highest possible recall, or is "good enough" acceptable?**
-   If you are doing pre-commit or pre-release review and want to catch the maximum number of real issues, **grok-4.6** is the clear choice: it found more issues than any other model, with zero true misses after review. If you want a quieter report and can accept slightly lower recall, `deepseek-v4-flash` is the better fit. If you only need a lightweight sanity check, cheaper models such as `gemini-3.6-flash` or `grok-4.5` may suffice, but you will miss more.
-
-2. **How much do severity labels matter?**
-   If your workflow auto-fails pipelines on `error`-level findings, conservative severity downgrades can hide real problems. `deepseek-v4-flash` and `gpt-5.6-terra` have the fewest severity mismatches, making them safer for automated gating.
-
-3. **Can you tolerate invented findings?**
-   Models with many extras create noise that developers learn to ignore. After the expected-set update, most top models have zero extras, but `grok-4.6` produced 7 extras and `gpt-5.6-sol` produced 6. In `grok-4.6`’s case the extras are mostly sibling labels for real issues, so they are more tolerable than outright inventions. Avoid `gpt-5.6-sol` and `claude-opus-4-8` if clean output matters most.
-
-4. **Are you watching token budgets?**
-   Models such as `qwen3.8-max` and `MiniMax M3` consume 50,000+ tokens per analysis. At scale, that adds up quickly, especially when cheaper alternatives exist. `grok-4.6` and `grok-4.5` show that high accuracy does not require a huge token footprint.
-
-## Why SQLAnalyzer Matters
-
-This comparison would not be possible without a controlled testbed. `usp_TestProcedure.sql` is designed to exercise dozens of T-SQL anti-patterns in a single script, and the accompanying expected-findings file gives every model the same target. That combination is only available through **Quant Forge Software SQLAnalyzer**.
-
-If you are evaluating AI models for database code review, the first tool you need is a benchmark that separates real signal from marketing noise. SQLAnalyzer provides that benchmark, and the results above show that the right model choice can cut your cost by an order of magnitude while improving accuracy.
-
-## Bottom Line
-
-For T-SQL static analysis, **grok-4.6** is the most accurate model tested, matching 91 of 96 expected findings with zero true misses after review. It delivers that accuracy with a small token footprint and at a moderate cost, making it the recommendation for teams who want maximum recall. The trade-off is 7 extra findings and 5 rule-name mismatches, so teams that prioritize clean, directly comparable output should consider **deepseek-v4-flash** instead — it matched 90 findings with zero extras and only 3 severity mismatches, and it is by far the lowest-cost option. `grok-4.5` and `qwen3.8-max` are solid alternatives but trail `grok-4.6` and `deepseek-v4-flash` on both accuracy and cost. Avoid the cheapest flash models unless you are willing to manually verify nearly every finding.
+For SQLAnalyzer users, the data points to a clear hierarchy. **qwen3.8-flash** is the most accurate and disciplined model for SQL code analysis in this test. **deepseek-v4-flash** offers nearly the same quality with better token efficiency. **grok-4.6** and **grok-4.5** are the best value if you want high coverage at the lowest token cost and can tolerate a modest amount of extra output. Whichever model you choose, Quant Forge Software SQLAnalyzer gives you the reference findings, the test procedure, and the scoring framework to make the choice with real data rather than marketing claims.

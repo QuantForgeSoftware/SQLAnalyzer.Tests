@@ -1,0 +1,24 @@
+Model: qwen3.8-flash
+Input tokens: 13,338
+Output tokens: 54,795
+Total tokens: 68,133
+AI time: 536.64 seconds
+Tokens/second: 127
+Estimated total cost: $0.444307 USD
+Notes
+
+qwen3.8-flash missed 5 expected findings (within a ±4 line tolerance).
+
+Rule-level breakdown of misses:
+  SessionSettingChanged: 2
+  HardCodedLiteral: 1
+  InsertWithoutColumnList: 1
+  SqlInjectionViaDynamicSql: 1
+
+Observed patterns:
+- Session-setting restoration findings were missed on lines 13 and 16, while the sibling NOCOUNT/XACT_ABORT rules were reported. The model sees the setting is disabled but does not flag that it is not restored before the procedure ends.
+- Hard-coded literals are occasionally skipped when the primary shape issue is already flagged. The HardCodedLiteral at line 36 (year 2016) was missed despite FunctionOnColumn being reported at the same line.
+- A dynamic-SQL security finding at line 115 was missed even though DynamicSqlConcatenation and DynamicSqlWithoutParameters were reported at lines 114/115, suggesting the model emphasizes the mechanism over the explicit injection risk for one of the two dynamic blocks.
+- InsertWithoutColumnList at line 215 was missed while the adjacent HardCodedLiteral at line 213/212 was reported, indicating co-located insert-form issues are sometimes dropped.
+
+Overall: qwen3.8-flash has very strong coverage (91/96 matched) and produces no spurious findings. Its main gaps are isolated secondary issues at already-flagged code regions and the session-setting restoration pattern. Four expected error-severity rules were downgraded to warning, so while detection is broad, severity calibration is slightly conservative.
