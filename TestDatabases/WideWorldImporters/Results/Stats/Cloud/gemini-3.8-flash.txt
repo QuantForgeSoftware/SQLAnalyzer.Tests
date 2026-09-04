@@ -1,0 +1,18 @@
+Model: gemini-3.8-flash
+Input tokens: 14,339
+Output tokens: 4,960
+Total tokens: 19,299
+AI time: 63.55 seconds
+Tokens/second: 304
+Estimated total cost: $0.029354 USD
+
+**Notes**
+gemini-3.8-flash found 82 of 96 expected findings (85.4% recall) with 4 extra findings. The missed findings cluster strongly around two weaknesses.
+
+- HardCodedLiteral: 8 of the 14 misses are hard-coded literal/identifier/date constants (lines 36, 51, 57, 81×2, 174, 213, 224). The model flags some magic values but systematically misses others, especially when they are embedded inside larger expressions (YEAR predicate, ISNULL, UNION branches, HAVING, DELETE, INSERT, UPDATE) or when multiple literals appear on the same conceptual line. It appears to recognize obvious standalone constants but not contextual/positional literals.
+- Security rules: SqlInjectionViaDynamicSql was missed for both @CustomerID (line 111) and @OrderID (line 115) dynamic concatenations. This is a significant gap because the model did report DynamicSqlConcatenation on the same lines, so it identified the pattern but did not upgrade it to an injection classification.
+- SessionSettingChanged at lines 13 and 16: like other models, gemini-3.8-flash reports the specific SET options (NoCountDisabled, XactAbortDisabled) but misses the broader meta-rule that a session setting is changed and not restored.
+- AggregateWithoutFilter at line 159 was missed while the same rule at line 154 was found, suggesting a proximity/duplication suppression effect.
+- CorrelatedScalarSubquery at line 84 was missed even though line 66 was detected, another instance of repeated-pattern suppression.
+
+The four extra findings are mostly duplicate TopWithoutOrderBy entries and an extra DynamicSqlConcatenation entry on line 114 that may overlap with the line 115 issue. Overall gemini-3.8-flash is cost-efficient but less precise on contextual literals and security severity, and it under-reports repeated anti-patterns.

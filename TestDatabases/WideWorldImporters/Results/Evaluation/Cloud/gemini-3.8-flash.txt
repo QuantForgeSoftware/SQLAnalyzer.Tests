@@ -1,0 +1,29 @@
+Comparison for gemini-3.8-flash (Cloud) vs Test.ExpectedFindings.json
+Lines ignored if difference < 5. Matched findings are not listed.
+
+Total expected: 96
+Matched: 82
+Missed: 14
+Extra: 4
+
+Missed findings:
+  line 13: SessionSettingChanged (warning)
+  line 16: SessionSettingChanged (warning)
+  line 36: HardCodedLiteral (warning)
+  line 51: HardCodedLiteral (warning)
+  line 57: HardCodedLiteral (warning)
+  line 81: HardCodedLiteral (warning)
+  line 81: HardCodedLiteral (warning)
+  line 84: CorrelatedScalarSubquery (warning)
+  line 111: SqlInjectionViaDynamicSql (error)
+  line 115: SqlInjectionViaDynamicSql (error)
+  line 159: AggregateWithoutFilter (warning)
+  line 174: HardCodedLiteral (warning)
+  line 213: HardCodedLiteral (warning)
+  line 224: HardCodedLiteral (warning)
+
+Extra findings:
+  line 63: TopWithoutOrderBy (warning)
+  line 97: TopWithoutOrderBy (warning)
+  line 114: DynamicSqlConcatenation (warning)
+  line 147: TopWithoutOrderBy (warning)

@@ -1,0 +1,15 @@
+Model: claude-fable-5-1
+Input tokens: 24,946
+Output tokens: 15,357
+Total tokens: 40,303
+AI time: 140.90 seconds
+Tokens/second: 286
+Estimated total cost: $1.017310 USD
+
+**Notes**
+claude-fable-5-1 found 93 of 96 expected findings (96.9% recall) with 10 extra findings. The missed findings are notable because they are all subtle variants of rules that the model did detect elsewhere.
+
+- SessionSettingChanged at lines 13 and 16: the model reported NoCountDisabled and XactAbortDisabled but failed to flag the broader pattern that a session setting is changed and not restored. This suggests the model looks for specific named anti-patterns rather than the generic "session setting changed" abstraction.
+- AggregateWithoutFilter at line 159: the model caught the same AggregateWithoutFilter issue at line 154 (SUM over Sales.OrderLines) but missed the nearly identical COUNT(*) over Sales.Orders. This indicates a proximity or duplication bias: when the same rule category appears twice in close succession, the model may suppress the second occurrence.
+
+Most extra findings are duplicate rule instances the model invented on the same conceptual line (e.g., multiple TopWithoutOrderBy and HardCodedLiteral entries) and a few spurious structural warnings (TempTableWithoutCleanup at line 94 for #ImplicitOrders, which is actually created by SELECT ... INTO). Overall the model is highly accurate but slightly over-generates on composite issues and under-generates on repeated patterns.

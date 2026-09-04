@@ -1,0 +1,16 @@
+Model: gpt-6-astra
+Input tokens: 12,845
+Output tokens: 7,992
+Total tokens: 20,837
+AI time: 98.22 seconds
+Tokens/second: 212
+Estimated total cost: $0.528050 USD
+
+**Notes**
+gpt-6-astra found 88 of 96 expected findings (91.7% recall) but produced 23 extra findings, a notably high false-positive rate. The missed findings reveal two distinct blind spots.
+
+- Security severity: SqlInjectionViaDynamicSql was missed for both @CustomerID (line 111) and @OrderID (line 115) dynamic concatenations. As with gemini-3.8-flash, the model recognizes DynamicSqlConcatenation but does not consistently elevate the same pattern to a SQL-injection classification, suggesting the security rule is treated as a separate, harder-to-trigger category.
+- SessionSettingChanged at lines 13 and 16: the model reports the specific SET option violations but misses the meta-rule that session settings are changed and not restored. This is the same abstraction gap seen in other models.
+- Single-instance misses: NotInNullableSubquery (line 48), TableVariableEstimate (line 90), WhileLoopRowByRow (line 105), and MultiStatementTvfInsteadOfInline (line 263). These are scattered structural/semantic rules rather than a cluster, indicating occasional lapses in pattern coverage rather than a systematic weakness.
+
+The 23 extra findings are dominated by over-eager HardCodedLiteral reporting (10 instances) and duplicated/fragmented rules on the same line (e.g., FunctionOnColumn and HardCodedLiteral each appearing twice at line 144). Several extras are also line-offset artifacts (lines 18, 20, 45, 69, 141, 156, 257) where the model appears to attribute literals or hints to nearby declaration or parameter lines instead of the actual statement lines. Overall gpt-6-astra is high-recall but heavily over-reports, especially on hard-coded constants and composite expressions.

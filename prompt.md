@@ -13,6 +13,14 @@ Return findings as a JSON array with the following shape for each issue:
 }
 ```
 
+## Output rules
+
+- One finding per rule per statement. Do not emit the same rule twice for the same SQL statement, even if the statement contains multiple clauses that each satisfy the rule. Choose the single best line number for the statement.
+- The `lineNumber` must be the actual line in the supplied source file where the anti-pattern begins. Do not increment or decrement line numbers, and do not report findings on blank or comment-only lines.
+- Do not decompose a single statement into multiple findings for the same issue. For example, a cursor declaration with `SELECT TOP (n)` should produce either a `CursorRowByRow` finding or a `TopWithoutOrderBy` finding, not both.
+- When a single construct satisfies both a specific rule and a more general rule, report only the most specific applicable rule unless the general rule adds distinct information.
+- Avoid duplicate rule categories on the same line. For example, if a `LIKE '%...%'` pattern is built by dynamic SQL, report `SqlInjectionViaDynamicSql` or `LeadingWildcardLike`, not both.
+
 ## Minimum Rules to detect
 
 ### 1. NoCountDisabled

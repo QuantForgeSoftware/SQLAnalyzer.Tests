@@ -1,0 +1,24 @@
+Comparison for claude-fable-5-1 (Cloud) vs Test.ExpectedFindings.json
+Lines ignored if difference < 5. Matched findings are not listed.
+
+Total expected: 96
+Matched: 93
+Missed: 3
+Extra: 10
+
+Missed findings:
+  line 13: SessionSettingChanged (warning)
+  line 16: SessionSettingChanged (warning)
+  line 159: AggregateWithoutFilter (warning)
+
+Extra findings:
+  line 63: TopWithoutOrderBy (warning)
+  line 81: HardCodedLiteral (warning)
+  line 94: TempTableWithoutCleanup (warning)
+  line 97: TopWithoutOrderBy (warning)
+  line 114: DynamicSqlConcatenation (warning)
+  line 115: DynamicSqlWithoutParameters (warning)
+  line 147: TopWithoutOrderBy (warning)
+  line 169: UpdateWithoutMeaningfulChange (warning)
+  line 215: InsertWithoutColumnList (warning)
+  line 220: LeadingWildcardLike (warning)
