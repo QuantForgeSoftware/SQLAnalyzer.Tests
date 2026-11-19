@@ -1,0 +1,43 @@
+Model: gpt-6.2-sol-re-max
+Input tokens: 13,648
+Output tokens: 23,033
+Total tokens: 36,681
+AI time: 255.64 seconds
+Tokens/second: 143
+Estimated total cost: $0.339514 USD
+
+**Notes**
+=====
+Run: gpt-6.2-sol (max effort) (command line --run-discovered-effort max), 11/17/2026 3:51 PM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 81
+Missed expected findings: 15
+Extra findings in output: 7
+Reported findings: 88 (recall 0.844, precision 0.920, F1 0.880)
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  TopWithoutOrderBy: 2 missed out of 8 expected (matched 6); expected lines [98, 148]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  CursorRowByRow: 1 missed out of 1 expected (matched 0); expected lines [98]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  NotInNullableSubquery: 1 missed out of 1 expected (matched 0); expected lines [48]
+  TableVariableEstimate: 1 missed out of 1 expected (matched 0); expected lines [90]
+  WhileLoopRowByRow: 1 missed out of 1 expected (matched 0); expected lines [105]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 9 of 9 HardCodedLiteral and 6 of 8 TopWithoutOrderBy matched.
+  - Shared-line companion findings skipped: SessionSettingChanged [13, 16], SqlInjectionViaDynamicSql [111, 115].
+  - Part of the dynamic LIKE block at line 221 was missed.
+  - Rules missed entirely: CursorRowByRow, NotInNullableSubquery, TableVariableEstimate, WhileLoopRowByRow.
+  - Line numbers: 34 of 81 matches are one line early (still within the ±4 tolerance). Findings span lines 12-261 (last expected finding is at 263).
+  - 4 severity disagreements (2 warnings raised to errors, 1 errors lowered to warnings).
+  - Extra findings (7): 4 HardCodedLiteral, 2 TopWithoutOrderBy, 1 CoalesceInJoin.
+  - The run is complete: exit code 0, valid JSON, both analysis passes finished.
+  - AI time 255.64 s (4:16); 36,681 tokens (23,033 output); $0.34 per run.
+  - Ranks 42nd of 58.

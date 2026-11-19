@@ -1,0 +1,47 @@
+Model: gemini-4-hydrogen-re-none
+Input tokens: 13,658
+Output tokens: 3,927
+Total tokens: 17,585
+AI time: 35.24 seconds
+Tokens/second: 499
+Estimated total cost: $0.049939 USD
+
+**Notes**
+=====
+Run: gemini-4-hydrogen (none effort) (command line --run-discovered-effort none), 11/13/2026 3:37 PM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 65
+Missed expected findings: 31
+Extra findings in output: 0
+Reported findings: 65 (recall 0.677, precision 1.000, F1 0.807)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlWithoutParameters: 1 missed out of 3 expected (matched 2); expected lines [116]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  SelectStar: 1 missed out of 2 expected (matched 1); expected lines [263]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Report-once on repeated patterns: 1 of 9 HardCodedLiteral and 1 of 8 TopWithoutOrderBy matched.
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) and SqlInjectionViaDynamicSql (111, 115)
+    skipped where the more specific rules were reported.
+  - Dynamic LIKE block at 221 only partly covered (DynamicSqlConcatenation and/or LeadingWildcardLike missed).
+  - No expected rule was missed entirely, including NotInNullableSubquery, TableVariableEstimate,
+    WhileLoopRowByRow, and MultiStatementTvfInsteadOfInline.
+  - The run is complete: exit code 0, valid JSON, findings through line 262 (last expected finding is at 263).
+  - 8 severity disagreements: 2 warnings raised to errors, 1 errors lowered to warnings.
+  - No extra findings.
+  - AI time 35.24 s (0:35); 17,585 tokens (3,927 output); $0.050 per run.
+  - Tied with the medium-effort run on score (65/65, F1 0.807) and is the most compact report in the test at 17,585 tokens. It is also the second-fastest run at 0:35.
+  - Ranks 44th of 45.

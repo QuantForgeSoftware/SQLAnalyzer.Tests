@@ -1,0 +1,590 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 12,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF sends row-count messages for statements in the procedure, adding avoidable client traffic.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 15,
+    "severity": "warning",
+    "explanation": "With XACT_ABORT OFF, some run-time errors can leave an explicit transaction open instead of rolling it back.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 17,
+    "severity": "warning",
+    "explanation": "@CustomerIdText is initialized to a fixed customer ID rather than using an input.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 19,
+    "severity": "warning",
+    "explanation": "@OrderID starts at the fixed order ID 1, which is used by the arithmetic predicate before any lookup.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 23,
+    "severity": "warning",
+    "explanation": "SELECT * returns every Sales.Orders column, including large text fields, and makes the result shape depend on the table schema.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 26,
+    "severity": "warning",
+    "explanation": "TOP (10) does not specify which orders to return.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 29,
+    "severity": "warning",
+    "explanation": "Sales.Orders.OrderID is the primary key, so DISTINCT cannot remove any duplicates.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 32,
+    "severity": "error",
+    "explanation": "NOLOCK on Sales.Orders can read uncommitted data and can miss or duplicate rows during concurrent writes.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "YEAR(o.OrderDate) makes the filter non-sargable; it does not express a direct range on OrderDate.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "The OrderDate filter embeds the reporting year 2016 instead of accepting a year or date range as input.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 38,
+    "severity": "warning",
+    "explanation": "The int CustomerID comparison implicitly converts the nvarchar variable @CustomerIdText to int. The current value converts, but nonnumeric values would fail.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 41,
+    "severity": "warning",
+    "explanation": "The OR predicate combines a CustomerID lookup with an unfiltered case, which can make it harder to choose an efficient plan for both.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 44,
+    "severity": "warning",
+    "explanation": "The leading wildcard in N\u0027%urgent%\u0027 requires a substring search of Orders.Comments rather than a prefix seek.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "ISNULL wraps the indexed CustomerID and is redundant because Sales.Orders.CustomerID is NOT NULL.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "The filter selects the fixed customer ID 1 instead of using @CustomerID.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 53,
+    "severity": "warning",
+    "explanation": "Adding zero to OrderID does not alter the comparison and obscures a direct equality predicate on the primary key.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "CustomerID \u003C\u003E 1 excludes only one customer and can read most of Sales.Orders.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "The exclusion embeds customer ID 1 without naming or parameterizing that business choice.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "The CROSS JOIN can pair an order with a customer unrelated to that order.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "TOP (1) does not specify which order and customer pair to return.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "The comma-separated FROM clause puts the Orders-to-OrderLines join condition in WHERE instead of an explicit JOIN.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "TOP (1) returns an arbitrary OrderID from the joined rows.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 65,
+    "severity": "warning",
+    "explanation": "LineCount is calculated through a scalar count correlated to each order. Preaggregating OrderLines by OrderID can avoid repeated lookups.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "The quantity test is expressed as a correlated EXISTS. It can also be joined to a set of distinct qualifying OrderIDs, although SQL Server may already use a semi-join.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "The minimum line quantity is embedded as 1 with no named threshold.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 71,
+    "severity": "warning",
+    "explanation": "The Comments CASE expression is repeated in ORDER BY even though the HasComments alias is available.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 74,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 sorts by OrderDate only as long as OrderDate remains the second select-list expression.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 77,
+    "severity": "error",
+    "explanation": "OrderDate is not unique. Without a tie-breaker such as OrderID, orders with the same date can shift between pages.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "Each branch selects a different primary-key value, so UNION duplicate elimination is unnecessary.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The first UNION branch embeds order ID 1.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The second UNION branch embeds order ID 2.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 83,
+    "severity": "warning",
+    "explanation": "COUNT(*) \u003E 0 counts matching order lines even though the predicate only needs to know whether one exists.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 86,
+    "severity": "error",
+    "explanation": "The assignment reads all orders and leaves @OrderID with whichever value is processed last. If there are no orders, it retains its previous value.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 90,
+    "severity": "warning",
+    "explanation": "The insert into @OrderIds does not define which five order IDs to keep.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "SELECT INTO infers the schema of #ImplicitOrders from the query rather than declaring it explicitly.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "The query does not define which five orders populate #ImplicitOrders.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 96,
+    "severity": "warning",
+    "explanation": "The cursor is opened for a single FETCH into @OrderID. A direct scalar query can retrieve that row without cursor setup and cleanup.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 109,
+    "severity": "warning",
+    "explanation": "The statement converts @CustomerID to text and embeds it in the SQL, producing different statement text for different customer IDs.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 110,
+    "severity": "warning",
+    "explanation": "EXEC runs the generated customer lookup without binding @CustomerID as a typed parameter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 113,
+    "severity": "warning",
+    "explanation": "The statement embeds @OrderID in executable text instead of keeping the query text fixed.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 114,
+    "severity": "warning",
+    "explanation": "sys.sp_executesql receives only the SQL text, leaving the order ID embedded instead of binding it as a parameter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 117,
+    "severity": "warning",
+    "explanation": "#Scratch is explicitly created but not explicitly dropped; SQL Server cleans it up when the procedure scope ends.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 123,
+    "severity": "warning",
+    "explanation": "The CATCH block returns an error message as a result row but does not rethrow or signal failure to the caller.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 128,
+    "severity": "warning",
+    "explanation": "The negative-order-ID path uses RAISERROR, which does not honor SET XACT_ABORT the way THROW does.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 131,
+    "severity": "warning",
+    "explanation": "PRINT sends a buffered, unstructured diagnostic message to the client.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 134,
+    "severity": "warning",
+    "explanation": "The order query embeds customer ID 1 rather than using @CustomerID.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 137,
+    "severity": "warning",
+    "explanation": "The order filter embeds January 1, 2016 as an unnamed lower bound.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 140,
+    "severity": "error",
+    "explanation": "CONVERT(date, \u002701/02/2016\u0027) can yield January 2 or February 1 depending on the session date format.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "COALESCE obscures a direct CustomerID equality join and is redundant because both CustomerID columns are NOT NULL.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "TOP (1) does not specify which order to return from the invoice join.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "The join matches each order to itself by primary key and retrieves no data from the second alias.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "TOP (1) returns an arbitrary order even if the redundant self-join is removed.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 149,
+    "severity": "warning",
+    "explanation": "Sorting all orders by the nvarchar(max) Comments column can be expensive in memory and tempdb.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 152,
+    "severity": "warning",
+    "explanation": "SUM(Quantity) processes the full Sales.OrderLines table because there is no restrictive filter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 155,
+    "severity": "warning",
+    "explanation": "OrderID \u003E 0 is a row-level filter on the grouping key and can be expressed in WHERE before grouping.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 158,
+    "severity": "warning",
+    "explanation": "COUNT(*) performs an exact count over all Sales.Orders rows without a restrictive filter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 158,
+    "severity": "warning",
+    "explanation": "The ungrouped COUNT(*) returns one row, so ordering by OrderCount has no effect.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 162,
+    "severity": "warning",
+    "explanation": "MERGE is unnecessary for a matched-only operation on Sales.Orders and adds complexity compared with a key-based UPDATE.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 164,
+    "severity": "warning",
+    "explanation": "The matched clause assigns Comments to itself but can still acquire write locks and fire update triggers.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 168,
+    "severity": "warning",
+    "explanation": "SET Comments = Comments does not change the stored value but still issues an update against Sales.Orders.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 172,
+    "severity": "error",
+    "explanation": "Deleting by Quantity alone can remove matching lines from many unrelated orders.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 172,
+    "severity": "warning",
+    "explanation": "The delete treats -1 as a special quantity without naming what makes those rows eligible for deletion.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 176,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY suspends the request for one second and occupies a worker while it waits.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 181,
+    "severity": "warning",
+    "explanation": "The transaction starts outside TRY/CATCH, so no local error handler guarantees cleanup.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 188,
+    "severity": "error",
+    "explanation": "SET IDENTITY_INSERT ON fails because the supplied Sales.Orders definition has no identity column.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 193,
+    "severity": "warning",
+    "explanation": "The call to sp_who omits its sys schema qualifier.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 196,
+    "severity": "error",
+    "explanation": "SET ROWCOUNT 1 is not reset within the procedure and can silently limit subsequent queries and data changes to one row.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 211,
+    "severity": "warning",
+    "explanation": "The VALUES insert into #DemoCategories relies on the table\u0027s physical column order.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 212,
+    "severity": "warning",
+    "explanation": "The insert embeds category ID 99 rather than accepting or deriving the ID.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 217,
+    "severity": "warning",
+    "explanation": "The pattern starts with %, preventing a prefix seek on the indexed Sales.Customers.CustomerName column.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 219,
+    "severity": "error",
+    "explanation": "@CustomerName is concatenated directly into SQL executed on the next line, so caller input can change the statement. Bind the LIKE pattern as a parameter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "The call to sp_executesql omits its sys schema qualifier.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "UpdateWithoutWhere",
+    "lineNumber": 222,
+    "severity": "error",
+    "explanation": "The update has no row filter. The active ROWCOUNT limit can mask the missing predicate by restricting the update to an unspecified row.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 223,
+    "severity": "warning",
+    "explanation": "The update assigns the fixed customer category ID 1 rather than using a named or supplied value.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 228,
+    "severity": "error",
+    "explanation": "The WHERE predicate on o.OrderDate rejects NULL-extended rows, so customers without a qualifying order are excluded despite the LEFT JOIN.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 228,
+    "severity": "warning",
+    "explanation": "The join result is filtered using January 1, 2016 as an unnamed cutoff.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 232,
+    "severity": "error",
+    "explanation": "DeliveryMethodID = NULL does not test for missing values. Use IS NULL for that test; the supplied column definition is NOT NULL.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 234,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerType can be evaluated separately for each customer row unless SQL Server can inline the function.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "The transaction handler returns only ERROR_MESSAGE() and lets execution continue without signaling failure.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "The handler does not roll back an active transaction, so a failure before COMMIT can leave the transaction open.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 247,
+    "severity": "warning",
+    "explanation": "INDEX = 1 forces a specific access path for Sales.Customers and prevents the optimizer from choosing a better index for the name filter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Three nested derived tables pass through CustomerID unchanged; a single query can apply the same name filter.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 256,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%A%\u0027 searches for a substring and cannot use a prefix seek on CustomerName.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "SELECT * exposes all columns returned by dbo.GetCustomerOrdersMulti and makes the result shape depend on the function\u0027s output schema.",
+    "ModelName": "gpt-6.2-sol-re-medium"
+  }
+]

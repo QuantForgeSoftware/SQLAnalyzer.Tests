@@ -1,0 +1,471 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 13,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF leaves DONE_IN_PROC row-count messages enabled, increasing network traffic.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 16,
+    "severity": "warning",
+    "explanation": "SET XACT_ABORT OFF allows runtime errors to leave explicit transactions partially applied.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 24,
+    "severity": "warning",
+    "explanation": "SELECT * from Sales.Orders couples callers to all current and future columns and prevents covering index optimization.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 27,
+    "severity": "warning",
+    "explanation": "SELECT TOP (10) from Sales.Orders without ORDER BY returns a nondeterministic set of rows.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 30,
+    "severity": "warning",
+    "explanation": "DISTINCT on o.OrderID is redundant because OrderID is already the primary key of Sales.Orders.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 33,
+    "severity": "warning",
+    "explanation": "WITH (NOLOCK) on Sales.Orders can read uncommitted, missing, or duplicated rows.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 36,
+    "severity": "warning",
+    "explanation": "Applying YEAR(o.OrderDate) in the WHERE clause prevents an index seek on OrderDate.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 39,
+    "severity": "warning",
+    "explanation": "Comparing int column o.CustomerID with nvarchar variable @CustomerIdText causes implicit conversion.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 42,
+    "severity": "warning",
+    "explanation": "OR-based optional filtering (@CustomerID IS NULL OR o.CustomerID = @CustomerID) hinders cardinality estimation and index seeks.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 45,
+    "severity": "warning",
+    "explanation": "LIKE N\u0027%urgent%\u0027 on o.Comments starts with a wildcard and prevents an index seek.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NotInNullableSubquery",
+    "lineNumber": 48,
+    "severity": "error",
+    "explanation": "NOT IN against Sales.Invoices.CustomerID can return zero rows if any subquery value is NULL.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 51,
+    "severity": "warning",
+    "explanation": "Wrapping o.CustomerID in ISNULL makes the predicate non-sargable.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 54,
+    "severity": "warning",
+    "explanation": "Arithmetic on o.OrderID (o.OrderID \u002B 0) prevents direct index seeking.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 57,
+    "severity": "warning",
+    "explanation": "Inequality predicate o.CustomerID \u003C\u003E 1 typically forces broad index or table scans.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 60,
+    "severity": "warning",
+    "explanation": "CROSS JOIN between Sales.Orders and Sales.Customers has no join predicate and multiplies row counts.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 63,
+    "severity": "warning",
+    "explanation": "Comma-separated FROM clause for Sales.Orders and Sales.OrderLines uses legacy join syntax.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 66,
+    "severity": "warning",
+    "explanation": "Correlated scalar subquery on Sales.OrderLines executes a lookup per outer Sales.Orders row.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 69,
+    "severity": "warning",
+    "explanation": "Correlated EXISTS subquery on Sales.OrderLines could be expressed as a set-based join.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 72,
+    "severity": "warning",
+    "explanation": "The CASE expression on o.Comments is duplicated in both the SELECT list and ORDER BY clause.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 75,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 relies on select-list column position, which is fragile if columns change.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 78,
+    "severity": "warning",
+    "explanation": "OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY orders by o.OrderDate without a unique tie-breaker.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 81,
+    "severity": "warning",
+    "explanation": "UNION performs unnecessary duplicate removal between disjoint o.OrderID = 1 and o.OrderID = 2 branches.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 84,
+    "severity": "warning",
+    "explanation": "Subquery uses COUNT(*) \u003E 0 on Sales.OrderLines where EXISTS would short-circuit.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 87,
+    "severity": "warning",
+    "explanation": "SELECT @OrderID = o.OrderID from Sales.Orders silently keeps the last row when multiple rows match.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "TableVariableEstimate",
+    "lineNumber": 90,
+    "severity": "warning",
+    "explanation": "Table variable @OrderIds can suffer from poor cardinality estimates.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 94,
+    "severity": "warning",
+    "explanation": "SELECT ... INTO #ImplicitOrders creates a temporary table implicitly instead of declaring it explicitly.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 97,
+    "severity": "warning",
+    "explanation": "Cursor order_cursor processes Sales.Orders row by row instead of using a set-based operation.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "WhileLoopRowByRow",
+    "lineNumber": 104,
+    "severity": "warning",
+    "explanation": "WHILE loop processes iterations row by row instead of using a set-based approach.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 110,
+    "severity": "warning",
+    "explanation": "Dynamic SQL string @Sql is built by concatenating @CustomerID.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 115,
+    "severity": "warning",
+    "explanation": "sys.sp_executesql executes @Sql without parameterized inputs.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 118,
+    "severity": "warning",
+    "explanation": "Temporary table #Scratch is created but never explicitly dropped before the procedure ends.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 124,
+    "severity": "error",
+    "explanation": "CATCH block selects ERROR_MESSAGE() without rethrowing or returning a failure status.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 129,
+    "severity": "warning",
+    "explanation": "RAISERROR is used instead of THROW for error reporting.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 132,
+    "severity": "warning",
+    "explanation": "PRINT is used for diagnostics, which is buffered and unsuitable for structured logging.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 135,
+    "severity": "warning",
+    "explanation": "Hard-coded business identifier CustomerID = 1 is embedded directly in the query.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 138,
+    "severity": "warning",
+    "explanation": "Unlabelled date literal \u002720160101\u0027 is embedded directly in the predicate.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 141,
+    "severity": "warning",
+    "explanation": "CONVERT(date, \u002701/02/2016\u0027) omits an explicit style parameter, making it session-dependent.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 144,
+    "severity": "warning",
+    "explanation": "COALESCE is used in the JOIN predicate between Sales.Orders and Sales.Invoices, inhibiting join optimization.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 147,
+    "severity": "warning",
+    "explanation": "Sales.Orders is self-joined on OrderID solely to retrieve o.OrderID.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 150,
+    "severity": "warning",
+    "explanation": "ORDER BY o.Comments sorts by a wide nvarchar(MAX) column.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 153,
+    "severity": "warning",
+    "explanation": "SUM(ol.Quantity) aggregates the entire Sales.OrderLines table without a WHERE filter.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 156,
+    "severity": "warning",
+    "explanation": "Row-level predicate ol.OrderID \u003E 0 is placed in HAVING instead of WHERE.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 159,
+    "severity": "warning",
+    "explanation": "ORDER BY OrderCount is redundant on a single-row aggregate query without GROUP BY.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 163,
+    "severity": "warning",
+    "explanation": "MERGE statement is used on Sales.Orders, which has known concurrency and correctness edge cases.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 169,
+    "severity": "warning",
+    "explanation": "UPDATE Sales.Orders sets Comments = Comments, causing unnecessary logging and locking.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 173,
+    "severity": "warning",
+    "explanation": "DELETE FROM Sales.OrderLines uses a non-key predicate (Quantity = -1).",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 177,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY \u002700:00:01\u0027 blocks the worker thread.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 182,
+    "severity": "error",
+    "explanation": "BEGIN TRANSACTION is not wrapped in a TRY...CATCH block.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 189,
+    "severity": "warning",
+    "explanation": "SET IDENTITY_INSERT Sales.Orders ON alters session state and introduces fragile identity coupling.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 194,
+    "severity": "warning",
+    "explanation": "EXEC sp_who invokes a stored procedure without a schema qualifier.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 197,
+    "severity": "warning",
+    "explanation": "SET ROWCOUNT 1 changes a session setting without restoring it.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 212,
+    "severity": "warning",
+    "explanation": "INSERT INTO #DemoCategories omits an explicit column list.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 218,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%\u0027 \u002B @CustomerName \u002B \u0027%\u0027 on CustomerName starts with a wildcard and prevents index seeks.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 220,
+    "severity": "error",
+    "explanation": "User-supplied @CustomerName is concatenated directly into dynamic SQL string @sql.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 221,
+    "severity": "warning",
+    "explanation": "sp_executesql executes @sql without parameterized inputs.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 221,
+    "severity": "warning",
+    "explanation": "sp_executesql is called without the sys. schema qualifier.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "UpdateWithoutWhere",
+    "lineNumber": 223,
+    "severity": "error",
+    "explanation": "UPDATE #DemoCustomers lacks a WHERE clause and updates every row.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 229,
+    "severity": "warning",
+    "explanation": "Filtering on o.OrderDate \u003E= \u00272016-01-01\u0027 in WHERE converts the LEFT JOIN on Sales.Orders into an inner join.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 233,
+    "severity": "error",
+    "explanation": "DeliveryMethodID = NULL always evaluates to UNKNOWN instead of using IS NULL.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 235,
+    "severity": "warning",
+    "explanation": "Scalar UDF dbo.GetCustomerType(CustomerID) in the SELECT list forces row-by-row evaluation.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 243,
+    "severity": "error",
+    "explanation": "CATCH block does not roll back the active transaction started in the TRY block.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 243,
+    "severity": "error",
+    "explanation": "CATCH block selects ERROR_MESSAGE() without rethrowing or returning a failure status.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 248,
+    "severity": "warning",
+    "explanation": "Hardcoded index hint WITH (INDEX = 1) on Sales.Customers restricts optimizer plan choices.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Query nests subqueries 4 levels deep instead of using CTEs or simpler joins.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 257,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%A%\u0027 on CustomerName starts with a wildcard and prevents an index seek.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "MultiStatementTvfInsteadOfInline",
+    "lineNumber": 262,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerOrdersMulti is a multi-statement TVF where an inline TVF would optimize better.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 262,
+    "severity": "warning",
+    "explanation": "SELECT * from dbo.GetCustomerOrdersMulti couples callers to all columns.",
+    "ModelName": "gemini-4-hydrogen-re-low"
+  }
+]

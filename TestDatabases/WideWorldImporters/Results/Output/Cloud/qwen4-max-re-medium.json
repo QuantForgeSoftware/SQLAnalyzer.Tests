@@ -1,0 +1,513 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 12,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF leaves DONE_IN_PROC row-count messages enabled for every statement in usp_TestProcedure, adding network chatter and breaking some client result-set handling.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 15,
+    "severity": "warning",
+    "explanation": "SET XACT_ABORT OFF while the procedure uses explicit transactions (lines 181, 238) allows run-time errors to leave a partially applied, open transaction.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 23,
+    "severity": "warning",
+    "explanation": "SELECT * FROM Sales.Orders returns all 17 columns including three nvarchar(MAX) fields, coupling callers to schema changes and wasting I/O.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 26,
+    "severity": "warning",
+    "explanation": "SELECT TOP (10) o.OrderID from Sales.Orders has no ORDER BY, so the 10 rows returned are arbitrary and can change between executions.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 29,
+    "severity": "warning",
+    "explanation": "DISTINCT on o.OrderID is redundant because OrderID is the primary key of Sales.Orders; it forces a needless aggregate/sort.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 32,
+    "severity": "warning",
+    "explanation": "WITH (NOLOCK) on Sales.Orders permits dirty reads, missing rows and duplicated rows during page splits.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "YEAR(o.OrderDate) = 2016 wraps the date column in a function, preventing a range seek; use OrderDate \u003E= \u002720160101\u0027 AND OrderDate \u003C \u002720170101\u0027.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 38,
+    "severity": "warning",
+    "explanation": "o.CustomerID (int) is compared to @CustomerIdText (nvarchar(20)), forcing an implicit conversion driven by data-type precedence and risking conversion failures.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 41,
+    "severity": "warning",
+    "explanation": "@CustomerID IS NULL OR o.CustomerID = @CustomerID produces a catch-all plan that scans Sales.Orders instead of seeking on FK_Sales_Orders_CustomerID.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 44,
+    "severity": "warning",
+    "explanation": "LIKE N\u0027%urgent%\u0027 on o.Comments (nvarchar(MAX)) cannot seek any index and scans the whole Orders table.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NotInNullableSubquery",
+    "lineNumber": 47,
+    "severity": "warning",
+    "explanation": "NOT IN against SELECT i.CustomerID FROM Sales.Invoices is NULL-sensitive: any NULL introduced by the subquery (e.g. after an outer join or schema change) makes the whole predicate return no rows.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "ISNULL(o.CustomerID, 0) = 1 wraps the indexed CustomerID column, blocking an index seek; CustomerID is NOT NULL so the wrapper is also pointless.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 53,
+    "severity": "warning",
+    "explanation": "o.OrderID \u002B 0 = @OrderID performs arithmetic on the primary key column, preventing a clustered index seek.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "o.CustomerID \u003C\u003E 1 is an inequality that matches nearly every row and forces a broad scan of Sales.Orders.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "CROSS JOIN of Sales.Orders and Sales.Customers has no join predicate, producing a row count equal to Orders x Customers before TOP (1) is applied.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "Comma-separated FROM Sales.Orders AS o, Sales.OrderLines AS ol with the join condition in WHERE uses deprecated join syntax and hides the join predicate.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 65,
+    "severity": "warning",
+    "explanation": "The correlated COUNT(*) over Sales.OrderLines is evaluated once per Orders row; a single GROUP BY join or OUTER APPLY would compute all counts in one pass.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "EXISTS (SELECT 1 FROM Sales.OrderLines WHERE ol.OrderID = o.OrderID AND ol.Quantity \u003E 1) is a per-row correlated probe that can be written as a set-based semi-join/derived aggregate.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 71,
+    "severity": "warning",
+    "explanation": "The CASE WHEN o.Comments IS NULL THEN 0 ELSE 1 END expression is duplicated in the select list and ORDER BY, so it is maintained twice and may be computed twice.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 74,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 depends on the position of o.OrderDate in the select list and silently sorts a different column if the list is edited.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 77,
+    "severity": "warning",
+    "explanation": "OFFSET/FETCH ordered only by o.OrderDate, which is not unique in Sales.Orders, so page boundaries are unstable; add OrderID as a tie-breaker.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The two branches filter OrderID = 1 and OrderID = 2 on the same key, so they are disjoint; UNION adds a needless distinct sort.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 83,
+    "severity": "warning",
+    "explanation": "(SELECT COUNT(*) FROM Sales.OrderLines ...) \u003E 0 counts every matching line instead of stopping at the first row as EXISTS would.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 86,
+    "severity": "warning",
+    "explanation": "SELECT @OrderID = o.OrderID FROM Sales.Orders assigns from an unordered multi-row set, silently keeping an arbitrary last value and leaving @OrderID unchanged when no rows exist.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "TableVariableEstimate",
+    "lineNumber": 89,
+    "severity": "warning",
+    "explanation": "@OrderIds table variable has no column statistics and gets a 1-row (or fixed) estimate, producing poor plans if it is loaded with many OrderIDs.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 90,
+    "severity": "warning",
+    "explanation": "INSERT ... SELECT TOP (5) o.OrderID from Sales.Orders has no ORDER BY, so which five OrderIDs land in @OrderIds is arbitrary.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "SELECT ... INTO #ImplicitOrders creates the temp table implicitly, taking schema locks in tempdb and hiding the column definitions.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "TOP (5) without ORDER BY makes the contents of #ImplicitOrders nondeterministic.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 96,
+    "severity": "warning",
+    "explanation": "order_cursor iterates Sales.Orders one OrderID at a time (OPEN/FETCH at lines 97-98) for work expressible as a single set-based statement.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "WhileLoopRowByRow",
+    "lineNumber": 103,
+    "severity": "warning",
+    "explanation": "The WHILE @Counter \u003C= 1 loop performs iterative counter work in T-SQL instead of a set-based operation.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 109,
+    "severity": "warning",
+    "explanation": "@Sql is built by concatenating CONVERT(nvarchar(20), @CustomerID) into the command text, preventing plan reuse and embedding values in SQL.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 110,
+    "severity": "warning",
+    "explanation": "EXEC (@Sql) executes a concatenated string with no parameter binding, so each distinct CustomerID compiles a separate plan.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 113,
+    "severity": "warning",
+    "explanation": "@Sql is again assembled by concatenating CONVERT(nvarchar(20), @OrderID) into the statement text rather than using a parameter placeholder.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 114,
+    "severity": "warning",
+    "explanation": "sys.sp_executesql is called with only @Sql and no parameter definition list, so the embedded OrderID value is not bound and plans are not reused.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 117,
+    "severity": "warning",
+    "explanation": "#Scratch is created but never dropped, keeping tempdb objects alive until the procedure scope ends.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 123,
+    "severity": "error",
+    "explanation": "The CATCH block only SELECTs ERROR_MESSAGE() as IgnoredError; the failure (e.g. the divide-by-zero path at line 121) is hidden from the caller and no THROW or failure status is returned.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 128,
+    "severity": "warning",
+    "explanation": "RAISERROR (N\u0027Negative order ID\u0027, 16, 1) uses legacy error syntax; THROW preserves the original error and honours XACT_ABORT/TRY-CATCH semantics.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 131,
+    "severity": "info",
+    "explanation": "PRINT N\u0027Monster procedure diagnostic\u0027 is buffered output that mixes with result sets and cannot be consumed as structured diagnostics.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 134,
+    "severity": "warning",
+    "explanation": "o.CustomerID = 1 embeds a specific business identifier instead of using the @CustomerID parameter already declared.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 137,
+    "severity": "warning",
+    "explanation": "o.OrderDate \u003E= \u002720160101\u0027 hard-codes an unlabelled date boundary in query logic rather than a named parameter or documented constant.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 140,
+    "severity": "warning",
+    "explanation": "CONVERT(date, \u002701/02/2016\u0027) has no style argument, so the value depends on the session DATEFORMAT/language and can mean Jan 2 or Feb 1 (or fail).",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "COALESCE(o.CustomerID, 0) = COALESCE(i.CustomerID, 0) wraps both join keys, blocking index seeks on the CustomerID indexes and matching all NULL customers to each other.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "Sales.Orders is joined to itself on OrderID = OrderID only to return o.OrderID, which is already available from the single row; the join adds a redundant seek.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 149,
+    "severity": "warning",
+    "explanation": "ORDER BY o.Comments sorts an nvarchar(MAX) LOB column across all orders, causing large memory grants and likely tempdb spills.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 152,
+    "severity": "warning",
+    "explanation": "SUM(ol.Quantity) scans the entire fact-like Sales.OrderLines table with no WHERE restriction to produce one scalar.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 155,
+    "severity": "warning",
+    "explanation": "HAVING ol.OrderID \u003E 0 filters a grouping key at row level; it belongs in WHERE so rows are eliminated before the aggregate.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 158,
+    "severity": "info",
+    "explanation": "COUNT(*) without GROUP BY returns exactly one row, so ORDER BY OrderCount adds nothing.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 162,
+    "severity": "warning",
+    "explanation": "MERGE into Sales.Orders has documented concurrency/upsert race and key-change issues; separate UPDATE and IF NOT EXISTS INSERT is safer.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 168,
+    "severity": "warning",
+    "explanation": "UPDATE Sales.Orders SET Comments = Comments writes the current value back, incurring locking, logging and versioning for no data change.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 172,
+    "severity": "error",
+    "explanation": "DELETE FROM Sales.OrderLines WHERE Quantity = -1 removes rows by a non-key business value, potentially deleting an unbounded number of order lines.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 176,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY \u002700:00:01\u0027 blocks the worker thread and holds the session (and any locks) instead of using asynchronous scheduling.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 181,
+    "severity": "warning",
+    "explanation": "BEGIN TRANSACTION is issued outside any TRY/CATCH, so an error between BEGIN and ROLLBACK can leave an open transaction holding locks.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 188,
+    "severity": "warning",
+    "explanation": "SET IDENTITY_INSERT Sales.Orders ON changes session-scoped state and couples the procedure to manual identity management on a shared table.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 193,
+    "severity": "warning",
+    "explanation": "EXEC sp_who is not schema-qualified (and uses the sp_ prefix), causing extra resolution overhead and possible name collisions.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 196,
+    "severity": "warning",
+    "explanation": "SET ROWCOUNT 1 is never reset to 0, so every subsequent statement in the session (including the later INSERT/UPDATE/DELETE) is silently limited to one row.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 211,
+    "severity": "warning",
+    "explanation": "INSERT INTO #DemoCategories VALUES (99, @NewCategory) omits the column list, so the insert breaks or misaligns if the temp table definition changes.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 212,
+    "severity": "warning",
+    "explanation": "CategoryID 99 is a magic business identifier embedded in the VALUES clause instead of being passed in or looked up.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 217,
+    "severity": "warning",
+    "explanation": "CustomerName LIKE \u0027%\u0027 \u002B @CustomerName \u002B \u0027%\u0027 starts with a wildcard, so UQ_Sales_Customers_CustomerName cannot be seeked and Sales.Customers is scanned.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 219,
+    "severity": "error",
+    "explanation": "@CustomerName (caller-supplied nvarchar) is concatenated straight into the dynamic LIKE string, allowing quote-breaking SQL injection when executed at line 220.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "EXEC sp_executesql is called without the sys schema qualifier, relying on name resolution for a system routine.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "UpdateWithoutWhere",
+    "lineNumber": 222,
+    "severity": "error",
+    "explanation": "UPDATE #DemoCustomers SET CustomerCategoryID = 1 has no WHERE clause and overwrites the category for every loaded customer row.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 223,
+    "severity": "warning",
+    "explanation": "CustomerCategoryID = 1 is a hard-coded business identifier rather than a parameter or lookup value.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 228,
+    "severity": "warning",
+    "explanation": "WHERE o.OrderDate \u003E= \u00272016-01-01\u0027 filters the LEFT JOINed Sales.Orders side, discarding NULL-extended rows and effectively turning the outer join into an inner join.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 228,
+    "severity": "warning",
+    "explanation": "\u00272016-01-01\u0027 is an unlabelled date constant embedded in the filter instead of a named date parameter.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 232,
+    "severity": "error",
+    "explanation": "WHERE DeliveryMethodID = NULL never evaluates to true under ANSI nulls, so the query always returns zero rows; use IS NULL.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 234,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerType(CustomerID) in the select list is a scalar UDF evaluated per customer row and blocks parallelism unless the function is inlined.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "The CATCH for the transaction opened at line 238 never rolls back, leaving an open or doomed transaction that holds locks after the procedure returns.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "The CATCH block only SELECTs ERROR_MESSAGE(); it neither rethrows with THROW nor returns a failure status, so the DELETE failure is invisible to the caller.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 247,
+    "severity": "warning",
+    "explanation": "WITH (INDEX = 1) pins Sales.Customers to a specific index id, which is fragile across index rebuilds/reordering and prevents the optimizer from choosing a better plan.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Three levels of nested derived tables (t1/t2/t3) wrap the same simple CustomerID projection, obscuring the query; refactor to a CTE or a single query.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 256,
+    "severity": "warning",
+    "explanation": "CustomerName LIKE \u0027%A%\u0027 in the innermost derived table forces a full scan of Sales.Customers.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "SELECT * FROM dbo.GetCustomerOrdersMulti(@CustomerName) exposes every function output column and breaks callers if the function\u0027s table schema changes.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  },
+  {
+    "ruleName": "MultiStatementTvfInsteadOfInline",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerOrdersMulti is a multi-statement TVF: it is optimized with a fixed row estimate and its body is executed separately, unlike an inline TVF that is folded into the outer query.",
+    "ModelName": "qwen4-max-preview-re-medium"
+  }
+]

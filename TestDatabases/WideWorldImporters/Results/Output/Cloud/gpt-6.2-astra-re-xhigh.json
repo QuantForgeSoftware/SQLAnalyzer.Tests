@@ -1,0 +1,625 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 12,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF makes the procedure send row-count messages for its statements in addition to its result sets.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 15,
+    "severity": "warning",
+    "explanation": "With XACT_ABORT OFF, some run-time errors can abort only the failing statement and leave the explicit transaction active.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 17,
+    "severity": "warning",
+    "explanation": "@CustomerIdText fixes the customer identifier at N\u00271\u0027, so its later lookup ignores the caller\u0027s @CustomerID.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 19,
+    "severity": "warning",
+    "explanation": "@OrderID starts with the business identifier 1, which remains its value if the later assignment finds no orders.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 23,
+    "severity": "warning",
+    "explanation": "SELECT * returns every Sales.Orders column, including its nvarchar(max) fields, and makes the result shape depend on the table schema.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 26,
+    "severity": "warning",
+    "explanation": "No ordering determines which ten OrderIDs are returned.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 29,
+    "severity": "warning",
+    "explanation": "Sales.Orders.OrderID is the primary key, so DISTINCT cannot remove any rows.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 32,
+    "severity": "error",
+    "explanation": "NOLOCK allows the order scan to return uncommitted OrderIDs or to miss or repeat rows during concurrent changes.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "YEAR(o.OrderDate) tests a computed value instead of expressing the filter as a range on OrderDate.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "The reporting year is fixed at 2016 rather than supplied as a named input.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 38,
+    "severity": "warning",
+    "explanation": "CustomerID is int, but @CustomerIdText is nvarchar(20). SQL Server implicitly converts the variable to int for the comparison.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 41,
+    "severity": "warning",
+    "explanation": "The OR combines an all-orders query with a single-customer lookup, which can make one cached plan unsuitable for both cases.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 44,
+    "severity": "warning",
+    "explanation": "The leading % in N\u0027%urgent%\u0027 requires a substring search of Comments rather than a prefix lookup.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "ISNULL wraps the indexed CustomerID and obscures a direct equality predicate. The fallback is unnecessary because Orders.CustomerID is NOT NULL.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "The ISNULL fallback uses 0 as an undocumented stand-in for a missing customer identifier.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "The comparison fixes the requested customer identifier at 1 rather than using @CustomerID.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 53,
+    "severity": "warning",
+    "explanation": "Adding 0 to the OrderID primary key is redundant and obscures the direct key comparison with @OrderID.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "CustomerID \u003C\u003E 1 selects every customer except one and can require reading a large portion of Sales.Orders.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "The excluded CustomerID is fixed at 1 without identifying why that customer is exceptional.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "TOP (1) has no ordering to determine which order/customer pair is returned.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "The CROSS JOIN pairs each order with every customer rather than with its own customer, so the returned pair need not be related.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "No ordering determines which matching order line supplies the returned OrderID.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "The comma-separated FROM list puts the Orders-to-OrderLines relationship in WHERE, where it is easy to omit when editing filters.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 65,
+    "severity": "warning",
+    "explanation": "The scalar line count depends on each outer OrderID and can require repeated OrderLines lookups rather than one grouped count.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "EXISTS is correlated on o.OrderID. A set-based alternative must join distinct qualifying OrderIDs to avoid duplicating orders with multiple matching lines.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "The qualifying line-quantity threshold is fixed at 1 inside the subquery.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 71,
+    "severity": "warning",
+    "explanation": "ORDER BY repeats the CASE that defines HasComments; ordering by the alias would keep the classification in one place.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 74,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 identifies OrderDate by position, so reordering the select list can silently change the sort.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 77,
+    "severity": "error",
+    "explanation": "OrderDate does not uniquely order the rows. Orders sharing a date can move between pages without OrderID as a tie-breaker.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The branches select different primary-key values and each returns at most one row, so UNION requests unnecessary duplicate elimination.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The first branch fixes OrderID at 1.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "The second branch fixes OrderID at 2.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 83,
+    "severity": "warning",
+    "explanation": "The predicate asks for a count of matching order lines when it only needs to know whether the first match exists.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 86,
+    "severity": "error",
+    "explanation": "Every order can assign @OrderID. With no unique filter or ordering, the value retained for later operations is unspecified.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 90,
+    "severity": "warning",
+    "explanation": "No ordering determines which five OrderIDs are inserted into @OrderIds.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "No ordering determines which five OrderIDs populate #ImplicitOrders.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "SELECT INTO infers the schema of #ImplicitOrders from the projection rather than declaring its column contract explicitly.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 96,
+    "severity": "warning",
+    "explanation": "order_cursor is opened for a single FETCH of an arbitrary OrderID; a direct query could obtain the value without cursor setup and cleanup.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 109,
+    "severity": "warning",
+    "explanation": "The converted @CustomerID is appended to the SQL text, producing different statement text for different customer IDs.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 110,
+    "severity": "warning",
+    "explanation": "EXEC runs @Sql with the customer identifier embedded in the text instead of binding an int parameter.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 113,
+    "severity": "warning",
+    "explanation": "The converted @OrderID is concatenated into the query even though the lookup can use a typed parameter.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 114,
+    "severity": "warning",
+    "explanation": "sys.sp_executesql receives only @Sql; it is given no parameter declaration or bound OrderID value.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 117,
+    "severity": "warning",
+    "explanation": "#Scratch is explicitly created but never dropped, so it remains allocated until procedure scope ends.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 123,
+    "severity": "error",
+    "explanation": "The CATCH returns ERROR_MESSAGE() as a result row but does not signal failure, allowing execution to continue.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 128,
+    "severity": "warning",
+    "explanation": "The negative-OrderID path uses legacy RAISERROR rather than THROW.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 131,
+    "severity": "warning",
+    "explanation": "PRINT emits a buffered, unstructured diagnostic rather than a reliably consumable status or log entry.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 134,
+    "severity": "warning",
+    "explanation": "The order lookup fixes CustomerID at 1 despite the available @CustomerID parameter.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 137,
+    "severity": "warning",
+    "explanation": "The OrderDate cutoff \u002720160101\u0027 is embedded in the predicate without a name or parameter explaining its significance.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 140,
+    "severity": "error",
+    "explanation": "Without an explicit conversion style, \u002701/02/2016\u0027 can mean January 2 or February 1 depending on the session date format.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "TOP (1) has no ordering to determine which invoice-matched order is returned.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "COALESCE(o.CustomerID, 0) wraps the Orders join key even though it is NOT NULL; the indexed column can be compared directly.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "COALESCE(i.CustomerID, 0) independently wraps the Invoices join key, which is also indexed and NOT NULL.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "No ordering determines which OrderID is selected from the self-join.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "Joining Orders to itself on its primary key matches each row only to itself and supplies no additional information.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 149,
+    "severity": "warning",
+    "explanation": "Sorting orders by the nvarchar(max) Comments column can require expensive text comparisons and substantial sort memory.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 152,
+    "severity": "warning",
+    "explanation": "SUM(ol.Quantity) reads quantities across all of Sales.OrderLines because no order or reporting range restricts the total.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 155,
+    "severity": "warning",
+    "explanation": "OrderID \u003E 0 depends only on the grouping key and can be expressed in WHERE rather than as a group filter.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 158,
+    "severity": "warning",
+    "explanation": "The unfiltered COUNT(*) requires a count of all rows in Sales.Orders.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 158,
+    "severity": "warning",
+    "explanation": "COUNT(*) without GROUP BY returns exactly one row, so ordering by OrderCount cannot change the result.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 162,
+    "severity": "warning",
+    "explanation": "MERGE is used solely for a matched update; an ordinary keyed UPDATE can express the operation without MERGE-specific complexity.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 164,
+    "severity": "warning",
+    "explanation": "The matched action assigns target.Comments to itself, potentially taking update locks and firing triggers without changing the value.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 168,
+    "severity": "warning",
+    "explanation": "The keyed UPDATE writes Comments back to itself and can incur write-side effects without changing the order.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 172,
+    "severity": "error",
+    "explanation": "Quantity is not an order-line key. The DELETE removes every line with quantity -1, regardless of which order it belongs to.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 172,
+    "severity": "warning",
+    "explanation": "The unexplained quantity value -1 determines which order lines are deleted.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 176,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY keeps the request waiting for one second before the procedure can continue.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 181,
+    "severity": "warning",
+    "explanation": "The transaction begins outside TRY/CATCH, so there is no error-handling path if execution fails before its ROLLBACK.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 188,
+    "severity": "error",
+    "explanation": "The supplied Sales.Orders definition has no IDENTITY column, so enabling IDENTITY_INSERT for it fails when reached.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 193,
+    "severity": "warning",
+    "explanation": "EXEC sp_who leaves the system procedure\u0027s schema implicit rather than naming sys.sp_who.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 196,
+    "severity": "error",
+    "explanation": "SET ROWCOUNT 1 is not reset inside the procedure. Later queries and writes, including the customer copy, can stop after one row.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 211,
+    "severity": "warning",
+    "explanation": "The VALUES insert relies on the declared order of CategoryID and CategoryName in #DemoCategories.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 212,
+    "severity": "warning",
+    "explanation": "The inserted category gets the fixed identifier 99 regardless of the supplied category name.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 214,
+    "severity": "warning",
+    "explanation": "The four selected customer fields map to #DemoCustomers by position because the INSERT names no target columns.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 217,
+    "severity": "warning",
+    "explanation": "Prepending \u0027%\u0027 to @CustomerName prevents a prefix seek on the CustomerName index.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 219,
+    "severity": "error",
+    "explanation": "@CustomerName is concatenated inside a quoted SQL literal. Caller input can change the executed statement rather than remain a search value.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "The call names sp_executesql without its sys schema qualifier.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "sp_executesql receives only the assembled text; it does not bind the customer search pattern as a parameter.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "UpdateWithoutWhere",
+    "lineNumber": 222,
+    "severity": "error",
+    "explanation": "Every row in #DemoCustomers qualifies for the update. The active ROWCOUNT limit restricts how many can change, not which customer is intended.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 223,
+    "severity": "warning",
+    "explanation": "The update assigns the fixed CustomerCategoryID 1 rather than a supplied or looked-up category identifier.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 228,
+    "severity": "error",
+    "explanation": "The WHERE predicate rejects NULL-extended order rows, so the LEFT JOIN does not preserve customers without a qualifying order.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 228,
+    "severity": "warning",
+    "explanation": "The qualifying-order cutoff \u00272016-01-01\u0027 is fixed in the predicate without a named business meaning.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 232,
+    "severity": "error",
+    "explanation": "DeliveryMethodID = NULL does not test for a missing value. It cannot select a row, and DeliveryMethodID is declared NOT NULL.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 234,
+    "severity": "warning",
+    "explanation": "dbo.GetCustomerType(CustomerID) can execute separately for each customer unless SQL Server can inline the scalar function.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "An error before COMMIT can leave the transaction active or uncommittable, but the CATCH does not check transaction state or roll it back.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "The CATCH only selects ERROR_MESSAGE(), so a failed delete or commit is not propagated to the caller as a failure.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 247,
+    "severity": "warning",
+    "explanation": "INDEX = 1 forces the clustered index on Sales.Customers and prevents the optimizer from choosing the CustomerName index for the LIKE predicate.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 250,
+    "severity": "warning",
+    "explanation": "Three nested derived tables merely pass CustomerID outward. One SELECT from Sales.Customers can return the same filtered result.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 256,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%A%\u0027 searches anywhere in CustomerName, so the name index cannot seek to a matching prefix.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "SELECT * exposes every column returned by dbo.GetCustomerOrdersMulti and couples the result shape to the function definition.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  },
+  {
+    "ruleName": "MultiStatementTvfInsteadOfInline",
+    "lineNumber": 261,
+    "severity": "info",
+    "explanation": "If dbo.GetCustomerOrdersMulti is a multi-statement TVF as its name suggests, it materializes its result without column statistics. Its definition is needed to confirm whether an inline query can replace it.",
+    "ModelName": "gpt-6.2-astra-re-xhigh"
+  }
+]

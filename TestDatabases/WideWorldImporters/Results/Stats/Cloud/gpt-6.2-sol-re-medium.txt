@@ -1,0 +1,44 @@
+Model: gpt-6.2-sol-re-medium
+Input tokens: 13,648
+Output tokens: 5,332
+Total tokens: 18,980
+AI time: 61.66 seconds
+Tokens/second: 308
+Estimated total cost: $0.162504 USD
+
+**Notes**
+=====
+Run: gpt-6.2-sol (medium effort) (command line --run-discovered-effort medium), 11/17/2026 3:43 PM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 79
+Missed expected findings: 17
+Extra findings in output: 5
+Reported findings: 84 (recall 0.823, precision 0.940, F1 0.878)
+
+Missed expected findings by rule:
+  TopWithoutOrderBy: 3 missed out of 8 expected (matched 5); expected lines [95, 98, 148]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  DynamicSqlWithoutParameters: 1 missed out of 3 expected (matched 2); expected lines [222]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  NotInNullableSubquery: 1 missed out of 1 expected (matched 0); expected lines [48]
+  TableVariableEstimate: 1 missed out of 1 expected (matched 0); expected lines [90]
+  WhileLoopRowByRow: 1 missed out of 1 expected (matched 0); expected lines [105]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 9 of 9 HardCodedLiteral and 5 of 8 TopWithoutOrderBy matched.
+  - Shared-line companion findings skipped: SessionSettingChanged [13, 16], SqlInjectionViaDynamicSql [111, 115].
+  - Part of the dynamic LIKE block at line 221 was missed.
+  - Rules missed entirely: MultiStatementTvfInsteadOfInline, NotInNullableSubquery, TableVariableEstimate, WhileLoopRowByRow.
+  - Line numbers: 35 of 79 matches are one line early (still within the ±4 tolerance). Findings span lines 12-261 (last expected finding is at 263).
+  - 9 severity disagreements (8 warnings raised to errors, 1 errors lowered to warnings).
+  - Extra findings (5): 3 HardCodedLiteral, 2 TopWithoutOrderBy.
+  - The run is complete: exit code 0, valid JSON, both analysis passes finished.
+  - AI time 61.66 s (1:02); 18,980 tokens (5,332 output); $0.16 per run.
+  - Ranks 43rd of 58.

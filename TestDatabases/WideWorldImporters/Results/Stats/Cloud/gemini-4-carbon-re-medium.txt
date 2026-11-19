@@ -1,0 +1,43 @@
+Model: gemini-4-carbon-re-medium
+Input tokens: 13,658
+Output tokens: 5,222
+Total tokens: 18,880
+AI time: 262.74 seconds
+Tokens/second: 72
+Estimated total cost: $0.079536 USD
+
+**Notes**
+=====
+Run: gemini-4-carbon (medium effort) (command line --run-discovered-effort medium), 11/13/2026 3:51 PM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 79
+Missed expected findings: 17
+Extra findings in output: 0
+Reported findings: 79 (recall 0.823, precision 1.000, F1 0.903)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 6 missed out of 9 expected (matched 3); expected lines [36, 51, 57, 81, 81, 174]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  TopWithoutOrderBy: 1 missed out of 8 expected (matched 7); expected lines [98]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 3 of 9 HardCodedLiteral and 7 of 8 TopWithoutOrderBy matched.
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) and SqlInjectionViaDynamicSql (111, 115)
+    skipped where the more specific rules were reported.
+  - Dynamic LIKE block at 221 only partly covered (DynamicSqlConcatenation and/or LeadingWildcardLike missed).
+  - No expected rule was missed entirely, including NotInNullableSubquery, TableVariableEstimate,
+    WhileLoopRowByRow, and MultiStatementTvfInsteadOfInline.
+  - The run is complete: exit code 0, valid JSON, findings through line 262 (last expected finding is at 263).
+  - 5 severity disagreements: 2 warnings raised to errors, 3 errors lowered to warnings.
+  - No extra findings.
+  - AI time 262.74 s (4:23); 18,880 tokens (5,222 output); $0.080 per run.
+  - Between none (85, F1 0.939) and low (76, F1 0.884) on coverage (79/79, F1 0.903), but much slower at 4:23.
+  - Ranks 27th of 45.

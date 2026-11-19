@@ -1,0 +1,42 @@
+Model: gemini-4-neon-re-medium
+Input tokens: 14,756
+Output tokens: 4,453
+Total tokens: 19,209
+AI time: 73.87 seconds
+Tokens/second: 260
+Estimated total cost: $0.111063 USD
+
+**Notes**
+=====
+Run: gemini-4-neon (medium effort) (new) (command line --run-discovered-effort medium), 11/19/2026 7:06 AM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 69
+Missed expected findings: 27
+Extra findings in output: 0
+Reported findings: 69 (recall 0.719, precision 1.000, F1 0.836)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlWithoutParameters: 1 missed out of 3 expected (matched 2); expected lines [116]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 1 of 9 HardCodedLiteral and 1 of 8 TopWithoutOrderBy matched.
+  - Shared-line companion findings skipped: SessionSettingChanged [13, 16], SqlInjectionViaDynamicSql [111, 115].
+  - Part of the dynamic LIKE block at line 221 was missed.
+  - No expected rule was missed entirely.
+  - Line numbers: 26 of 69 matches are one line early (still within the ±4 tolerance). Findings span lines 12-261 (last expected finding is at 263).
+  - 3 severity disagreements (0 warnings raised to errors, 3 errors lowered to warnings).
+  - No extra findings.
+  - The run is complete: exit code 0, valid JSON, both analysis passes finished.
+  - AI time 73.87 s (1:14); 19,209 tokens (4,453 output); $0.11 per run.
+  - Ranks 51st of 61.

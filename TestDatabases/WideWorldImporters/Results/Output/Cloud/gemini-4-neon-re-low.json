@@ -1,0 +1,464 @@
+[
+  {
+    "ruleName": "NoCountDisabled",
+    "lineNumber": 12,
+    "severity": "warning",
+    "explanation": "SET NOCOUNT OFF leaves row-count messages enabled, adding unnecessary network traffic and client overhead.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "XactAbortDisabled",
+    "lineNumber": 15,
+    "severity": "warning",
+    "explanation": "SET XACT_ABORT OFF allows certain run-time errors to leave transactions open and partially applied.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 23,
+    "severity": "warning",
+    "explanation": "SELECT * on Sales.Orders returns all columns unnecessarily and couples callers to schema changes.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "TopWithoutOrderBy",
+    "lineNumber": 26,
+    "severity": "warning",
+    "explanation": "SELECT TOP (10) from Sales.Orders without an ORDER BY returns an arbitrary, non-deterministic set of rows.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "UnnecessaryDistinct",
+    "lineNumber": 29,
+    "severity": "warning",
+    "explanation": "DISTINCT is redundant because OrderID is the primary key of Sales.Orders and is already unique.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "ReadUncommittedHint",
+    "lineNumber": 32,
+    "severity": "warning",
+    "explanation": "WITH (NOLOCK) on Sales.Orders permits dirty reads, phantom rows, and skipped or duplicated rows.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "FunctionOnColumn",
+    "lineNumber": 35,
+    "severity": "warning",
+    "explanation": "Applying YEAR() to o.OrderDate in the WHERE clause prevents an index seek on OrderDate.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "ImplicitConversion",
+    "lineNumber": 38,
+    "severity": "warning",
+    "explanation": "Comparing int column o.CustomerID with nvarchar variable @CustomerIdText forces an implicit conversion.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "OptionalParameterOr",
+    "lineNumber": 41,
+    "severity": "warning",
+    "explanation": "OR-based optional filter (@CustomerID IS NULL OR o.CustomerID = @CustomerID) hinders cardinality estimation and index seeks.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 44,
+    "severity": "warning",
+    "explanation": "LIKE N\u0027%urgent%\u0027 on o.Comments starts with a wildcard, preventing an index seek.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NotInNullableSubquery",
+    "lineNumber": 47,
+    "severity": "warning",
+    "explanation": "NOT IN against a subquery on Sales.Invoices can produce unexpected empty results if any returned value is NULL.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NonSargableIsNull",
+    "lineNumber": 50,
+    "severity": "warning",
+    "explanation": "Wrapping o.CustomerID in ISNULL() in the WHERE clause makes the predicate non-sargable.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "ArithmeticOnColumn",
+    "lineNumber": 53,
+    "severity": "warning",
+    "explanation": "Performing arithmetic (o.OrderID \u002B 0) on the key column in the WHERE clause prevents direct index seeking.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NegativePredicate",
+    "lineNumber": 56,
+    "severity": "warning",
+    "explanation": "Using the inequality operator (\u003C\u003E) on o.CustomerID typically forces a broad index or table scan.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CartesianJoin",
+    "lineNumber": 59,
+    "severity": "warning",
+    "explanation": "CROSS JOIN between Sales.Orders and Sales.Customers has no join predicate and produces a Cartesian product.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "OldStyleJoin",
+    "lineNumber": 62,
+    "severity": "warning",
+    "explanation": "Comma-separated tables in the FROM clause (Sales.Orders, Sales.OrderLines) obscure join logic and risk accidental Cartesian joins.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CorrelatedScalarSubquery",
+    "lineNumber": 65,
+    "severity": "warning",
+    "explanation": "Correlated scalar subquery counting Sales.OrderLines executes per outer row of Sales.Orders.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CorrelatedExists",
+    "lineNumber": 68,
+    "severity": "warning",
+    "explanation": "Correlated EXISTS subquery against Sales.OrderLines can be expressed as a set-based join.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "RepeatedExpression",
+    "lineNumber": 71,
+    "severity": "warning",
+    "explanation": "The CASE expression on o.Comments is duplicated in both the SELECT list and the ORDER BY clause.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "OrderByOrdinal",
+    "lineNumber": 74,
+    "severity": "warning",
+    "explanation": "ORDER BY 2 relies on select-list column position, which is fragile if columns are reordered.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NondeterministicPagination",
+    "lineNumber": 77,
+    "severity": "warning",
+    "explanation": "OFFSET/FETCH pagination ordered only by non-unique o.OrderDate lacks a unique tie-breaker column.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "UnionInsteadOfUnionAll",
+    "lineNumber": 80,
+    "severity": "warning",
+    "explanation": "UNION performs unnecessary duplicate elimination between two disjoint branches (OrderID = 1 and OrderID = 2).",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CountStarForExistence",
+    "lineNumber": 83,
+    "severity": "warning",
+    "explanation": "Using (SELECT COUNT(*) ...) \u003E 0 counts all matching Sales.OrderLines rows when only existence is needed.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "VariableAssignmentSelect",
+    "lineNumber": 86,
+    "severity": "warning",
+    "explanation": "Assigning @OrderID via SELECT from Sales.Orders silently accepts multiple rows and keeps an arbitrary last value.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "TableVariableEstimate",
+    "lineNumber": 89,
+    "severity": "warning",
+    "explanation": "Table variable @OrderIds may receive poor cardinality estimates compared to a temporary table.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SelectIntoTempTable",
+    "lineNumber": 93,
+    "severity": "warning",
+    "explanation": "SELECT ... INTO #ImplicitOrders creates a temporary table schema implicitly instead of defining it explicitly.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CursorRowByRow",
+    "lineNumber": 96,
+    "severity": "warning",
+    "explanation": "Cursor order_cursor processes rows from Sales.Orders one at a time instead of using set-based logic.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "WhileLoopRowByRow",
+    "lineNumber": 103,
+    "severity": "warning",
+    "explanation": "WHILE loop performs iterative row-by-row processing instead of a set-based operation.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlConcatenation",
+    "lineNumber": 109,
+    "severity": "warning",
+    "explanation": "Dynamic SQL string @Sql is built by concatenating @CustomerID instead of using parameters.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 114,
+    "severity": "warning",
+    "explanation": "sp_executesql is invoked with a concatenated @Sql string instead of parameterized inputs.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "TempTableWithoutCleanup",
+    "lineNumber": 117,
+    "severity": "warning",
+    "explanation": "Explicitly created temporary table #Scratch is not dropped before the procedure ends.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CatchSwallowsError",
+    "lineNumber": 123,
+    "severity": "warning",
+    "explanation": "CATCH block selects ERROR_MESSAGE() without rethrowing via THROW or returning an error status.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "LegacyRaiseError",
+    "lineNumber": 128,
+    "severity": "warning",
+    "explanation": "Uses legacy RAISERROR instead of THROW for error handling.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "PrintDiagnostic",
+    "lineNumber": 131,
+    "severity": "warning",
+    "explanation": "PRINT is buffered and unsuitable for structured diagnostics in production stored procedures.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "HardCodedLiteral",
+    "lineNumber": 134,
+    "severity": "warning",
+    "explanation": "Hard-coded business identifier (o.CustomerID = 1) is embedded directly in the query.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "MagicDateLiteral",
+    "lineNumber": 137,
+    "severity": "warning",
+    "explanation": "Unlabelled date literal \u002720160101\u0027 is embedded directly in the WHERE clause.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "AmbiguousDateConversion",
+    "lineNumber": 140,
+    "severity": "warning",
+    "explanation": "CONVERT(date, \u002701/02/2016\u0027) omits an explicit style parameter, making the result dependent on session DATEFORMAT.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CoalesceInJoin",
+    "lineNumber": 143,
+    "severity": "warning",
+    "explanation": "COALESCE on o.CustomerID and i.CustomerID in the JOIN predicate inhibits index usage and join optimization.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SelfJoinWithoutNeed",
+    "lineNumber": 146,
+    "severity": "warning",
+    "explanation": "Sales.Orders is self-joined on OrderID solely to retrieve the same key already available in the outer table.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "WideSort",
+    "lineNumber": 149,
+    "severity": "warning",
+    "explanation": "Sorting Sales.Orders by nvarchar(MAX) column o.Comments requires a wide, expensive sort operation.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "AggregateWithoutFilter",
+    "lineNumber": 152,
+    "severity": "warning",
+    "explanation": "Aggregates SUM(ol.Quantity) across the entire Sales.OrderLines table without a restrictive WHERE filter.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "HavingForRowFilter",
+    "lineNumber": 155,
+    "severity": "warning",
+    "explanation": "Row-level predicate ol.OrderID \u003E 0 is placed in HAVING instead of filtering rows earlier in WHERE.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "RedundantOrderBy",
+    "lineNumber": 158,
+    "severity": "warning",
+    "explanation": "ORDER BY OrderCount is redundant because COUNT(*) without GROUP BY always returns a single row.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "MergeStatement",
+    "lineNumber": 162,
+    "severity": "warning",
+    "explanation": "MERGE on Sales.Orders has known concurrency and correctness edge cases in SQL Server.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "UpdateWithoutMeaningfulChange",
+    "lineNumber": 168,
+    "severity": "warning",
+    "explanation": "UPDATE Sales.Orders sets Comments = Comments, causing unnecessary logging and locking without changing data.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "DeleteWithWeakPredicate",
+    "lineNumber": 172,
+    "severity": "warning",
+    "explanation": "DELETE from Sales.OrderLines filters by a non-key column (Quantity = -1) rather than a stable key.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "WaitForDelay",
+    "lineNumber": 176,
+    "severity": "warning",
+    "explanation": "WAITFOR DELAY blocks the worker thread synchronously instead of using asynchronous scheduling.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "ExplicitTransactionWithoutTryCatch",
+    "lineNumber": 181,
+    "severity": "warning",
+    "explanation": "BEGIN TRANSACTION is not wrapped in a BEGIN TRY ... BEGIN CATCH error-handling block.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SetIdentityInsert",
+    "lineNumber": 188,
+    "severity": "warning",
+    "explanation": "SET IDENTITY_INSERT Sales.Orders ON mutates session state and introduces fragile identity management.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "UnqualifiedProcedureName",
+    "lineNumber": 193,
+    "severity": "warning",
+    "explanation": "Stored procedure sp_who is called without a schema qualifier.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SessionSettingChanged",
+    "lineNumber": 196,
+    "severity": "warning",
+    "explanation": "SET ROWCOUNT 1 changes a session-level setting without restoring it to 0.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 211,
+    "severity": "warning",
+    "explanation": "INSERT INTO #DemoCategories omits an explicit column list, making it fragile to schema changes.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "InsertWithoutColumnList",
+    "lineNumber": 214,
+    "severity": "warning",
+    "explanation": "INSERT INTO #DemoCustomers omits an explicit column list, making it fragile to schema changes.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 217,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%\u0027 \u002B @CustomerName \u002B \u0027%\u0027 on CustomerName uses a leading wildcard, preventing an index seek.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SqlInjectionViaDynamicSql",
+    "lineNumber": 219,
+    "severity": "error",
+    "explanation": "User-supplied @CustomerName is concatenated directly into dynamic SQL @sql, creating a SQL injection vulnerability.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "DynamicSqlWithoutParameters",
+    "lineNumber": 220,
+    "severity": "warning",
+    "explanation": "sp_executesql executes dynamic SQL @sql without parameterized inputs.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "UpdateWithoutWhere",
+    "lineNumber": 222,
+    "severity": "error",
+    "explanation": "UPDATE #DemoCustomers has no WHERE clause and will overwrite CustomerCategoryID for every row.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "OuterJoinToFilter",
+    "lineNumber": 228,
+    "severity": "warning",
+    "explanation": "Filtering on o.OrderDate \u003E= \u00272016-01-01\u0027 in the WHERE clause converts the LEFT JOIN to Sales.Orders into an inner join.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NullEquality",
+    "lineNumber": 232,
+    "severity": "error",
+    "explanation": "Predicate DeliveryMethodID = NULL always evaluates to UNKNOWN instead of using IS NULL.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "ScalarUdfInSelect",
+    "lineNumber": 234,
+    "severity": "warning",
+    "explanation": "Scalar UDF dbo.GetCustomerType(CustomerID) in the SELECT list forces row-by-row evaluation.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "CatchWithoutRollback",
+    "lineNumber": 242,
+    "severity": "error",
+    "explanation": "CATCH block handles an error inside an explicit transaction without rolling back the open transaction.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "IndexHintHardcoded",
+    "lineNumber": 247,
+    "severity": "warning",
+    "explanation": "Hardcoded index hint WITH (INDEX = 1) on Sales.Customers overrides the query optimizer.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "NestedSubqueryDepth",
+    "lineNumber": 251,
+    "severity": "warning",
+    "explanation": "Query nests three levels of derived tables; refactor using a CTE or simplified query.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "LeadingWildcardLike",
+    "lineNumber": 256,
+    "severity": "warning",
+    "explanation": "LIKE \u0027%A%\u0027 on CustomerName starts with a wildcard, preventing an index seek.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "SelectStar",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "SELECT * from dbo.GetCustomerOrdersMulti couples callers to all returned columns.",
+    "ModelName": "gemini-4-neon-re-low"
+  },
+  {
+    "ruleName": "MultiStatementTvfInsteadOfInline",
+    "lineNumber": 261,
+    "severity": "warning",
+    "explanation": "Calling multi-statement table-valued function dbo.GetCustomerOrdersMulti inhibits query optimization compared to an inline TVF.",
+    "ModelName": "gemini-4-neon-re-low"
+  }
+]

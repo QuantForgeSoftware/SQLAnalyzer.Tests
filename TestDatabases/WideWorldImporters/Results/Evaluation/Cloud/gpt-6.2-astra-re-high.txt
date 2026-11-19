@@ -1,0 +1,44 @@
+Comparison (line differences < 5 ignored): gpt-6.2-astra-re-high.json (gpt-6.2-astra (high effort)) vs Test.ExpectedFindings.json
+
+Total expected findings: 96
+Total output findings:   89
+Matched within +/-4 lines: 82
+Missing from output:     14
+Extra in output:         7
+Severity mismatches:     9
+
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  line 84: CorrelatedScalarSubquery - Correlated scalar COUNT(*) subquery against Sales.OrderLines runs once per Sales.Orders row.
+  line 90: TableVariableEstimate - Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+  line 95: TopWithoutOrderBy - SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+  line 105: WhileLoopRowByRow - WHILE loop increments @Counter iteratively rather than using a set-based approach.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 148: TopWithoutOrderBy - SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+  line 221: DynamicSqlConcatenation - SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+
+Extra findings (in output but not within line tolerance):
+  line 17: HardCodedLiteral - @CustomerIdText fixes the customer identifier at N'1' rather than using the supplied @CustomerID.
+  line 19: HardCodedLiteral - @OrderID is initialized to business identifier 1, which is then used to filter Sales.Orders.
+  line 50: HardCodedLiteral - The equality test selects customer 1 independently of @CustomerID.
+  line 68: HardCodedLiteral - The qualifying order-line quantity threshold is fixed at 1.
+  line 90: TopWithoutOrderBy - The insert can populate @OrderIds with any five orders.
+  line 143: TopWithoutOrderBy - Any order matching an invoice by CustomerID can supply the returned OrderID.
+  line 143: CoalesceInJoin - COALESCE also wraps i.CustomerID on the Invoices side, obscuring the direct comparison on that indexed, NOT NULL column.
+
+Severity mismatches (same rule matched, different severity):
+  expected line 33 (output line 32): ReadUncommittedHint - expected warning, got error
+  expected line 87 (output line 86): VariableAssignmentSelect - expected warning, got error
+  expected line 125 (output line 123): CatchSwallowsError - expected warning, got error
+  expected line 142 (output line 140): AmbiguousDateConversion - expected warning, got error
+  expected line 183 (output line 181): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 190 (output line 188): SetIdentityInsert - expected warning, got error
+  expected line 198 (output line 196): SessionSettingChanged - expected warning, got error
+  expected line 230 (output line 228): OuterJoinToFilter - expected warning, got error
+  expected line 244 (output line 242): CatchSwallowsError - expected warning, got error

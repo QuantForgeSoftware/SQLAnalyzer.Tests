@@ -1,0 +1,46 @@
+Comparison (line differences < 5 ignored): gpt-6.2-astra-re-max.json (gpt-6.2-astra (max effort)) vs Test.ExpectedFindings.json
+
+Total expected findings: 96
+Total output findings:   95
+Matched within +/-4 lines: 83
+Missing from output:     13
+Extra in output:         12
+Severity mismatches:     7
+
+Missing findings (expected but not within line tolerance):
+  line 13: SessionSettingChanged - SET NOCOUNT OFF changes a session setting and is not restored before the procedure ends.
+  line 16: SessionSettingChanged - SET XACT_ABORT OFF changes a session setting and is not restored before the procedure ends.
+  line 48: NotInNullableSubquery - NOT IN against a subquery on i.CustomerID yields incorrect results if the subquery ever produces NULL.
+  line 90: TableVariableEstimate - Table variable @OrderIds may receive poor cardinality estimates on older compatibility levels.
+  line 95: TopWithoutOrderBy - SELECT TOP (5) into #ImplicitOrders has no ORDER BY, so the chosen rows are nondeterministic.
+  line 98: TopWithoutOrderBy - SELECT TOP (2) feeding the cursor has no ORDER BY, so the chosen rows are nondeterministic.
+  line 105: WhileLoopRowByRow - WHILE loop increments @Counter iteratively rather than using a set-based approach.
+  line 111: SqlInjectionViaDynamicSql - User-supplied parameter @CustomerID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 115: SqlInjectionViaDynamicSql - User-supplied parameter @OrderID is concatenated into a dynamic SQL string, creating a SQL injection risk.
+  line 141: MagicDateLiteral - The date value '01/02/2016' is embedded directly in the expression.
+  line 148: TopWithoutOrderBy - SELECT TOP (1) on the self-join has no ORDER BY, so the returned row is nondeterministic.
+  line 221: DynamicSqlConcatenation - SQL string is built by concatenating @CustomerName directly into the LIKE pattern.
+  line 221: LeadingWildcardLike - The constructed dynamic query uses a LIKE pattern that starts with a leading wildcard.
+
+Extra findings (in output but not within line tolerance):
+  line 17: HardCodedLiteral - @CustomerIdText fixes the customer identifier at N'1' instead of using the supplied @CustomerID.
+  line 19: HardCodedLiteral - @OrderID starts with an unexplained order identifier of 1, which can survive a later assignment if the query returns no rows.
+  line 44: HardCodedLiteral - The word 'urgent' is embedded as the criterion for selecting orders by comment.
+  line 50: HardCodedLiteral - The equality test selects the fixed customer identifier 1 instead of @CustomerID.
+  line 68: HardCodedLiteral - The qualifying order-line quantity threshold is fixed at greater than 1.
+  line 90: TopWithoutOrderBy - No ORDER BY determines which five OrderIDs are inserted into @OrderIds.
+  line 143: TopWithoutOrderBy - No ORDER BY defines which matching order/invoice row supplies the returned OrderID.
+  line 143: HardCodedLiteral - The Orders operand uses 0 as an undocumented substitute customer identifier.
+  line 143: CoalesceInJoin - The other COALESCE wraps the indexed Invoices.CustomerID join key, which is also NOT NULL.
+  line 143: HardCodedLiteral - The Invoices operand separately uses 0 as an undocumented substitute customer identifier.
+  line 155: HardCodedLiteral - The result uses a fixed OrderID cutoff of 0, although the supplied key definition does not require positive IDs.
+  line 256: HardCodedLiteral - The customer-name test uses the fixed search text 'A' rather than a supplied search term.
+
+Severity mismatches (same rule matched, different severity):
+  expected line 142 (output line 140): AmbiguousDateConversion - expected warning, got error
+  expected line 183 (output line 181): ExplicitTransactionWithoutTryCatch - expected error, got warning
+  expected line 190 (output line 188): SetIdentityInsert - expected warning, got error
+  expected line 198 (output line 196): SessionSettingChanged - expected warning, got error
+  expected line 230 (output line 228): OuterJoinToFilter - expected warning, got error
+  expected line 244 (output line 242): CatchSwallowsError - expected warning, got error
+  expected line 263 (output line 261): MultiStatementTvfInsteadOfInline - expected warning, got info

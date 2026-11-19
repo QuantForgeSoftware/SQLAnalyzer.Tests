@@ -1,0 +1,42 @@
+Model: qwen4-max-preview-re-low
+Input tokens: 14,516
+Output tokens: 8,503
+Total tokens: 23,019
+AI time: 137.04 seconds
+Tokens/second: 168
+Estimated total cost: $0.060038 USD
+
+**Notes**
+=====
+Run: qwen4-max-preview (low effort) (command line --run-discovered-effort low), 11/18/2026 7:21 AM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 73
+Missed expected findings: 23
+Extra findings in output: 1
+Reported findings: 74 (recall 0.760, precision 0.986, F1 0.859)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 6 missed out of 9 expected (matched 3); expected lines [36, 51, 57, 81, 81, 174]
+  TopWithoutOrderBy: 6 missed out of 8 expected (matched 2); expected lines [60, 63, 95, 98, 145, 148]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 3 of 9 HardCodedLiteral and 2 of 8 TopWithoutOrderBy matched.
+  - Shared-line companion findings skipped: SessionSettingChanged [13, 16], SqlInjectionViaDynamicSql [111, 115].
+  - Part of the dynamic LIKE block at line 221 was missed.
+  - No expected rule was missed entirely.
+  - Line numbers: 28 of 73 matches are one line early (still within the ±4 tolerance). Findings span lines 12-261 (last expected finding is at 263).
+  - 10 severity disagreements (8 warnings raised to errors, 0 errors lowered to warnings).
+  - Extra findings (1): 1 TopWithoutOrderBy.
+  - The run is complete: exit code 0, valid JSON, both analysis passes finished.
+  - AI time 137.04 s (2:17); 23,019 tokens (8,503 output); $0.06 per run.
+  - Ranks 47th of 58.

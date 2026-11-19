@@ -1,0 +1,42 @@
+Model: gemini-4-carbon-re-none
+Input tokens: 13,658
+Output tokens: 5,595
+Total tokens: 19,253
+AI time: 52.51 seconds
+Tokens/second: 367
+Estimated total cost: $0.083266 USD
+
+**Notes**
+=====
+Run: gemini-4-carbon (none effort) (command line --run-discovered-effort none), 11/13/2026 3:46 PM CST.
+
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 85
+Missed expected findings: 11
+Extra findings in output: 0
+Reported findings: 85 (recall 0.885, precision 1.000, F1 0.939)
+
+Missed expected findings by rule:
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  TopWithoutOrderBy: 1 missed out of 8 expected (matched 7); expected lines [98]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Repeated patterns: 9 of 9 HardCodedLiteral and 7 of 8 TopWithoutOrderBy matched.
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) and SqlInjectionViaDynamicSql (111, 115)
+    skipped where the more specific rules were reported.
+  - Dynamic LIKE block at 221 only partly covered (DynamicSqlConcatenation and/or LeadingWildcardLike missed).
+  - No expected rule was missed entirely, including NotInNullableSubquery, TableVariableEstimate,
+    WhileLoopRowByRow, and MultiStatementTvfInsteadOfInline.
+  - The run is complete: exit code 0, valid JSON, findings through line 262 (last expected finding is at 263).
+  - 11 severity disagreements: 8 warnings raised to errors, 2 errors lowered to warnings.
+  - No extra findings.
+  - AI time 52.51 s (0:53); 19,253 tokens (5,595 output); $0.083 per run.
+  - Matches gemini-3.1-pro-preview and gpt-5.6-terra on 85 of 96 with zero extras (F1 0.939), in 0:53 at $0.08, about half the price of gpt-5.6-terra and faster than its 1:00.
+  - Ranks 12th of 45.
