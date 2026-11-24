@@ -1,0 +1,41 @@
+Model: unknown model
+Input tokens: 13,541
+Output tokens: 40,936
+Total tokens: 54,477
+AI time: 1854.31 seconds
+Tokens/second: 29
+Estimated total cost: $0.000000 USD
+**Notes**
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 76
+Missed expected findings: 20
+Extra findings in output: 0
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  DynamicSqlConcatenation: 1 missed out of 3 expected (matched 2); expected lines [221]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MagicDateLiteral: 1 missed out of 3 expected (matched 2); expected lines [141]
+  TopWithoutOrderBy: 1 missed out of 8 expected (matched 7); expected lines [98]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Rules completely missed (no instance detected): none
+  - Every miss is a secondary instance of a rule the model already reported elsewhere; it tends to report one
+    finding per rule family and does not repeat it on later lines or on lines already carrying another finding.
+  - Main patterns:
+      Hard-coded / magic literals: 9 (only one HardCodedLiteral reported in the whole procedure)
+      Dynamic SQL / injection: 4 (concatenation was flagged, but the SqlInjection companion finding was not repeated; the
+        dynamic LIKE at line 221 was missed entirely)
+      Error handling and session settings: 2 (NoCountDisabled/XactAbortDisabled reported, SessionSettingChanged companions skipped)
+      Procedural / DML constructs: 2 (no-op UPDATE at 170, INSERT without column list at 215)
+      Joins, subqueries, aggregation, ordering: 3 (correlated COUNT at 84, unfiltered COUNT at 159, TOP feeding cursor at 98)
+  - No false positives and only 3 severity disagreements; precision is perfect, recall (79%) is the limiting factor.
+  - Compared with qwen3.6-27b-mtp (66/96) the main gain is TopWithoutOrderBy (7/8 vs 1/8), at the cost of roughly
+    double the output tokens (40,936 vs 20,159).

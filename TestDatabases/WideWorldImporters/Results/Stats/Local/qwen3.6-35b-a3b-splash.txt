@@ -1,0 +1,53 @@
+Model: qwen3.6-35b-a3b-splash
+Input tokens: 13,457
+Output tokens: 21,243
+Total tokens: 34,700
+AI time: 80.08 seconds
+Tokens/second: 433
+Estimated total cost: $0.000000 USD
+**Notes**
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 60
+Missed expected findings: 36
+Extra findings in output: 1
+Reported findings: 61 (recall 0.625, precision 0.984, F1 0.764)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  LeadingWildcardLike: 3 missed out of 4 expected (matched 1); expected lines [219, 221, 258]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  DynamicSqlWithoutParameters: 2 missed out of 3 expected (matched 1); expected lines [116, 222]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  SqlInjectionViaDynamicSql: 2 missed out of 3 expected (matched 1); expected lines [111, 115]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  OuterJoinToFilter: 1 missed out of 1 expected (matched 0); expected lines [230]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Strict one-finding-per-rule behavior: 61 findings across 60 rules, with only SelectStar reported twice
+    (lines 23 and 261). It touches almost every rule, but every repeated pattern is reported once:
+    1 of 9 HardCodedLiteral and 1 of 8 TopWithoutOrderBy (15 of the 36 misses), 1 of 4 LeadingWildcardLike,
+    and 1 of 3 for each dynamic-SQL rule (DynamicSqlConcatenation, DynamicSqlWithoutParameters,
+    SqlInjectionViaDynamicSql), so none of the three dynamic-SQL blocks is covered in full.
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) skipped where NoCountDisabled and
+    XactAbortDisabled were reported.
+  - The single extra is a near miss: OuterJoinToFilter was reported at line 225 against expected line 230,
+    five lines off and just outside the tolerance, so it counts as one miss and one extra.
+  - MultiStatementTvfInsteadOfInline (263) was not reported; second instances of CatchSwallowsError (244),
+    AggregateWithoutFilter (159), CorrelatedScalarSubquery (84), InsertWithoutColumnList (215),
+    UpdateWithoutMeaningfulChange (170) and UnqualifiedProcedureName (222) were missed.
+  - The run is complete, not truncated: findings run through line 261 of the 268-line procedure.
+  - 4 severity disagreements, all warnings raised to errors (DynamicSqlConcatenation, DynamicSqlWithoutParameters,
+    CatchSwallowsError, MergeStatement).
+  - Very fast: AI time 80.08 seconds (1:20) at 433 tokens/second, with 21,243 output tokens (34,700 total).
+    Compared with qwen3.6-35b-a3b-mtp it finds 4 fewer issues (60 vs 64) and adds one extra, but runs about
+    2.8 times faster (1:20 vs 3:44).
+  - Ranks 12th of 17 in the local comparison, between qwen3.6-35b-a3b-mtp (0.800) and gemma-4-31b-it-qat (0.583).

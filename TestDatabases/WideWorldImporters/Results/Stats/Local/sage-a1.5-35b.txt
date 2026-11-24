@@ -1,0 +1,47 @@
+Model: unknown model
+Input tokens: 13,457
+Output tokens: 49,470
+Total tokens: 62,927
+AI time: 621.00 seconds
+Tokens/second: 101
+Estimated total cost: $0.000000 USD
+**Notes**
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 65
+Missed expected findings: 31
+Extra findings in output: 0
+Reported findings: 65 (recall 0.677, precision 1.000, F1 0.807)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 174, 213, 224]
+  TopWithoutOrderBy: 7 missed out of 8 expected (matched 1); expected lines [60, 63, 92, 95, 98, 145, 148]
+  DynamicSqlConcatenation: 3 missed out of 3 expected (matched 0); expected lines [111, 115, 221]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  LeadingWildcardLike: 2 missed out of 4 expected (matched 2); expected lines [221, 258]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  UnqualifiedProcedureName: 1 missed out of 2 expected (matched 1); expected lines [222]
+  CatchSwallowsError: 1 missed out of 2 expected (matched 1); expected lines [244]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Report-once behavior on repeated patterns: only 1 of 9 HardCodedLiteral and 1 of 8 TopWithoutOrderBy were
+    reported. These two rules account for 15 of the 31 misses.
+  - Inverted dynamic-SQL companion pattern: SqlInjectionViaDynamicSql was found on all three dynamic-SQL blocks,
+    but DynamicSqlConcatenation was reported on none of them (most models do the opposite).
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) skipped where NoCountDisabled and
+    XactAbortDisabled were reported.
+  - The last part of the procedure is thin: the dynamic LIKE at 221, the leading wildcard at 258, the second
+    CatchSwallowsError at 244 and the multi-statement TVF at 263 were all missed.
+  - Remaining misses are single secondary instances (84, 141, 159, 170, 215, 222, 230).
+  - Line numbers are reliable: 0 extras, so no finding landed on a wrong line (precision 1.000). No mercury-style drift.
+  - 15 severity disagreements, 13 of them warnings raised to errors (ReadUncommittedHint, ImplicitConversion,
+    CartesianJoin, DynamicSqlWithoutParameters x3, MergeStatement, etc.) and 2 lowered to info.
+  - Token usage is high for the result: 49,470 output tokens (62,927 total), second only to qwen3.8-27b-mlx among
+    the local models, for a mid-table F1. Stats file reports "Model: unknown model"; the log's -model argument is
+    sage-a1.5 (profile sage-a1.5-35b).
+  - Ranks 9th of 15 in the local comparison, between qwen3.6-27b-mtp (0.815) and qwen3.6-35b-a3b-mtp (0.800).

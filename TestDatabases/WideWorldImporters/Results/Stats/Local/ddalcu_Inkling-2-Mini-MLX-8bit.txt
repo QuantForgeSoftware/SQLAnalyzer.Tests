@@ -1,0 +1,49 @@
+Model: ddalcu/Inkling-2-Mini-MLX-8bit
+Input tokens: 15,792
+Output tokens: 17,114
+Total tokens: 32,906
+AI time: 245.74 seconds
+Tokens/second: 134
+Estimated total cost: $0.000000 USD
+**Notes**
+=====
+Total expected findings: 96 (across 61 rules)
+Matched within tolerance: 71
+Missed expected findings: 25
+Extra findings in output: 2
+Reported findings: 73 (recall 0.740, precision 0.973, F1 0.840)
+
+Missed expected findings by rule:
+  HardCodedLiteral: 8 missed out of 9 expected (matched 1); expected lines [36, 51, 57, 81, 81, 174, 213, 224]
+  TopWithoutOrderBy: 3 missed out of 8 expected (matched 5); expected lines [95, 98, 148]
+  DynamicSqlConcatenation: 2 missed out of 3 expected (matched 1); expected lines [115, 221]
+  MagicDateLiteral: 2 missed out of 3 expected (matched 1); expected lines [141, 230]
+  SessionSettingChanged: 2 missed out of 3 expected (matched 1); expected lines [13, 16]
+  AggregateWithoutFilter: 1 missed out of 2 expected (matched 1); expected lines [159]
+  CorrelatedScalarSubquery: 1 missed out of 2 expected (matched 1); expected lines [84]
+  InsertWithoutColumnList: 1 missed out of 2 expected (matched 1); expected lines [215]
+  LeadingWildcardLike: 1 missed out of 4 expected (matched 3); expected lines [221]
+  MultiStatementTvfInsteadOfInline: 1 missed out of 1 expected (matched 0); expected lines [263]
+  NotInNullableSubquery: 1 missed out of 1 expected (matched 0); expected lines [48]
+  SqlInjectionViaDynamicSql: 1 missed out of 3 expected (matched 2); expected lines [115]
+  UpdateWithoutMeaningfulChange: 1 missed out of 2 expected (matched 1); expected lines [170]
+
+Pattern analysis for missed expected findings:
+  - Broad mid-table coverage: 73 findings across 59 of 61 rules, running through line 261 of the
+    procedure. It is not a one-finding-per-rule report; several patterns are repeated, including 3 of 4
+    LeadingWildcardLike and 5 of 8 TopWithoutOrderBy.
+  - HardCodedLiteral is the largest gap: 8 of 9 expected instances missed, with only one match. The
+    missed literals sit on predicates, UNION branches, a delete, and later inserts and updates.
+  - Companion findings on shared lines: SessionSettingChanged (13, 16) skipped where NoCountDisabled
+    and XactAbortDisabled were reported. The second dynamic-SQL block at line 115 missed both
+    DynamicSqlConcatenation and SqlInjectionViaDynamicSql. LeadingWildcardLike at 221 was also missed
+    with DynamicSqlConcatenation on the same line.
+  - The two extras are both TopWithoutOrderBy (lines 90 and 143). The matcher assigned nearby expected
+    lines 92 and 145 to slightly closer reports at 93 and 146, which left expected lines 95, 98, and 148
+    unmatched as well. On the current answer key those two extras match and precision is 1.000.
+  - Completely missed rules: NotInNullableSubquery (48) and MultiStatementTvfInsteadOfInline (263).
+  - One severity disagreement: ExplicitTransactionWithoutTryCatch at expected line 183 (output 181)
+    was reported as a warning rather than an error. This does not affect the score.
+  - The run is complete (ExitCode 0, ProviderStopReason stop on both passes). AI time 245.74 seconds
+    (4:06) at 134 tokens/second, with 17,114 output tokens (32,906 total) and no recorded per-token cost.
+  - Ranks 8th of 18 in the comparison, between muse-glimmer-30b@q4_k_xl (0.877) and flint (0.826).
